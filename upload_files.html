@@ -1,0 +1,11 @@
+<html>
+<head><title>Upload Files to Filing Cabinet</title></head>
+<body>
+<form enctype="multipart/form-data" action="uploader.php" method="POST">
+<!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
+Choose a file to upload: <input name="uploadedfile" type="file" />
+Comma separated list of labels: <input name="labels" type="text" /><br />
+<input type="submit" value="Upload File" />
+</form>
+</body>
+</html>
