@@ -21,7 +21,7 @@ foreach ($labels as $id => $label) {
 // connect to the database
 $user = '<insert database username>';
 $password = '<insert database password>';
-$database = '<insert database name>';
+$database = 'filingcabinet';
 mysql_connect(localhost, $user, $password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
