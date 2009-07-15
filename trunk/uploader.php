@@ -1,10 +1,9 @@
 <?php
 
+require 'environment.php';
+
 // connect to the database
-$user = '<insert database username>';
-$password = '<insert database password>';
-$database = 'filingcabinet';
-mysql_connect(localhost, $user, $password);
+mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
 for ($i = 1; $i <= $_POST['amount']; ++$i) {
@@ -45,7 +44,7 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
 
   if(move_uploaded_file($_FILES["uploadedfile_$i"]['tmp_name'], $target_path)) {
     // archive the file
-    echo 'archiver says: ' . exec('7za a -mx=9 -y <insert archive path and filename> ' . $target_path, $output, $return_value) . '<br />';
+    echo 'archiver says: ' . exec("7za a -mx=9 -y $archive_path $target_path", $output, $return_value) . '<br />';
     if ($return_value == 0) {
         // insert the file data into the database
         mysql_query(
