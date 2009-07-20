@@ -13,6 +13,8 @@ if ($_POST['action'] == 'delete') {
     if ($return_value == 0) {
         $qDelFile = 'DELETE FROM Files WHERE id = ' . $_POST['file_id'];
         mysql_query($qDelFile) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelFile . "</p>\n");
+        $qDelLabels = 'DELETE FROM Labels WHERE file_id = ' . $_POST['file_id'];
+        mysql_query($qDelLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelLabels . "</p>\n");
         echo "File deleted</p>\n";
     } else {
         echo "There was an error deleting the file.</p>\n";
