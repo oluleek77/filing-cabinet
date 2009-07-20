@@ -1,9 +1,9 @@
 Filing Cabinet
 GPL 3.0
 
-Don't just run install-example.sh, make a copy of it (named something else) then edit your copy so it works with your own setup, then make it executable, then execute it.
+Don't just run install-example-local.sh or install-example-remote.sh, make a copy of it (named something else) then edit your copy so it works with your own setup, then make it executable, then execute it.
 
-cp install-example.sh install.sh
+cp install-example-local.sh install.sh
 my_favourite_text_editor install.sh
 chmod +x install.sh
 ./install.sh
