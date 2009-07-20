@@ -6,18 +6,22 @@ require 'environment.php';
 mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
+$fileID = array(); // for keeping track of which files have which ids
+$sequence = array(); // for keeping track of which files are in sequence with which
+
 for ($i = 1; $i <= $_POST['amount']; ++$i) {
 
   if ($_FILES["uploadedfile_$i"]['error'] > 0)
   {
-    echo 'Error: ' . $_FILES["uploadedfile_$i"]['error'] . '<br />';
+    echo "<p>File $i Error: " . $_FILES["uploadedfile_$i"]['error'] . "</p>\n";
+    continue;
   }
   else
   {
-    echo 'Upload: ' . $_FILES["uploadedfile_$i"]['name'] . '<br />';
+    echo '<p>Upload: ' . $_FILES["uploadedfile_$i"]['name'] . '<br />';
     echo 'Type: ' . $_FILES["uploadedfile_$i"]['type'] . '<br />';
     echo 'Size: ' . ($_FILES["uploadedfile_$i"]['size'] / 1024) . ' Kb<br />';
-    echo 'Labels: ' . $_POST["labels_$i"] . '<br />';
+    echo 'Labels: ' . $_POST["labels_$i"] . '</p>';
   }
 
   // split and trim the labels
@@ -36,11 +40,11 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
   $qShowStatus = "SHOW TABLE STATUS LIKE 'Files'";
   $qShowStatusResult = mysql_query($qShowStatus) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qShowStatus );
   $row = mysql_fetch_assoc($qShowStatusResult);
-  $next_increment = $row['Auto_increment'];
+  $fileID["File $i"] = $row['Auto_increment'];
 
 
   // make the file name correspond to the id in the database
-  $target_path =  'file_' . $next_increment;
+  $target_path =  'file_' . $fileID["File $i"];
 
   if(move_uploaded_file($_FILES["uploadedfile_$i"]['tmp_name'], $target_path)) {
     // archive the file
@@ -59,9 +63,13 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
         foreach ($labels as $label) {
           mysql_query(
             "INSERT INTO Labels (file_id, label_name)
-            VALUES(".$next_increment.", '".addslashes($label)."')"
+            VALUES(".$fileID["File $i"].", '".addslashes($label)."')"
           );
         }
+        
+        // record sequence data
+        $sequence[$fileID["File $i"]] = $_POST["sequence_$i"];
+        
         // remove the file from the upload location
         exec('rm ' . $target_path);
     } else {
@@ -74,6 +82,9 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
   }
 
 }
+
+print_r($fileID);
+print_r($sequence);
 
 mysql_close();
 ?>

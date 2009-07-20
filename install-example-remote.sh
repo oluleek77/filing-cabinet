@@ -10,9 +10,9 @@ db_user=user
 db_pass=pass
 
 # where the filing cabinet is hosted from
-web_path=user@my.domain:/my_home/web/filingcabinet
+web_path=user@my.domain:/my_web_home/filingcabinet
 
-# where the files are actually stored (needs to be a 7zip file)
+# where the files are actually stored from the point of view of the server (needs to be a 7zip file)
 archive_path_enc='\/media\/sdb\/filearchive\/allfiles.7z'
 
 # make a copy of the web files that need to be edited
