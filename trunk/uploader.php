@@ -11,7 +11,11 @@ $sequence = array(); // for keeping track of which files are in sequence with wh
 
 for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 
-  if ($_FILES["uploadedfile_$i"]['error'] > 0)
+  if ($_FILES["uploadedfile_$i"]['error'] == 4)
+  {
+    continue; // this part of the form has not been filled in
+  }
+  else if ($_FILES["uploadedfile_$i"]['error'] > 0)
   {
     echo "<p>File $i Error: " . $_FILES["uploadedfile_$i"]['error'] . "</p>\n";
     continue;
@@ -61,14 +65,19 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 
         // insert the label data into the database
         foreach ($labels as $label) {
-          mysql_query(
-            "INSERT INTO Labels (file_id, label_name)
-            VALUES(".$fileID["File $i"].", '".addslashes($label)."')"
-          );
+          if ($label != '') {
+            mysql_query(
+              "INSERT INTO Labels (file_id, label_name)
+              VALUES(".$fileID["File $i"].", '".addslashes($label)."')"
+            );
+          }
         }
         
         // record sequence data
-        $sequence[$fileID["File $i"]] = $_POST["sequence_$i"];
+        // if sequence number is the same as the file number then no sequence is recorded.
+        if ($i != (int)$_POST["sequence_$i"]) {
+            $sequence[$fileID["File $i"]] = 'File ' . $_POST["sequence_$i"];
+        }
         
         // remove the file from the upload location
         exec('rm ' . $target_path);
@@ -83,8 +92,19 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 
 }
 
-print_r($fileID);
-print_r($sequence);
+//print_r($fileID);
+//echo '<br />';
+//print_r($sequence);
+
+// putt the sequence data into the database
+foreach ($sequence as $file_ID => $target)
+{
+    mysql_query(
+        "UPDATE Files
+        SET next_file_id = " . $fileID[$target] . "
+        WHERE id = $file_ID"
+    );
+}
 
 mysql_close();
 ?>
