@@ -9,7 +9,7 @@ mysql_connect(localhost, $db_user, $db_password);
 // check if we've been asked to delete a file
 if ($_POST['action'] == 'delete') {
     echo "<p>Deleting file from archive<br />\n";
-    echo 'archiver says: ' . exec("7za d -y $archive_path file_$_POST['file_id']", $output, $return_value) . "<br />\n";
+    echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_POST['file_id'], $output, $return_value) . "<br />\n";
     if ($return_value == 0) {
         $qDelFile = 'DELETE FROM Files WHERE id = ' . $_POST['file_id'];
         mysql_query($qDelFile) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelFile . "</p>\n");
