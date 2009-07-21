@@ -9,7 +9,7 @@ mysql_connect(localhost, $db_user, $db_password);
 $fileID = array(); // for keeping track of which files have which ids
 $sequence = array(); // for keeping track of which files are in sequence with which
 
-for ($i = 1; $i <= $_POST['amount']; ++$i) {
+for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 
   if ($_FILES["uploadedfile_$i"]['error'] > 0)
   {
@@ -31,10 +31,10 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
   }
 
   // use semaphore locking
-  while (file_exists('.lock_archiver') && ((time() - filemtime('.lock_archiver')) < 1800)) {
+  while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 1800)) {
     sleep(50);
   }
-  @touch('.lock_archiver');
+  @touch('.lock_cabinet');
 
   // get id of row we're about to insert
   $qShowStatus = "SHOW TABLE STATUS LIKE 'Files'";
@@ -55,7 +55,7 @@ for ($i = 1; $i <= $_POST['amount']; ++$i) {
           "INSERT INTO Files (filename, type, size, owner, permissions)
           VALUES('".addslashes($_FILES["uploadedfile_$i"]['name'])."', '".addslashes($_FILES["uploadedfile_$i"]['type'])."', ".$_FILES["uploadedfile_$i"]['size'].",
           'tobyandmg', 0)"
-        );
+        ); 
         // now safe to unlock because the next increment will give a new file id.
         @unlink('.lock_cabinet');
 
