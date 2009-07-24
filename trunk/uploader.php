@@ -1,6 +1,6 @@
 <?php
 
-require 'environment.php';
+require_once 'environment.php';
 
 // connect to the database
 mysql_connect(localhost, $db_user, $db_password);
