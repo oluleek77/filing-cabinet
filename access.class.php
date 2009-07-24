@@ -1,4 +1,7 @@
 <?php
+
+require_once 'environment.php';
+
 /**
  * PHP Class to user access (login, register, logout, etc)
  * 
@@ -38,7 +41,7 @@ class flexibleAccess{
    * The database that we will use
    * var string
    */
-  var $dbName = 'database';
+  var $dbName = $database; // from environment.php
   /**
    * The database host
    * var string
@@ -53,12 +56,12 @@ class flexibleAccess{
    * The database user
    * var string
    */
-  var $dbUser = 'user';
+  var $dbUser = $db_user; // from environment.php
   /**
    * The database password
    * var string
    */
-  var $dbPass = 'password';
+  var $dbPass = $db_pass; // from environment.php
   /**
    * The database table that holds all the information
    * var string
@@ -84,7 +87,7 @@ class flexibleAccess{
    * When user wants the system to remember him/her, how much time to keep the cookie? (seconds)
    * var int
    */
-  var $remTime = 2592000;//One month
+  var $remTime = 2592000; // One month
   /**
    * The name of the cookie which we will use if user wants to be remembered by the system
    * var string
