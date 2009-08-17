@@ -77,7 +77,7 @@ class flexibleAccess{
    * var array
    */
   var $tbFields = array(
-  	'userID'=> 'userID', 
+  /*	'userID'=> 'userID', */
   	'login' => 'username',
   	'pass'  => 'password',
   	'email' => 'email',
@@ -92,7 +92,7 @@ class flexibleAccess{
    * The name of the cookie which we will use if user wants to be remembered by the system
    * var string
    */
-  var $remCookieName = 'ckSavePass';
+  var $remCookieName = 'fcSavePass';
   /**
    * The cookie domain
    * var string
@@ -108,6 +108,7 @@ class flexibleAccess{
    * var bool
    */
   var $displayErrors = true;
+  
   /*Do not edit after this line*/
   var $userID;
   var $dbConn;
@@ -170,7 +171,7 @@ class flexibleAccess{
 		if ( $loadUser )
 		{
 			$this->userData = mysql_fetch_array($res);
-			$this->userID = $this->userData[$this->tbFields['userID']];
+			$this->userID = $this->userData[$this->tbFields['login']];
 			$_SESSION[$this->sessionVariable] = $this->userID;
 			if ( $remember ){
 			  $cookie = base64_encode(serialize(array('uname'=>$uname,'password'=>$originalPassword)));
@@ -242,7 +243,7 @@ class flexibleAccess{
     if (empty($this->userID)) $this->error('No user is loaded', __LINE__);
     if ( $this->is_active()) $this->error('Allready active account', __LINE__);
     $res = $this->query("UPDATE `{$this->dbTable}` SET {$this->tbFields['active']} = 1 
-	WHERE `{$this->tbFields['userID']}` = '".$this->escape($this->userID)."' LIMIT 1");
+	WHERE `{$this->tbFields['login']}` = '".$this->escape($this->userID)."' LIMIT 1");
     if (@mysql_affected_rows() == 1)
 	{
 		$this->userData[$this->tbFields['active']] = true;
@@ -261,7 +262,7 @@ class flexibleAccess{
 	  case 'sha1':
 	  	$password = "SHA1('".$data[$this->tbFields['pass']]."')"; break;
 	  case 'md5' :
-	  	$password = "MD5('".$data[$this->tbFields['pass']]."')";break;
+	  	$password = "MD5('".$data[$this->tbFields['pass']]."')"; break;
 	  case 'nothing':
 	  	$password = $data[$this->tbFields['pass']];
 	}
@@ -309,7 +310,7 @@ class flexibleAccess{
   */
   function loadUser($userID)
   {
-	$res = $this->query("SELECT * FROM `{$this->dbTable}` WHERE `{$this->tbFields['userID']}` = '".$this->escape($userID)."' LIMIT 1");
+	$res = $this->query("SELECT * FROM `{$this->dbTable}` WHERE `{$this->tbFields['login']}` = '".$this->escape($userID)."' LIMIT 1");
     if ( mysql_num_rows($res) == 0 )
     	return false;
     $this->userData = mysql_fetch_array($res);
