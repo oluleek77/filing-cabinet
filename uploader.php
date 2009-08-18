@@ -1,10 +1,17 @@
 <?php
 
 require_once 'environment.php';
+require_once 'access.classs.php';
 
 // connect to the database
-mysql_connect(localhost, $db_user, $db_password);
+$db_link = mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
+
+$user = new flexibleAccess($db_link);
+// must be logged in to upload files
+if (!$user->is_loaded()) {
+  header('Location: http://'.$_SERVER['HTTP_HOST'].'login.php?location='.$_SERVER['PHP_SELF']);
+}
 
 $fileID = array(); // for keeping track of which files have which ids
 $sequence = array(); // for keeping track of which files are in sequence with which

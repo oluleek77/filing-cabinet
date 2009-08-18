@@ -24,7 +24,7 @@ sed -i "s/<insert database password>/$db_pass/" environment.php.tmp
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" environment.php.tmp
 
 # this bit copies the web files in
-scp index.html upload_files.php uploader.php listview.php $web_path/
+scp index.html upload_files.php uploader.php listview.php access.class.php login.php $web_path/
 scp environment.php.tmp $web_path/environment.php
 
 # You might want to add a bit that imports the sql into your database
