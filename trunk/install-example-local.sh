@@ -16,7 +16,7 @@ web_path=$HOME/web/filingcabinet
 archive_path_enc='\/media\/sdb\/filearchive\/allfiles.7z'
 
 # this bit copies the web files in
-cp index.html environment.php upload_files.php uploader.php listview.php $web_path
+cp index.html environment.php upload_files.php uploader.php listview.php access.class.php login.php $web_path
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $web_path/environment.php
