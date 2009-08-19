@@ -1,7 +1,7 @@
 <?php
 
 require_once 'environment.php';
-require_once 'access.classs.php';
+require_once 'access.class.php';
 
 // connect to the database
 $db_link = mysql_connect(localhost, $db_user, $db_password);
@@ -10,7 +10,7 @@ $db_link = mysql_connect(localhost, $db_user, $db_password);
 $user = new flexibleAccess($db_link);
 // must be logged in to upload files
 if (!$user->is_loaded()) {
-  header('Location: http://'.$_SERVER['HTTP_HOST'].'login.php?location='.$_SERVER['PHP_SELF']);
+  header('Location: http://'.$_SERVER['HTTP_HOST'].'/login.php?location=upload_files.php');
 }
 
 $fileID = array(); // for keeping track of which files have which ids

@@ -41,7 +41,7 @@ class flexibleAccess{
    * The database that we will use
    * var string
    */
-  var $dbName = $database; // from environment.php
+  var $dbName = ''; // will get from environment.php in constructor
   /**
    * The database host
    * var string
@@ -56,12 +56,12 @@ class flexibleAccess{
    * The database user
    * var string
    */
-  var $dbUser = $db_user; // from environment.php
+  var $dbUser = ''; // will get from environment.php in constructor
   /**
    * The database password
    * var string
    */
-  var $dbPass = $db_pass; // from environment.php
+  var $dbPass = ''; // will get from environment.php in constructor
   /**
    * The database table that holds all the information
    * var string
@@ -114,7 +114,7 @@ class flexibleAccess{
   var $dbConn;
   var $userData=array();
   /**
-   * Class Constructure
+   * Class Constructor
    * 
    * @param string $dbConn
    * @param array $settings
@@ -122,6 +122,11 @@ class flexibleAccess{
    */
   function flexibleAccess($dbConn = '', $settings = '')
   {
+	    // insert data from environment.php
+	    $this->dbName = $GLOBALS['database'];
+	    $this->dbUser = $GLOBALS['db_user'];
+	    $this->dbPass = $GLOBALS['db_password'];
+	    
 	    if ( is_array($settings) ){
 		    foreach ( $settings as $k => $v ){
 				    if ( !isset( $this->{$k} ) ) die('Property '.$k.' does not exists. Check your settings.');
