@@ -27,11 +27,11 @@ if ( !$user->is_loaded() )
 	</p>';
 }else{
   // User is loaded, so send them on to where they want to go.
-  if isset($_GET['location']) {
-    header('Location: http://'.$_SERVER['HTTP_HOST'].$_GET['location']);
+  if (isset($_GET['location'])) {
+    header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.$_GET['location']);
   } else {
     // if no location is specified go to list view.
-    header('Location: http://'.$_SERVER['HTTP_HOST'].'listview.php');
+    header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.'listview.php');
   }
   //echo '<a href="'.$_SERVER['PHP_SELF'].'?logout=1">logout</a>';
 }
