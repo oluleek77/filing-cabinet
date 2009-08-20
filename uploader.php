@@ -10,7 +10,7 @@ $db_link = mysql_connect(localhost, $db_user, $db_password);
 $user = new flexibleAccess($db_link);
 // must be logged in to upload files
 if (!$user->is_loaded()) {
-  header('Location: http://'.$_SERVER['HTTP_HOST'].'/login.php?location=upload_files.php');
+  header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location=upload_files.php');
 }
 
 $fileID = array(); // for keeping track of which files have which ids
