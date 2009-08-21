@@ -18,11 +18,13 @@ if ( !$user->is_loaded() )
 	    header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 	  }
 	}
+	if (!isset($_GET['location'])) $_GET['location'] = urlencode('listview.php');
 	echo '<h1>Filing Cabinet Login</h1>
 	<p>You do not have to login to <a href="listview.php">access public files</a>.</p>
 	<p><form method="post" action="'.$_SERVER['PHP_SELF'].'" />
 	 username: <input type="text" name="uname" /><br /><br />
 	 password: <input type="password" name="pwd" /><br /><br />
+	 <input type="hidden" name="location" value="'.$_GET['location'].'" />
 	 <input type="submit" value="login" />
 	</form>
 	</p>
@@ -34,8 +36,8 @@ else if (!$user->is_active()){
   echo '<p><a href="'.$_SERVER['PHP_SELF'].'?logout=1">logout</a></p>';
 } else {
   // User is loaded, so send them on to where they want to go.
-  if (isset($_GET['location'])) {
-    header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.$_GET['location']);
+  if (isset($_POST['location'])) {
+    header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.urldecode($_POST['location']));
   } else {
     // if no location is specified go to list view.
     header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.'listview.php');
