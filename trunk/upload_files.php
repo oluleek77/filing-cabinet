@@ -5,7 +5,7 @@ require_once 'access.class.php';
 $user = new flexibleAccess();
 // must be logged in to upload files
 if (!($user->is_loaded() and $user->is_active())) {
-  header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location='.$_SERVER['SCRIPT_NAME']);
+  header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location='.urlencode('upload_files.php'));
 }
 
 ?>
