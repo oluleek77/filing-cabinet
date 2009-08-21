@@ -18,14 +18,21 @@ if ( !$user->is_loaded() )
 	    header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 	  }
 	}
-	echo '<h1>Login</h1>
+	echo '<h1>Filing Cabinet Login</h1>
+	<p>You do not have to login to <a href="listview.php">access public files</a>.</p>
 	<p><form method="post" action="'.$_SERVER['PHP_SELF'].'" />
 	 username: <input type="text" name="uname" /><br /><br />
 	 password: <input type="password" name="pwd" /><br /><br />
 	 <input type="submit" value="login" />
 	</form>
-	</p>';
-}else{
+	</p>
+	<p>Or you may <a href="register.php">create a new account</a>.</p>';
+}
+else if (!$user->is_active()){
+  echo '<p>Your account is not active. When you registered you should have got an email giving you directions
+  on how to activate your account. If there is a problem contat the administrator.</p>';
+  echo '<p><a href="'.$_SERVER['PHP_SELF'].'?logout=1">logout</a></p>';
+} else {
   // User is loaded, so send them on to where they want to go.
   if (isset($_GET['location'])) {
     header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.$_GET['location']);
@@ -33,6 +40,5 @@ if ( !$user->is_loaded() )
     // if no location is specified go to list view.
     header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/'.'listview.php');
   }
-  //echo '<a href="'.$_SERVER['PHP_SELF'].'?logout=1">logout</a>';
 }
 ?>

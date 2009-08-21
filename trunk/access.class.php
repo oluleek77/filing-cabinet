@@ -66,7 +66,7 @@ class flexibleAccess{
    * The database table that holds all the information
    * var string
    */
-  var $dbTable  = 'users';
+  var $dbTable  = 'Users';
   /**
    * The session variable ($_SESSION[$sessionVariable]) which will hold the data while the user is logged on
    * var string
@@ -273,8 +273,9 @@ class flexibleAccess{
 	}
     foreach ($data as $k => $v ) $data[$k] = "'".$this->escape($v)."'";
     $data[$this->tbFields['pass']] = $password;
-    $this->query("INSERT INTO `{$this->dbTable}` (`".implode('`, `', array_keys($data))."`) VALUES (".implode(", ", $data).")");
-    return (int)mysql_insert_id($this->dbConn);
+    $res = $this->query("INSERT INTO `{$this->dbTable}` (`".implode('`, `', array_keys($data))."`) VALUES (".implode(", ", $data).")");
+    if (!$res) return 0;
+    else return mysql_affected_rows($this->dbConn);
   }
   /*
    * Creates a random password. You can use it to create a password or a hash for user activation
@@ -298,11 +299,11 @@ class flexibleAccess{
   	* @param string $sql
   	* @return string
   */
-  function query($sql, $line = 'Uknown')
+  function query($sql, $line = 'Unknown')
   {
     //if (defined('DEVELOPMENT_MODE') ) echo '<b>Query to execute: </b>'.$sql.'<br /><b>Line: </b>'.$line.'<br />';
 	$res = mysql_db_query($this->dbName, $sql, $this->dbConn);
-	if ( !res )
+	if ( !$res )
 		$this->error(mysql_error($this->dbConn), $line);
 	return $res;
   }

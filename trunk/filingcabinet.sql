@@ -3,13 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 09, 2009 at 11:28 AM
+-- Generation Time: Aug 21, 2009 at 09:24 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.4-2ubuntu5.3
---
--- Database that goes with filing-cabinet project
--- http://code.google.com/p/filing-cabinet
---
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -25,18 +21,18 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `Files` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `filename` varchar(100) character set utf8 collate utf8_bin NOT NULL,
-  `type` varchar(50) NOT NULL default 'unknown',
+  `filename` varchar(100) collate utf8_unicode_ci NOT NULL,
+  `type` varchar(50) collate utf8_unicode_ci NOT NULL default 'unknown',
   `size` double NOT NULL default '0',
   `uploaded` timestamp NOT NULL default CURRENT_TIMESTAMP,
-  `owner` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `owner` varchar(50) collate utf8_unicode_ci NOT NULL,
   `permissions` smallint(6) NOT NULL default '0',
   `next_file_id` int(10) default NULL,
   PRIMARY KEY  (`id`),
   KEY `filename` (`filename`),
   KEY `owner` (`owner`),
   KEY `next_file_id` (`next_file_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -46,9 +42,21 @@ CREATE TABLE IF NOT EXISTS `Files` (
 
 CREATE TABLE IF NOT EXISTS `Labels` (
   `file_id` int(8) NOT NULL,
-  `label_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `label_name` varchar(100) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`file_id`,`label_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Sequence`
+--
+
+CREATE TABLE IF NOT EXISTS `Sequence` (
+  `file_id` int(8) NOT NULL,
+  `next_file_id` int(8) NOT NULL,
+  PRIMARY KEY  (`file_id`,`next_file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -57,8 +65,12 @@ CREATE TABLE IF NOT EXISTS `Labels` (
 --
 
 CREATE TABLE IF NOT EXISTS `Users` (
-  `username` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `password` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
-  `email` varchar(250) character set ascii default NULL,
+  `username` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `password` varchar(50) collate utf8_unicode_ci NOT NULL,
+  `email` varchar(250) character set ascii NOT NULL,
+  `activationHash` varchar(150) collate utf8_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `activationHash` (`activationHash`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
