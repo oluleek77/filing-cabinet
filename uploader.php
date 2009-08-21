@@ -9,7 +9,7 @@ $db_link = mysql_connect(localhost, $db_user, $db_password);
 
 $user = new flexibleAccess($db_link);
 // must be logged in to upload files
-if (!$user->is_loaded()) {
+if (!($user->is_loaded() and $user->is_active())) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location=upload_files.php');
 }
 
@@ -103,7 +103,7 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 //echo '<br />';
 //print_r($sequence);
 
-// putt the sequence data into the database
+// put the sequence data into the database
 foreach ($sequence as $file_ID => $target)
 {
     mysql_query(

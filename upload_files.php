@@ -4,7 +4,7 @@ require_once 'access.class.php';
 
 $user = new flexibleAccess();
 // must be logged in to upload files
-if (!$user->is_loaded()) {
+if (!($user->is_loaded() and $user->is_active())) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location='.$_SERVER['SCRIPT_NAME']);
 }
 
@@ -12,6 +12,8 @@ if (!$user->is_loaded()) {
 <html>
 <head><title>Upload Files to Filing Cabinet</title></head>
 <body>
+<p>View <a href="listview.php">files in cabinet.</a></p>
+<p><?php echo $user->get_property('username') ?> <a href="login.php?logout=1">Logout</a></p>
 <form enctype="multipart/form-data" action="uploader.php" method="POST">
 <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
 <table>
