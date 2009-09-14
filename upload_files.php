@@ -21,6 +21,7 @@ if (!($user->is_loaded() and $user->is_active())) {
     <th></th>
     <th>Files to upload</th>
     <th>Comma separated list of labels</th>
+    <th>Allow public access</th>
     <th>Sequence</th>
   </tr>
 <?php
@@ -30,7 +31,8 @@ for ($i = 1; $i <= $amount; ++$i):
   <tr>
     <td>File <?php echo $i ?></td>
     <td><input name='uploadedfile_<?php echo $i ?>' type='file' /></td>
-    <td><input name='labels_<?php echo $i ?>' type='text' /><br /></td>
+    <td><input name='labels_<?php echo $i ?>' type='text' /></td>
+    <td><input name='public_<?php echo $i ?>' type='checkbox' /></td>
     <td>Followed in sequence by <select name='sequence_<?php echo $i ?>'>
     <?php
     for ($j = 1; $j <= $amount; ++$j){
