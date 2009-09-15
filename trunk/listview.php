@@ -13,18 +13,25 @@ $user = new flexibleAccess($db_link);
 if ($_POST['action'] == 'delete') {
     // must be logged in to delete files
     if (!($user->is_loaded() and $user->is_active())) {
-        "<p>You need to login to delete files</p>\n";
+        echo "<p>You need to login to delete files.</p>\n";
     } else {
-        echo "<p>Deleting file from archive<br />\n";
-        echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_POST['file_id'], $output, $return_value) . "<br />\n";
-        if ($return_value == 0) {
-            $qDelFile = 'DELETE FROM Files WHERE id = ' . $_POST['file_id'];
-            mysql_query($qDelFile) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelFile . "</p>\n");
-            $qDelLabels = 'DELETE FROM Labels WHERE file_id = ' . $_POST['file_id'];
-            mysql_query($qDelLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelLabels . "</p>\n");
-            echo "File deleted</p>\n";
+        // user must own the file to delete it
+        $fileOwner = 'SELECT owner FROM Files WHERE id = ' . $_POST['file_id'];
+        $fileOwnerResult = mysql_query($fileOwner) or die ('Query failed: ' . mysql_error() . '<br />' . $fileOwner);
+        if (mysql_result($fileOwnerResult, 0, 'owner') != $user->get_property('username')) {
+            echo "<p>You need to own the file to delete it.</p>\n";
         } else {
-            echo "There was an error deleting the file.</p>\n";
+            echo "<p>Deleting file from archive<br />\n";
+            echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_POST['file_id'], $output, $return_value) . "<br />\n";
+            if ($return_value == 0) {
+                $qDelFile = 'DELETE FROM Files WHERE id = ' . $_POST['file_id'];
+                mysql_query($qDelFile) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelFile . "</p>\n");
+                $qDelLabels = 'DELETE FROM Labels WHERE file_id = ' . $_POST['file_id'];
+                mysql_query($qDelLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelLabels . "</p>\n");
+                echo "File deleted</p>\n";
+            } else {
+                echo "There was an error deleting the file.</p>\n";
+            }
         }
     }
 }
