@@ -65,7 +65,7 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
         mysql_query(
           "INSERT INTO Files (filename, type, size, owner, permissions)
           VALUES('".addslashes($_FILES["uploadedfile_$i"]['name'])."', '".addslashes($_FILES["uploadedfile_$i"]['type'])."', ".$_FILES["uploadedfile_$i"]['size'].",
-          '".addslashes($user->getProperty('username'))."', ".(($_POST["public_$i"] == 'on')?'1':'0').")"
+          '".addslashes($user->get_property('username'))."', ".(($_POST["public_$i"] == 'on')?'1':'0').")"
         ); 
         // now safe to unlock because the next increment will give a new file id.
         @unlink('.lock_cabinet');

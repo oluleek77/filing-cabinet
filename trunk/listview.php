@@ -36,8 +36,11 @@ if ($_POST['action'] == 'delete') {
     }
 }
 
-// show all files
-$qAllFiles = 'SELECT id, filename FROM Files';
+// show all puplic files and files own by this user (if logged in)
+$qAllFiles = 'SELECT id, filename, owner FROM Files WHERE permissions = 1';
+if ($user->is_loaded() and $user->is_active()) {
+    $qAllFiles .= " OR owner = '".$user->get_properties('username')."'";
+}
 $qAllFilesResult = mysql_query($qAllFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAllFiles );
 
 $num = mysql_numrows($qAllFilesResult);
@@ -47,11 +50,14 @@ echo "<table>\n";
 for ($row = 0; $row < $num; ++$row) {
     echo "<tr>\n";
     echo '<td>' . mysql_result($qAllFilesResult, $row, 'filename') . "</td>\n";
-    echo '<td><form action="listview.php" method="POST">';
-    echo '<input type="hidden" name="action" value="delete" />';
-    echo '<input type="hidden" name="file_id" value="' . mysql_result($qAllFilesResult, $row, 'id') . '" />';
-    echo '<input type="submit" value="Delete" />';
-    echo "</form></td>\n";
+    // provide a delete button for the file is user owns it.
+    if ($user->is_loaded() and $user->is_active() and (mysql_result($qAllFilesResult, $row, 'owner') == $user->get_properties('username'))) {
+        echo '<td><form action="listview.php" method="POST">';
+        echo '<input type="hidden" name="action" value="delete" />';
+        echo '<input type="hidden" name="file_id" value="' . mysql_result($qAllFilesResult, $row, 'id') . '" />';
+        echo '<input type="submit" value="Delete" />';
+        echo "</form></td>\n";
+    }
     echo "</tr>\n";
 }
 echo "</table>\n";
