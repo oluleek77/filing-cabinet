@@ -49,7 +49,7 @@ echo "<p>Displaying $num files.</p>\n";
 echo "<table>\n";
 for ($row = 0; $row < $num; ++$row) {
     echo "<tr>\n";
-    echo '<td>' . mysql_result($qAllFilesResult, $row, 'filename') . "</td>\n";
+    echo '<td><a href="fileview.php?id=' . mysql_result($qAllFilesResult, $row, 'id') . '">' . mysql_result($qAllFilesResult, $row, 'filename') . "</a></td>\n";
     // provide a delete button for the file is user owns it.
     if ($user->is_loaded() and $user->is_active() and (mysql_result($qAllFilesResult, $row, 'owner') == $user->get_properties('username'))) {
         echo '<td><form action="listview.php" method="POST">';
