@@ -40,6 +40,10 @@ if ($_POST['action'] == 'delete') {
 $qAllFiles = 'SELECT id, filename, owner FROM Files WHERE permissions = 1';
 if ($user->is_loaded() and $user->is_active()) {
     $qAllFiles .= " OR owner = '".$user->get_properties('username')."'";
+    echo '<p>Welcome ' . $user->get_properties('username') . '. <a href="login.php?logout=1">Logout</a>.';
+    echo '<a href="upload_files.php">Upload files</a></p>'."\n";
+} else {
+    echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
 }
 $qAllFilesResult = mysql_query($qAllFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAllFiles );
 
