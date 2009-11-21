@@ -39,8 +39,8 @@ if ($_POST['action'] == 'delete') {
 // show all puplic files and files own by this user (if logged in)
 $qAllFiles = 'SELECT id, filename, owner FROM Files WHERE permissions = 1';
 if ($user->is_loaded() and $user->is_active()) {
-    $qAllFiles .= " OR owner = '".$user->get_properties('username')."'";
-    echo '<p>Welcome ' . $user->get_properties('username') . '. <a href="login.php?logout=1">Logout</a>.';
+    $qAllFiles .= " OR owner = '".$user->get_property('username')."'";
+    echo '<p>Welcome ' . $user->get_property('username') . '. <a href="login.php?logout=1">Logout</a>.';
     echo '<a href="upload_files.php">Upload files</a></p>'."\n";
 } else {
     echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
@@ -55,7 +55,7 @@ for ($row = 0; $row < $num; ++$row) {
     echo "<tr>\n";
     echo '<td><a href="fileview.php?id=' . mysql_result($qAllFilesResult, $row, 'id') . '">' . mysql_result($qAllFilesResult, $row, 'filename') . "</a></td>\n";
     // provide a delete button for the file is user owns it.
-    if ($user->is_loaded() and $user->is_active() and (mysql_result($qAllFilesResult, $row, 'owner') == $user->get_properties('username'))) {
+    if ($user->is_loaded() and $user->is_active() and (mysql_result($qAllFilesResult, $row, 'owner') == $user->get_property('username'))) {
         echo '<td><form action="listview.php" method="POST">';
         echo '<input type="hidden" name="action" value="delete" />';
         echo '<input type="hidden" name="file_id" value="' . mysql_result($qAllFilesResult, $row, 'id') . '" />';
