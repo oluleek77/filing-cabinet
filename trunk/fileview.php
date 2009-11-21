@@ -19,21 +19,27 @@ if (!$qFileDataResult or (mysql_numrows($qFileDataResult) != 1)) {
 }
 // redirect if user does not have permission to view the file
 // (if the file is not public and they are not the owner of it)
-if (mysql_result($qFileDataResult, 0, 'permissions') == 0 and mysql_result($qFileDataResult, 0, 'owner') != $user->get_properties('username')) {
+if (mysql_result($qFileDataResult, 0, 'permissions') == 0 and mysql_result($qFileDataResult, 0, 'owner') != $user->get_property('username')) {
     header('Location: listview.php');
 }
 
+echo '<h1>'. mysql_result($qFileDataResult, 0, 'filename') . '</h1>';
+
 // find previous file in sequence, if it exists.
-$qPrevFileName = 'SELECT filename FROM Files WHERE next_file_id = ' . $_GET['id'];
-$qPrevFileNameResult = mysql_query($qPrevFileName);
+$qPrevFile = 'SELECT id, filename FROM Files WHERE next_file_id = ' . $_GET['id'];
+$qPrevFileResult = mysql_query($qPrevFile);
+if (mysql_num_rows($qPrevFileResult) > 0) {
+    echo 'Previous in sequence: <a href="fileview.php?id=' . mysql_result($qPrevFileResult, 0, 'id') . '">' . mysql_result($qPrevFileResult, 0, 'filename') . '</a>';
+}
 
 // get filename for next file in sequence if there is one.
 if (mysql_result($qFileDataResult, 0, 'next_file_id')) {
-    $qNextFileName = 'SELECT filename FROM Files WHERE id = ' . mysql_result($qFileDataResult, 0, 'next_file_id');
-    $qNextFileNameResult = mysql_query($qNextFileName);
+    $qNextFile = 'SELECT id, filename FROM Files WHERE id = ' . mysql_result($qFileDataResult, 0, 'next_file_id');
+    $qNextFileResult = mysql_query($qNextFile);
+    echo 'Next in sequence: <a href="fileview.php?id=' . mysql_result($qNextFileResult, 0, 'id') . '">' . mysql_result($qNextFileResult, 0, 'filename') . '</a>';
 }
 
-echo '<h1>'. mysql_result($qFileDataResult, 0, 'filename') . '</h1>';
+
 
 mysql_close();
 ?>
