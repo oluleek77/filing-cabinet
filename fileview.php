@@ -25,6 +25,13 @@ if (mysql_result($qFileDataResult, 0, 'permissions') == 0 and mysql_result($qFil
 
 echo '<h1>'. mysql_result($qFileDataResult, 0, 'filename') . '</h1>';
 
+// display file data
+echo '<p>MIME Type: ' . mysql_result($qFileDataResult, 0, 'type') . '</p>';
+echo '<p>File size: ' . mysql_result($qFileDataResult, 0, 'size') . '</p>';
+echo '<p>Owner: ' . mysql_result($qFileDataResult, 0, 'owner') . '</p>';
+
+echo '<div><a href="download?id=' . $_GET['id'] . '">Download</a></div>';
+
 // find previous file in sequence, if it exists.
 $qPrevFile = 'SELECT id, filename FROM Files WHERE next_file_id = ' . $_GET['id'];
 $qPrevFileResult = mysql_query($qPrevFile);
@@ -38,8 +45,6 @@ if (mysql_result($qFileDataResult, 0, 'next_file_id')) {
     $qNextFileResult = mysql_query($qNextFile);
     echo 'Next in sequence: <a href="fileview.php?id=' . mysql_result($qNextFileResult, 0, 'id') . '">' . mysql_result($qNextFileResult, 0, 'filename') . '</a>';
 }
-
-
 
 mysql_close();
 ?>

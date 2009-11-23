@@ -24,7 +24,7 @@ archive_path_enc='\/media\/sdb\/filearchive\/allfiles.7z'
 admin_email='admin@my.domain.com'
 
 # this bit copies the web files in
-cp index.html environment.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php $full_path
+cp index.html environment.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php
