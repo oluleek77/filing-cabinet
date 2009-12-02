@@ -44,17 +44,17 @@ if ($_POST['action'] == 'delete')
 }
 
 // show all puplic files and files own by this user (if logged in)
-$qAllFiles = 'SELECT id, filename, owner FROM Files WHERE permissions = 1';
+$qSelectedFiles = 'SELECT * FROM Files WHERE (permissions = 1';
 if ($user->is_loaded() and $user->is_active())
 {
-    $qAllFiles .= " OR owner = '".$user->get_property('username')."'";
+    $qSelectedFiles .= " OR owner = '".addslashes($user->get_property('username'))."')";
     echo '<p>Welcome ' . $user->get_property('username') . '. <a href="login.php?logout=1">Logout</a>.';
     echo '<a href="upload_files.php">Upload files</a></p>'."\n";
 }
 else {
+    $qSelectedFiles .= ')';
     echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
 }
-$qAllFilesResult = mysql_query($qAllFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAllFiles );
 
 // create a breadcrumb navigation for the labels
 $crumbDelimiter = ',';
@@ -63,34 +63,57 @@ if ($_GET['crumbs'])
 {
     $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
 }
-echo '<div class="breadcrumbs">' . "\n";
+echo '<div id="breadcrumbs">' . "\n";
 echo '<a href="listview.php">All Files</a>';
 foreach ($breadcrumbs as $num => $crumb)
 {
     echo ' >> <a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_slice($breadcrumbs, 0, $num+1))) . '">' . $crumb . '</a>';
+    // while we are creating the breadcrumb navigation
+    // also build the query that will fetch the files that match the selected labels.
+    $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
 } 
 echo "</div>\n";
 
-$num = mysql_numrows($qAllFilesResult);
+// list all the available labels
+$qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC";
+$rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
+
+echo '<div id="labels">' . "\n";
+echo "<table>\n";
+while ($row = mysql_fetch_assoc($rAvailableLabels))
+{
+    echo "<tr>\n";
+    echo '<td><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+    echo "</tr>\n";
+}
+echo "</table>\n";
+echo "</div>\n";
+
+// list all the selected files
+$rSelectedFiles = mysql_query($qSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
+
+echo '<div id="files">' . "\n";
+$num = mysql_numrows($rSelectedFiles);
 echo "<p>Displaying $num files.</p>\n";
 
 echo "<table>\n";
 for ($row = 0; $row < $num; ++$row)
 {
     echo "<tr>\n";
-    echo '<td><a href="fileview.php?id=' . mysql_result($qAllFilesResult, $row, 'id') . '">' . mysql_result($qAllFilesResult, $row, 'filename') . "</a></td>\n";
+    echo '<td><a href="fileview.php?id=' . mysql_result($rSelectedFiles, $row, 'id') . '">' . mysql_result($rSelectedFiles, $row, 'filename') . "</a></td>\n";
     // provide a delete button for the file is user owns it.
-    if ($user->is_loaded() and $user->is_active() and (mysql_result($qAllFilesResult, $row, 'owner') == $user->get_property('username')))
+    if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
     {
         echo '<td><form action="listview.php" method="POST">';
         echo '<input type="hidden" name="action" value="delete" />';
-        echo '<input type="hidden" name="file_id" value="' . mysql_result($qAllFilesResult, $row, 'id') . '" />';
+        echo '<input type="hidden" name="file_id" value="' . mysql_result($rSelectedFiles, $row, 'id') . '" />';
         echo '<input type="submit" value="Delete" />';
         echo "</form></td>\n";
     }
     echo "</tr>\n";
 }
 echo "</table>\n";
+echo "</div>\n";
 
 mysql_close();
 ?>
