@@ -9,15 +9,12 @@ mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
 $user = new flexibleAccess($db_link);
-echo '
-<head>
-    <link rel="stylesheet" type="text/css" href="filingcabinet-default.css" />
-    <title>Filing Cabinet</title>
-</head>
-';
+echo head();
+
+echo '<h1>Filing Cabinet</h1>';
 
 // check if we've been asked to delete a file
-if ($_POST['action'] == 'delete')
+if ($_GET['action'] == 'delete')
 {
     // must be logged in to delete files
     if (!($user->is_loaded() and $user->is_active()))
@@ -26,7 +23,7 @@ if ($_POST['action'] == 'delete')
     }
     else {
         // user must own the file to delete it
-        $fileOwner = 'SELECT owner FROM Files WHERE id = ' . $_POST['file_id'];
+        $fileOwner = 'SELECT owner FROM Files WHERE id = ' . $_GET['file_id'];
         $fileOwnerResult = mysql_query($fileOwner) or die ('Query failed: ' . mysql_error() . '<br />' . $fileOwner);
         if (mysql_result($fileOwnerResult, 0, 'owner') != $user->get_property('username'))
         {
@@ -34,12 +31,12 @@ if ($_POST['action'] == 'delete')
         }
         else {
             echo "<p>Deleting file from archive<br />\n";
-            echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_POST['file_id'], $output, $return_value) . "<br />\n";
+            echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_GET['file_id'], $output, $return_value) . "<br />\n";
             if ($return_value == 0)
             {
-                $qDelFile = 'DELETE FROM Files WHERE id = ' . $_POST['file_id'];
+                $qDelFile = 'DELETE FROM Files WHERE id = ' . $_GET['file_id'];
                 mysql_query($qDelFile) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelFile . "</p>\n");
-                $qDelLabels = 'DELETE FROM Labels WHERE file_id = ' . $_POST['file_id'];
+                $qDelLabels = 'DELETE FROM Labels WHERE file_id = ' . $_GET['file_id'];
                 mysql_query($qDelLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qDelLabels . "</p>\n");
                 echo "File deleted</p>\n";
             }
@@ -55,22 +52,13 @@ $qSelectedFiles = 'SELECT * FROM Files WHERE (permissions = 1';
 if ($user->is_loaded() and $user->is_active())
 {
     $qSelectedFiles .= " OR owner = '".addslashes($user->get_property('username'))."')";
-    echo '<p>Welcome ' . $user->get_property('username') . '. <a href="login.php?logout=1">Logout</a>.';
-    echo '<a href="upload_files.php">Upload files</a></p>'."\n";
+    echo tabMenu(True, $user->get_property('username'));
 }
 else {
     $qSelectedFiles .= ')';
     echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
+    echo tabMenu(False);
 }
-
-echo '<div id="tabs">
-  <ul>
-    <li></li>
-    <li><a href="#"><span>List Files</span></a></li>
-    <li><a href="upload_files.php"><span>Upload</span></a></li>
-  </ul>
-</div>';
-
 
 // create a breadcrumb navigation for the labels
 $crumbDelimiter = ',';
@@ -126,18 +114,19 @@ for ($row = 0; $row < $num; ++$row)
     // provide a download button
     echo '<td><a href="download?id=' . mysql_result($rSelectedFiles, $row, 'id') . "\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
     // provide a delete button for the file is user owns it.
-    if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
+    /*if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
     {
-        echo '<td><form action="listview.php" method="POST">';
+        echo '<td><form action="listview.php" method="GET">';
         echo '<input type="hidden" name="action" value="delete" />';
         echo '<input type="hidden" name="file_id" value="' . mysql_result($rSelectedFiles, $row, 'id') . '" />';
         echo '<input type="submit" value="Delete" />';
         echo "</form></td>\n";
     }
-    echo "</tr>\n";
+    echo "</tr>\n"; */
 }
 echo "</table>\n";
 echo "</div>\n";
 
 mysql_close();
+echo foot();
 ?>
