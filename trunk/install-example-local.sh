@@ -4,6 +4,8 @@
 # To make your own personal install script edit a copy of this file. #
 # Don't edit this file itself, or your script will become everyone's.#
 ######################################################################
+# This script assumes the target directory structure already exists
+# i.e. $full_path exists and has a subdirectory called images
 
 # put your database username and password here
 db_user=user
@@ -26,6 +28,7 @@ admin_email='admin@my.domain.com'
 
 # this bit copies the web files in
 cp index.html environment.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path
+cp images/* $full_path/images/
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php

@@ -4,6 +4,8 @@
 # To make your own personal install script edit a copy of this file. #
 # Don't edit this file itself, or your script will become everyone's.#
 ######################################################################
+# This script assumes the target directory structure already exists
+# i.e. $full_path exists and has a subdirectory called images
 
 # put your database username and password here
 db_user=user
@@ -37,6 +39,7 @@ sed -i "s/<insert admin email address>/$admin_email/" environment.php.tmp
 
 # this bit copies the web files in
 scp index.html upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path/
+scp images/* $full_path/images/
 scp environment.php.tmp $full_path/environment.php
 
 # You might want to add a bit that imports the sql into your database

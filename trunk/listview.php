@@ -8,6 +8,12 @@ mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
 $user = new flexibleAccess($db_link);
+echo '
+<head>
+    <link rel="stylesheet" type="text/css" href="filingcabinet-default.css" />
+    <title>Filing Cabinet</title>
+</head>
+';
 
 // check if we've been asked to delete a file
 if ($_POST['action'] == 'delete')
@@ -55,6 +61,15 @@ else {
     $qSelectedFiles .= ')';
     echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
 }
+
+echo '<div id="tabs">
+  <ul>
+    <li></li>
+    <li><a href="#"><span>List Files</span></a></li>
+    <li><a href="upload_files.php"><span>Upload</span></a></li>
+  </ul>
+</div>';
+
 
 // create a breadcrumb navigation for the labels
 $crumbDelimiter = ',';
