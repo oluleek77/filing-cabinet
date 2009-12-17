@@ -119,8 +119,12 @@ echo "<table>\n";
 for ($row = 0; $row < $num; ++$row)
 {
     echo "<tr>\n";
-    echo '<td><img src="images/mimetypes/16/' . mimeFilename(mysql_result($rSelectedFiles, $row, 'type')) . "\" /></td>\n";
+    // show MIME icon
+    echo '<td><img src="images/mimetypes/16/' . mimeFilename(mysql_result($rSelectedFiles, $row, 'type')) . '" alt="' . mysql_result($rSelectedFiles, $row, 'type') . "\" /></td>\n";
+    // filename linked fo fileview
     echo '<td><a href="fileview.php?id=' . mysql_result($rSelectedFiles, $row, 'id') . '">' . mysql_result($rSelectedFiles, $row, 'filename') . "</a></td>\n";
+    // provide a download button
+    echo '<td><a href="download?id=' . mysql_result($rSelectedFiles, $row, 'id') . "\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
     // provide a delete button for the file is user owns it.
     if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
     {
