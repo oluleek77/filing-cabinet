@@ -1,6 +1,7 @@
 <?php
 
 require 'environment.php';
+require 'common.php';
 require_once 'access.class.php';
 
 // connect to the database
@@ -26,7 +27,7 @@ if (mysql_result($qFileDataResult, 0, 'permissions') == 0 and mysql_result($qFil
 echo '<h1>'. mysql_result($qFileDataResult, 0, 'filename') . '</h1>';
 
 // display file data
-echo '<p>MIME Type: ' . mysql_result($qFileDataResult, 0, 'type') . '</p>';
+echo '<p>MIME Type: ' . mysql_result($qFileDataResult, 0, 'type') . '<img src="images/mimetypes/32/' . mimeFilename(mysql_result($qFileDataResult, 0, 'type')) . '" /></p>';
 echo '<p>File size: ' . mysql_result($qFileDataResult, 0, 'size') . '</p>';
 echo '<p>Owner: ' . mysql_result($qFileDataResult, 0, 'owner') . '</p>';
 

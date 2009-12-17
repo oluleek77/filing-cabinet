@@ -5,7 +5,9 @@
 # Don't edit this file itself, or your script will become everyone's.#
 ######################################################################
 # This script assumes the target directory structure already exists
-# i.e. $full_path exists and has a subdirectory called images
+# i.e. $full_path exists and has a subdirectory called 'images'
+# images has a subdirectory called 'mimetypes'
+# mimetypes has two subdirectories: '16' and '32'
 
 # put your database username and password here
 db_user=user
@@ -27,8 +29,10 @@ archive_path_enc="$archive_path\/allfiles.7z"
 admin_email='admin@my.domain.com'
 
 # this bit copies the web files in
-cp index.html environment.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path
+cp index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path
 cp images/* $full_path/images/
+cp images/mimetypes/16/* $full_path/images/mimetypes/16/
+cp images/mimetypes/32/* $full_path/images/mimetypes/32/
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php

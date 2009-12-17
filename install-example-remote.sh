@@ -5,7 +5,9 @@
 # Don't edit this file itself, or your script will become everyone's.#
 ######################################################################
 # This script assumes the target directory structure already exists
-# i.e. $full_path exists and has a subdirectory called images
+# i.e. $full_path exists and has a subdirectory called 'images'
+# images has a subdirectory called 'mimetypes'
+# mimetypes has two subdirectories: '16' and '32'
 
 # put your database username and password here
 db_user=user
@@ -38,8 +40,10 @@ sed -i "s/<insert path of app relative to web directory>/$fc_path/" environment.
 sed -i "s/<insert admin email address>/$admin_email/" environment.php.tmp
 
 # this bit copies the web files in
-scp index.html upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path/
+scp index.html common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path/
 scp images/* $full_path/images/
+scp images/mimetypes/16/* $full_path/images/mimetypes/16/
+scp images/mimetypes/32/* $full_path/images/mimetypes/32/
 scp environment.php.tmp $full_path/environment.php
 
 # You might want to add a bit that imports the sql into your database
