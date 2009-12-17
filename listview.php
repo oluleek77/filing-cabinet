@@ -97,9 +97,12 @@ echo '<div id="labels">' . "\n";
 echo "<table>\n";
 while ($row = mysql_fetch_assoc($rAvailableLabels))
 {
-    echo "<tr>\n";
-    echo '<td><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
-    echo "</tr>\n";
+    // don't show labels that have already been selected
+    if (!in_array($row['label_name'], $breadcrumbs) ) {
+        echo "<tr>\n";
+        echo '<td><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+        echo "</tr>\n";
+    }
 }
 echo "</table>\n";
 echo "</div>\n";
