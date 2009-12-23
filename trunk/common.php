@@ -53,4 +53,13 @@ function tabMenu($logged = True, $username = '')
 ";
 }
 
+// translate comma-seperated string into array of labels
+function parseLabels($str)
+{
+    $labels = explode(',', $str);
+    foreach ($labels as $id => $label) {
+        $labels[$id] = strtolower(trim($label));
+    }
+    return $labels;
+}
 ?>

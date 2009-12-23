@@ -2,6 +2,7 @@
 
 require_once 'environment.php';
 require_once 'access.class.php';
+require_once 'common.php';
 
 // connect to the database
 $db_link = mysql_connect(localhost, $db_user, $db_password);
@@ -36,10 +37,7 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
   }
 
   // split and trim the labels
-  $labels = explode(',', $_POST["labels_$i"]);
-  foreach ($labels as $id => $label) {
-    $labels[$id] = strtolower(trim($label));
-  }
+  $labels = parseLabels($_POST["labels_$i"]);
 
   // use semaphore locking
   while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 1800)) {
