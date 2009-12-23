@@ -65,7 +65,7 @@ if ($user->is_loaded() and $user->is_active() and mysql_result($rAllFileData, 0,
     // check if we've been asked to rename the file
     if ($_GET['rename'] and $_GET['rename'] != '' and $_GET['rename'] != $filename)
     {
-        $qRename = 'UPDATE Files SET filename = \'' . $_GET['rename'] . '\'';
+        $qRename = 'UPDATE Files SET filename = \'' . $_GET['rename'] . '\' WHERE id = ' . $_GET['id'];
         mysql_query($qRename) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qRename . "</p>\n");
         $filename = $_GET['rename'];
     }
