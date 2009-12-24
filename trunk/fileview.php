@@ -13,6 +13,8 @@ $user = new flexibleAccess($db_link);
 // get all the file data
 $qAllFileData = 'SELECT * FROM Files WHERE id = ' . $_GET['id'];
 $rAllFileData = mysql_query($qAllFileData);
+$filename = mysql_result($rAllFileData, 0, 'filename');
+$permissions = mysql_result($rAllFileData, 0, 'permissions');
 
 // redirect if file does not exist
 if (!$rAllFileData or (mysql_numrows($rAllFileData) != 1)) {
@@ -20,10 +22,9 @@ if (!$rAllFileData or (mysql_numrows($rAllFileData) != 1)) {
 }
 // redirect if user does not have permission to view the file
 // (if the file is not public and they are not the owner of it)
-if (mysql_result($rAllFileData, 0, 'permissions') == 0 and mysql_result($rAllFileData, 0, 'owner') != $user->get_property('username')) {
+if ($permissions == 0 and mysql_result($rAllFileData, 0, 'owner') != $user->get_property('username')) {
     header('Location: listview.php');
 }
-$filename = mysql_result($rAllFileData, 0, 'filename');
 
 echo head();
 echo '<h1>Filing Cabinet</h1>';
@@ -70,6 +71,23 @@ if ($user->is_loaded() and $user->is_active() and mysql_result($rAllFileData, 0,
         $filename = $_GET['rename'];
     }
     
+    // check if we've been asked to change the permisions
+    if ($_GET['permissions'])
+    {
+        if ($_GET['permissions'] == 'Private')
+        {
+            $qPermissions = 'UPDATE Files SET permissions = 0 WHERE id = ' . $_GET['id'];
+            mysql_query($qPermissions) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qPermissions . "</p>\n");
+            $permissions = 0;
+        }
+        else if ($_GET['permissions'] == 'Public')
+        {
+            $qPermissions = 'UPDATE Files SET permissions = 1 WHERE id = ' . $_GET['id'];
+            mysql_query($qPermissions) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qPermissions . "</p>\n");
+            $permissions = 1;
+        }
+    }
+    
 }
 
 echo '<h2><img src="images/mimetypes/32/' . mimeFilename(mysql_result($rAllFileData, 0, 'type')) . '" />' . $filename . '</h2>';
@@ -92,6 +110,24 @@ echo '<div><a href="download.php?id=' . $_GET['id'] . '"><img src="images/downlo
 echo '<p>MIME Type: ' . mysql_result($rAllFileData, 0, 'type') . '</p>';
 echo '<p>File size: ' . mysql_result($rAllFileData, 0, 'size') . '</p>';
 echo '<p>Owner: ' . mysql_result($rAllFileData, 0, 'owner') . '</p>';
+
+// if the user owns the file, show form for switching privacy
+if ($user->is_loaded() and $user->is_active() and mysql_result($rAllFileData, 0, 'owner') == $user->get_property('username'))
+{
+    $perm_a = 'Public';
+    $perm_b = 'Private';
+    if ($permissions == 0) // private
+    {
+        $perm_a = 'Private';
+        $perm_b = 'Public';
+    }
+    echo '<p>File is ' . $perm_a;
+    echo '<form action="fileview.php" method="get">
+    <input type="hidden" name="id" value="' . $_GET['id'] . '" />
+    <input type="hidden" name="permissions" value="' . $perm_b . '"/>
+    <input type="submit" value="Make ' . $perm_b . '" />
+    </form></p>';
+}
 
 // get all labels for this file
 $qFileLabels = 'SELECT label_name FROM Labels WHERE file_id = ' . $_GET['id'];
