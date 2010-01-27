@@ -17,6 +17,9 @@ if (!($user->is_loaded() and $user->is_active())) {
 $fileID = array(); // for keeping track of which files have which ids
 $sequence = array(); // for keeping track of which files are in sequence with which
 
+echo head();
+echo tabMenu(True);
+
 for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
 
   if ($_FILES["uploadedfile_$i"]['error'] == 4)
@@ -31,9 +34,9 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
   else
   {
     echo '<p>Upload: ' . $_FILES["uploadedfile_$i"]['name'] . '<br />';
-    echo 'Type: ' . $_FILES["uploadedfile_$i"]['type'] . '<br />';
-    echo 'Size: ' . ($_FILES["uploadedfile_$i"]['size'] / 1024) . ' Kb<br />';
-    echo 'Labels: ' . $_POST["labels_$i"] . '</p>';
+    //echo 'Type: ' . $_FILES["uploadedfile_$i"]['type'] . '<br />';
+    //echo 'Size: ' . ($_FILES["uploadedfile_$i"]['size'] / 1024) . ' Kb<br />';
+    //echo 'Labels: ' . $_POST["labels_$i"] . '</p>';
   }
 
   // split and trim the labels
@@ -111,5 +114,6 @@ foreach ($sequence as $file_ID => $target)
     );
 }
 
+echo foot();
 mysql_close();
 ?>
