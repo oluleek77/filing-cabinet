@@ -19,24 +19,27 @@ echo tabMenu(True, $user->get_property('username'));
   <tr>
     <th></th>
     <th>Files to upload</th>
+    <th>Edit filename</th>
     <th>Comma separated list of labels</th>
     <th>Allow public access</th>
     <th>Sequence</th>
   </tr>
 <?php
+// amount of files that can be uploaded in one go
 $amount = 10;
 for ($i = 1; $i <= $amount; ++$i):
 ?>
   <tr>
     <td>File <?php echo $i ?></td>
     <td><input name='uploadedfile_<?php echo $i ?>' type='file' /></td>
+    <td><input name='filename_<?php echo $i ?>' type='text' /></td>
     <td><input name='labels_<?php echo $i ?>' type='text' /></td>
     <td><input name='public_<?php echo $i ?>' type='checkbox' /></td>
     <td>Followed in sequence by <select name='sequence_<?php echo $i ?>'>
     <?php
     for ($j = 1; $j <= $amount; ++$j){
       if ($j == $i) {
-        echo "<option value='$j' selected>[No sequence]</option>\n";
+        echo "<option value='$j' selected>[Not followed]</option>\n";
       } else {
         echo "<option value='$j'>File $j</option>\n";
       }
