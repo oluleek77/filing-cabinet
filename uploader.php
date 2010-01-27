@@ -63,9 +63,14 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
     echo 'archiver says: ' . exec("7za a -mx=9 -y $archive_path $target_path", $output, $return_value) . '<br />';
     if ($return_value == 0) {
         // insert the file data into the database
+        $qFilename = addslashes($_FILES["uploadedfile_$i"]['name']);
+        if ($_POST["filename_$i"])
+        {
+            $qFilename = addslashes($_POST["filename_$i"]);
+        }
         mysql_query(
           "INSERT INTO Files (filename, type, size, owner, permissions)
-          VALUES('".addslashes($_FILES["uploadedfile_$i"]['name'])."', '".addslashes($_FILES["uploadedfile_$i"]['type'])."', ".$_FILES["uploadedfile_$i"]['size'].",
+          VALUES('".$qFilename."', '".addslashes($_FILES["uploadedfile_$i"]['type'])."', ".$_FILES["uploadedfile_$i"]['size'].",
           '".addslashes($user->get_property('username'))."', ".(($_POST["public_$i"] == 'on')?'1':'0').")"
         ); 
         // now safe to unlock because the next increment will give a new file id.
