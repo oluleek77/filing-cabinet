@@ -76,3 +76,7 @@
 	padding: 1em;
 }
 
+td.common_label {
+    font-weight:bold;
+}
+

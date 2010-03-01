@@ -8,4 +8,9 @@ $archive_dir = '<insert archive path>';
 $archive_path = '<insert archive path and filename>';
 $rel_web_path = '<insert path of app relative to web directory>';
 $admin_email = '<insert admin email address>';
+
+$labels_per_page = 50;
+$files_per_page = 50;
+$show_common_limit = 15; // lower limit for number of displayed labels for presenting most common
+$show_common_amount = 5; // when presenting most common labels, show this many
 ?>
