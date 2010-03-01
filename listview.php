@@ -78,12 +78,35 @@ foreach ($breadcrumbs as $num => $crumb)
 } 
 echo "</div>\n";
 
-// list all the available labels i.e. labels tat occur on the selected files
-$qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC";
+echo '<div id="labels">' . "\n";
+
+// list all the available labels i.e. labels that occur on the selected files
+$qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY label_name ASC";
 $rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
 
-echo '<div id="labels">' . "\n";
 echo "<table>\n";
+
+// if there are more than $show_common_limit labels present $show_common_amount most common up front
+if (mysql_num_rows($rAvailableLabels) > $show_common_limit)
+{
+    // must add length of breadcrumbs to show common amount since
+    // labels that are in the breadcrumbs get included then ignored
+    $common_amount_crumbs = $show_common_amount + count($breadcrumbs);
+    $qCommonLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC LIMIT 0, $common_amount_crumbs";
+    if ($rCommonLabels = mysql_query($qCommonLabels))
+    {
+        while ($row = mysql_fetch_assoc($rCommonLabels))
+        {
+            // don't show labels that have already been selected
+            if (!in_array($row['label_name'], $breadcrumbs) ) {
+                echo "<tr>\n";
+                echo '<td class="common_label"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+                echo "</tr>\n";
+            }
+        }
+    }
+}
+
 while ($row = mysql_fetch_assoc($rAvailableLabels))
 {
     // don't show labels that have already been selected
