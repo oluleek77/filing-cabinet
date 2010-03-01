@@ -78,7 +78,7 @@ foreach ($breadcrumbs as $num => $crumb)
 } 
 echo "</div>\n";
 
-// list all the available labels
+// list all the available labels i.e. labels tat occur on the selected files
 $qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC";
 $rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
 
@@ -97,7 +97,7 @@ echo "</table>\n";
 echo "</div>\n";
 
 // list all the selected files
-$rSelectedFiles = mysql_query($qSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
+$rSelectedFiles = mysql_query($qSelectedFiles . ' ORDER BY filename ASC') or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
 
 echo '<div id="files">' . "\n";
 $num = mysql_numrows($rSelectedFiles);
