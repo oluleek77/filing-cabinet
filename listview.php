@@ -114,16 +114,20 @@ $firstLabel = $_GET['labelpage'] * $labels_per_page or 0;
 $lastLabel = $firstLabel + $labels_per_page;
 if ($labelCount < $lastLabel) $lastLabel = $labelCount;
 
-echo "<p>$firstLabel - $lastLabel of $labelCount Labels:<br /> Page";
-$href = 'listview.php?';
-if ($breadcrumbs) $href .= urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
-if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
-for ($i = 0; $i < $labelCount; $i += $labels_per_page)
+echo "<p>$firstLabel - $lastLabel of $labelCount Labels";
+if ($labelCount > $labels_per_page)
 {
-    // at this stage it's simplist to do pagination RMS style. May change this in future.
-    $page = $i/$labels_per_page;
-    if ($page == $_GET['labelpage']) echo " $page";
-    else echo " <a href=\"${href}labelpage=$page\">$page</a>";
+    $href = 'listview.php?';
+    if ($breadcrumbs) $href .= urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
+    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
+    echo ':<br /> Page';
+    for ($i = 0; $i < $labelCount; $i += $labels_per_page)
+    {
+        // at this stage it's simplist to do pagination RMS style. May change this in future.
+        $page = $i/$labels_per_page;
+        if ($page == $_GET['labelpage']) echo " $page";
+        else echo " <a href=\"${href}labelpage=$page\">$page</a>";
+    }
 }
 echo "</p>\n";
 
