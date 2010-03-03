@@ -80,14 +80,13 @@ echo "</div>\n";
 
 echo '<div id="labels">' . "\n";
 
-// list all the available labels i.e. labels that occur on the selected files
-$qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY label_name ASC";
-$rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
-
-echo "<table>\n";
+// count all the available labels i.e. labels that occur on the selected files
+$qCountAvailableLabels = "SELECT COUNT(DISTINCT label_name) AS label_amount FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id";
+$rCountAvailableLabels = mysql_query($qCountAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qCountAvailableLabels );
+$labelCount = mysql_result($rCountAvailableLabels, 0, 'label_amount');
 
 // if there are more than $show_common_limit labels present $show_common_amount most common up front
-if (mysql_num_rows($rAvailableLabels) > $show_common_limit)
+if ($labelCount > $show_common_limit)
 {
     // must add length of breadcrumbs to show common amount since
     // labels that are in the breadcrumbs get included then ignored
@@ -95,18 +94,44 @@ if (mysql_num_rows($rAvailableLabels) > $show_common_limit)
     $qCommonLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC LIMIT 0, $common_amount_crumbs";
     if ($rCommonLabels = mysql_query($qCommonLabels))
     {
+        echo "<table>\n";
+        echo '<tr><th>Most common labels:</th></tr>'; 
         while ($row = mysql_fetch_assoc($rCommonLabels))
         {
             // don't show labels that have already been selected
             if (!in_array($row['label_name'], $breadcrumbs) ) {
                 echo "<tr>\n";
-                echo '<td class="common_label"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+                echo '<td class="common_label"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . "\">{$row['label_name']}</a>({$row['amount']})</td>\n";
                 echo "</tr>\n";
             }
         }
+        echo "</table>\n";
     }
 }
 
+// show pages for label
+$firstLabel = $_GET['labelpage'] * $labels_per_page or 0;
+$lastLabel = $firstLabel + $labels_per_page;
+if ($labelCount < $lastLabel) $lastLabel = $labelCount;
+
+echo "<p>$firstLabel - $lastLabel of $labelCount Labels:<br /> Page";
+$href = 'listview.php?';
+if ($breadcrumbs) $href .= urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
+if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
+for ($i = 0; $i < $labelCount; $i += $labels_per_page)
+{
+    // at this stage it's simplist to do pagination RMS style. May change this in future.
+    $page = $i/$labels_per_page;
+    if ($page == $_GET['labelpage']) echo " $page";
+    else echo " <a href=\"${href}labelpage=$page\">$page</a>";
+}
+echo "</p>\n";
+
+// get current page of Labels
+$qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY label_name ASC LIMIT $firstLabel, $labels_per_page";
+$rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
+
+echo "<table>\n";
 while ($row = mysql_fetch_assoc($rAvailableLabels))
 {
     // don't show labels that have already been selected
