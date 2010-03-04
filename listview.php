@@ -114,7 +114,8 @@ $firstLabel = $_GET['labelpage'] * $labels_per_page or 0;
 $lastLabel = $firstLabel + $labels_per_page;
 if ($labelCount < $lastLabel) $lastLabel = $labelCount;
 
-echo "<p>$firstLabel - $lastLabel of $labelCount Labels";
+echo "<p>Displaying $firstLabel - $lastLabel of $labelCount labels";
+// only show pages if there is more than one page of data
 if ($labelCount > $labels_per_page)
 {
     $href = 'listview.php?';
@@ -131,7 +132,7 @@ if ($labelCount > $labels_per_page)
 }
 echo "</p>\n";
 
-// get current page of Labels
+// get current page of labels
 $qAvailableLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY label_name ASC LIMIT $firstLabel, $labels_per_page";
 $rAvailableLabels = mysql_query($qAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qAvailableLabels );
 
@@ -148,23 +149,50 @@ while ($row = mysql_fetch_assoc($rAvailableLabels))
 echo "</table>\n";
 echo "</div>\n";
 
-// list all the selected files
-$rSelectedFiles = mysql_query($qSelectedFiles . ' ORDER BY filename ASC') or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
-
 echo '<div id="files">' . "\n";
-$num = mysql_numrows($rSelectedFiles);
-echo "<p>Displaying $num files.</p>\n";
+
+// count number of files selected
+$qCountSelectedFiles = str_replace('*', 'COUNT(*) AS file_amount', $qSelectedFiles);
+$rCountSelectedFiles = mysql_query($qCountSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
+$fileCount = mysql_result($rCountSelectedFiles, 0, 'file_amount');
+
+// show pages for files
+$firstFile = $_GET['filepage'] * $files_per_page or 0;
+$lastFile = $firstFile + $files_per_page;
+if ($fileCount < $lastFile) $lastFile = $fileCount;
+
+echo "<p>Displaying $firstFile - $lastFile of $fileCount files";
+// only show pages if there is more than one page of data
+if ($fileCount > $files_per_page)
+{
+    $href = 'listview.php?';
+    if ($breadcrumbs) $href .= urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
+    if ($_GET['labelpage']) $href .= 'labelpage=' . $_GET['labelpage'];
+    echo ':<br /> Page';
+    for ($i = 0; $i < $fileCount; $i += $files_per_page)
+    {
+        // at this stage it's simplist to do pagination RMS style. May change this in future.
+        $page = $i/$files_per_page;
+        if ($page == $_GET['filepage']) echo " $page";
+        else echo " <a href=\"${href}filepage=$page\">$page</a>";
+    }
+}
+echo "</p>\n";
+
+// get current page of the selected files
+$qSelectedFiles .= " ORDER BY filename ASC LIMIT $firstFile, $files_per_page";
+$rSelectedFiles = mysql_query($qSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
 
 echo "<table>\n";
-for ($row = 0; $row < $num; ++$row)
+while ($row = mysql_fetch_assoc($rSelectedFiles))
 {
     echo "<tr>\n";
     // show MIME icon
-    echo '<td><img src="images/mimetypes/16/' . mimeFilename(mysql_result($rSelectedFiles, $row, 'type')) . '" alt="' . mysql_result($rSelectedFiles, $row, 'type') . "\" /></td>\n";
+    echo '<td><img src="images/mimetypes/16/' . mimeFilename($row['type']) . "\" alt=\"{$row['type']}\" /></td>\n";
     // filename linked fo fileview
-    echo '<td><a href="fileview.php?id=' . mysql_result($rSelectedFiles, $row, 'id') . '">' . mysql_result($rSelectedFiles, $row, 'filename') . "</a></td>\n";
+    echo "<td><a href=\"fileview.php?id={$row['id']}\">{$row['filename']}</a></td>\n";
     // provide a download button
-    echo '<td><a href="download?id=' . mysql_result($rSelectedFiles, $row, 'id') . "\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
+    echo "<td><a href=\"download?id={$row['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
     // provide a delete button for the file is user owns it.
     /*if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
     {
@@ -173,8 +201,8 @@ for ($row = 0; $row < $num; ++$row)
         echo '<input type="hidden" name="file_id" value="' . mysql_result($rSelectedFiles, $row, 'id') . '" />';
         echo '<input type="submit" value="Delete" />';
         echo "</form></td>\n";
-    }
-    echo "</tr>\n"; */
+    }*/
+    echo "</tr>\n"; 
 }
 echo "</table>\n";
 echo "</div>\n";
