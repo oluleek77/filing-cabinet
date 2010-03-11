@@ -31,8 +31,8 @@ for ($i = 1; $i <= $amount; ++$i):
 ?>
   <tr>
     <td>File <?php echo $i ?></td>
-    <td><input name='uploadedfile_<?php echo $i ?>' type='file' /></td>
-    <td><input name='filename_<?php echo $i ?>' type='text' /></td>
+    <td><input name='uploadedfile_<?php echo $i ?>' type='file' onchange="document.getElementById('name_<?php echo $i ?>').value = this.value" /></td>
+    <td><input name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
     <td><input name='labels_<?php echo $i ?>' type='text' /></td>
     <td><input name='public_<?php echo $i ?>' type='checkbox' /></td>
     <td>Followed in sequence by <select name='sequence_<?php echo $i ?>'>
