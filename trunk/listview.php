@@ -152,7 +152,7 @@ echo "</div>\n";
 echo '<div id="files">' . "\n";
 
 // count number of files selected
-$qCountSelectedFiles = str_replace('*', 'COUNT(*) AS file_amount', $qSelectedFiles);
+$qCountSelectedFiles = substr_replace($qSelectedFiles, 'COUNT(*) AS file_amount', 7, 1);
 $rCountSelectedFiles = mysql_query($qCountSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
 $fileCount = mysql_result($rCountSelectedFiles, 0, 'file_amount');
 
