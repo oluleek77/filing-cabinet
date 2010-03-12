@@ -4,6 +4,16 @@ require_once 'environment.php';
 require_once 'access.class.php';
 require_once 'common.php';
 
+/* need to upgrade to PHP 5.3 to use this
+function get_mime_type($filename)
+{
+    $finfo = finfo_open(FILEINFO_MIME);
+    $mimetype = finfo_file($finfo, $filename);
+    finfo_close($finfo);
+    return $mimetype;
+}
+*/
+
 // connect to the database
 $db_link = mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
@@ -33,6 +43,9 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
   }
   else
   {
+    // the type of the file may not have been detected properly, so detect again with a better method
+    $_FILES["uploadedfile_$i"]['type'] = mime_content_type($_FILES["uploadedfile_$i"]['tmp_name']);
+    
     echo '<p>Upload: ' . $_FILES["uploadedfile_$i"]['name'] . '<br />';
     //echo 'Type: ' . $_FILES["uploadedfile_$i"]['type'] . '<br />';
     //echo 'Size: ' . ($_FILES["uploadedfile_$i"]['size'] / 1024) . ' Kb<br />';
