@@ -1,4 +1,7 @@
 
+body {
+	background:#E0E0FF;
+}
 
 /*Credits: Dynamic Drive CSS Library */
 /*URL: http://www.dynamicdrive.com/style/ */
@@ -59,24 +62,57 @@
 	
 #breadcrumbs {
     clear:both;
-	border:2px solid #666;
-	padding:1em;
+    margin-bottom:1em;
 }
 	
 #labels {
     float:left;
-	border:2px solid #666;
-	margin-right:2em;
-	padding: 1em;
+    margin-right:2em;
 }
 	
 #files {
     float:left;
-	border:2px solid #666;
-	padding: 1em;
 }
 
 td.common_label {
     font-weight:bold;
 }
 
+/* rounded corners without images or javasvcript*/
+.spiffy{display:block}
+.spiffy *{
+  display:block;
+  height:1px;
+  overflow:hidden;
+  font-size:.01em;
+  background:#AAAAEE}
+.spiffy1{
+  margin-left:3px;
+  margin-right:3px;
+  padding-left:1px;
+  padding-right:1px;
+  border-left:1px solid #c8c8f7;
+  border-right:1px solid #c8c8f7;
+  background:#b7b7f2}
+.spiffy2{
+  margin-left:1px;
+  margin-right:1px;
+  padding-right:1px;
+  padding-left:1px;
+  border-left:1px solid #dadafd;
+  border-right:1px solid #dadafd;
+  background:#b4b4f1}
+.spiffy3{
+  margin-left:1px;
+  margin-right:1px;
+  border-left:1px solid #b4b4f1;
+  border-right:1px solid #b4b4f1;}
+.spiffy4{
+  border-left:1px solid #c8c8f7;
+  border-right:1px solid #c8c8f7}
+.spiffy5{
+  border-left:1px solid #b7b7f2;
+  border-right:1px solid #b7b7f2}
+.spiffyfg{
+  background:#AAAAEE;
+  padding:1em}

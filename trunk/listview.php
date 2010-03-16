@@ -67,7 +67,19 @@ if ($_GET['crumbs'])
 {
     $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
 }
-echo '<div id="breadcrumbs">' . "\n";
+?>
+<!-- css rounded corners, without images or javascript -->
+<div id="breadcrumbs">
+  <b class="spiffy">
+  <b class="spiffy1"><b></b></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy5"></b></b>
+
+  <div class="spiffyfg">
+<?php
+
 echo '<a href="listview.php">All Files</a>';
 foreach ($breadcrumbs as $num => $crumb)
 {
@@ -76,9 +88,27 @@ foreach ($breadcrumbs as $num => $crumb)
     // also build the query that will fetch the files that match the selected labels.
     $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
 } 
-echo "</div>\n";
+?>
+  </div>
 
-echo '<div id="labels">' . "\n";
+  <b class="spiffy">
+  <b class="spiffy5"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy1"><b></b></b></b>
+</div>
+
+<div id="labels">
+  <b class="spiffy">
+  <b class="spiffy1"><b></b></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy5"></b></b>
+
+  <div class="spiffyfg">
+<?php
 
 // count all the available labels i.e. labels that occur on the selected files
 $qCountAvailableLabels = "SELECT COUNT(DISTINCT label_name) AS label_amount FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id";
@@ -147,9 +177,27 @@ while ($row = mysql_fetch_assoc($rAvailableLabels))
     }
 }
 echo "</table>\n";
-echo "</div>\n";
+?>
+  </div>
 
-echo '<div id="files">' . "\n";
+  <b class="spiffy">
+  <b class="spiffy5"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy1"><b></b></b></b>
+</div>
+
+<div id="files">
+  <b class="spiffy">
+  <b class="spiffy1"><b></b></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy5"></b></b>
+
+  <div class="spiffyfg">
+<?php
 
 // count number of files selected
 $qCountSelectedFiles = substr_replace($qSelectedFiles, 'COUNT(*) AS file_amount', 7, 1);
@@ -205,7 +253,17 @@ while ($row = mysql_fetch_assoc($rSelectedFiles))
     echo "</tr>\n"; 
 }
 echo "</table>\n";
-echo "</div>\n";
+?>
+  </div>
+
+  <b class="spiffy">
+  <b class="spiffy5"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy1"><b></b></b></b>
+</div>
+<?php
 
 mysql_close();
 echo foot();
