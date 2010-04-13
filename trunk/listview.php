@@ -250,6 +250,8 @@ while ($row = mysql_fetch_assoc($rSelectedFiles))
         echo '<input type="submit" value="Delete" />';
         echo "</form></td>\n";
     }*/
+    // show filesize
+    echo '<td>' . HumanReadableFilesize($row['size']) . "</td>\n";
     echo "</tr>\n"; 
 }
 echo "</table>\n";
