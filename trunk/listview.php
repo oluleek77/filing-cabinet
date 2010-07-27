@@ -9,6 +9,7 @@ mysql_connect(localhost, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
 $user = new flexibleAccess($db_link);
+
 echo head();
 
 echo '<h1>Filing Cabinet</h1>';
@@ -177,6 +178,25 @@ while ($row = mysql_fetch_assoc($rAvailableLabels))
     }
 }
 echo "</table>\n";
+
+echo "<p>Displaying $firstLabel - $lastLabel of $labelCount labels";
+// only show pages if there is more than one page of data
+if ($labelCount > $labels_per_page)
+{
+    $href = 'listview.php?';
+    if ($breadcrumbs) $href .= 'crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
+    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
+    echo ':<br /> Page';
+    for ($i = 0; $i < $labelCount; $i += $labels_per_page)
+    {
+        // at this stage it's simplist to do pagination RMS style (first page is numbered 0). May change this in future.
+        $page = $i/$labels_per_page;
+        if ($page == $_GET['labelpage']) echo " $page";
+        else echo " <a href=\"${href}labelpage=$page\">$page</a>";
+    }
+}
+echo "</p>\n";
+
 ?>
   </div>
 
