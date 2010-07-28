@@ -13,4 +13,6 @@ $labels_per_page = 50;
 $files_per_page = 50;
 $show_common_limit = 15; // lower limit for number of displayed labels for presenting most common
 $show_common_amount = 5; // when presenting most common labels, show this many
+$label_large_amount = 20; // when at least this many files have a particular label, show that label in large font
+$label_x_large_amount = 50; // when at least this many files have a particular label, show that label in x-large font
 ?>

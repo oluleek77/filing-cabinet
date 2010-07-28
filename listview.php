@@ -173,7 +173,11 @@ while ($row = mysql_fetch_assoc($rAvailableLabels))
     // don't show labels that have already been selected
     if (!in_array($row['label_name'], $breadcrumbs) ) {
         echo "<tr>\n";
-        echo '<td><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+        $fontsize = 'medium';
+        if ($row['amount'] < 2) $fontsize = 'small';
+        if ($row['amount'] >= $label_large_amount ) $fontsize = 'large';
+        if ($row['amount'] >= $label_x_large_amount ) $fontsize = 'x-large';
+        echo '<td  style="font-size:'.$fontsize.'"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
         echo "</tr>\n";
     }
 }
