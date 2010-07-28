@@ -151,7 +151,7 @@ if ($labelCount > $labels_per_page)
 {
     $href = 'listview.php?';
     if ($breadcrumbs) $href .= 'crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
-    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
+    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'] . '&';
     echo ':<br /> Page';
     for ($i = 0; $i < $labelCount; $i += $labels_per_page)
     {
@@ -189,7 +189,7 @@ if ($labelCount > $labels_per_page)
 {
     $href = 'listview.php?';
     if ($breadcrumbs) $href .= 'crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
-    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'];
+    if ($_GET['filepage']) $href .= 'filepage=' . $_GET['filepage'] . '&';
     echo ':<br /> Page';
     for ($i = 0; $i < $labelCount; $i += $labels_per_page)
     {
@@ -239,7 +239,7 @@ if ($fileCount > $files_per_page)
 {
     $href = 'listview.php?';
     if ($breadcrumbs) $href .= 'crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
-    if ($_GET['labelpage']) $href .= 'labelpage=' . $_GET['labelpage'];
+    if ($_GET['labelpage']) $href .= 'labelpage=' . $_GET['labelpage'] . '&';
     echo ':<br /> Page';
     for ($i = 0; $i < $fileCount; $i += $files_per_page)
     {
@@ -279,6 +279,25 @@ while ($row = mysql_fetch_assoc($rSelectedFiles))
     echo "</tr>\n"; 
 }
 echo "</table>\n";
+
+echo "<p>Displaying $firstFile - $lastFile of $fileCount files";
+// only show pages if there is more than one page of data
+if ($fileCount > $files_per_page)
+{
+    $href = 'listview.php?';
+    if ($breadcrumbs) $href .= 'crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs)) . '&';
+    if ($_GET['labelpage']) $href .= 'labelpage=' . $_GET['labelpage'] . '&';
+    echo ':<br /> Page';
+    for ($i = 0; $i < $fileCount; $i += $files_per_page)
+    {
+        // at this stage it's simplist to do pagination RMS style. May change this in future.
+        $page = $i/$files_per_page;
+        if ($page == $_GET['filepage']) echo " $page";
+        else echo " <a href=\"${href}filepage=$page\">$page</a>";
+    }
+}
+echo "</p>\n";
+
 ?>
   </div>
 
