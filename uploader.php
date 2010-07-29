@@ -25,7 +25,6 @@ if (!($user->is_loaded() and $user->is_active())) {
 }
 
 $fileID = array(); // for keeping track of which files have which ids
-$sequence = array(); // for keeping track of which files are in sequence with which
 
 echo head();
 echo tabMenu(True);
@@ -100,9 +99,12 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
         }
         
         // record sequence data
-        // if sequence number is the same as the file number then no sequence is recorded.
-        if ($i != (int)$_POST["sequence_$i"]) {
-            $sequence[$fileID["File $i"]] = 'File ' . $_POST["sequence_$i"];
+        if ($_POST["sequence_$i"] == 'on') {
+            mysql_query(
+                "UPDATE Files
+                SET next_file_id = " . $fileID["File $i"] . "
+                WHERE id = " . $fileID["File ".($i-1)]
+            );
         }
         
         // remove the file from the upload location
@@ -116,20 +118,6 @@ for ($i = 1; $i <= (int)$_POST['amount']; ++$i) {
     echo 'There was an error uploading the file: ' . $_FILES["uploadedfile_$i"]['name'];
   }
 
-}
-
-//print_r($fileID);
-//echo '<br />';
-//print_r($sequence);
-
-// put the sequence data into the database
-foreach ($sequence as $file_ID => $target)
-{
-    mysql_query(
-        "UPDATE Files
-        SET next_file_id = " . $fileID[$target] . "
-        WHERE id = $file_ID"
-    );
 }
 
 echo foot();

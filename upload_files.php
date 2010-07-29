@@ -35,17 +35,7 @@ for ($i = 1; $i <= $amount; ++$i):
     <td><input name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
     <td><input name='labels_<?php echo $i ?>' type='text' /></td>
     <td><input name='public_<?php echo $i ?>' type='checkbox' /></td>
-    <td>Followed in sequence by <select name='sequence_<?php echo $i ?>'>
-    <?php
-    for ($j = 1; $j <= $amount; ++$j){
-      if ($j == $i) {
-        echo "<option value='$j' selected>[Not followed]</option>\n";
-      } else {
-        echo "<option value='$j'>File $j</option>\n";
-      }
-    }
-    ?>
-    </select></td>
+    <td><input name='sequence_<?php echo $i ?>' type='checkbox' /></td>
   </tr>
 <?php
 endfor;
