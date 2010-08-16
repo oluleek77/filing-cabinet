@@ -15,7 +15,7 @@ echo tabMenu(True, $user->get_property('username'));
 
 <form enctype="multipart/form-data" action="uploader.php" method="POST">
 <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
-<table>
+<table id='upload'>
   <tr>
     <th></th>
     <th title='Choose a file to upload'>Files to upload</th>
