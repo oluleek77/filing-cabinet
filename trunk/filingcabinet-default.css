@@ -82,41 +82,11 @@ table#upload th, td {
     padding-right:1em;
 }
 
-/* rounded corners without images or javasvcript*/
-.spiffy{display:block}
-.spiffy *{
-  display:block;
-  height:1px;
-  overflow:hidden;
-  font-size:.01em;
-  background:#AAAAEE}
-.spiffy1{
-  margin-left:3px;
-  margin-right:3px;
-  padding-left:1px;
-  padding-right:1px;
-  border-left:1px solid #c8c8f7;
-  border-right:1px solid #c8c8f7;
-  background:#b7b7f2}
-.spiffy2{
-  margin-left:1px;
-  margin-right:1px;
-  padding-right:1px;
-  padding-left:1px;
-  border-left:1px solid #dadafd;
-  border-right:1px solid #dadafd;
-  background:#b4b4f1}
-.spiffy3{
-  margin-left:1px;
-  margin-right:1px;
-  border-left:1px solid #b4b4f1;
-  border-right:1px solid #b4b4f1;}
-.spiffy4{
-  border-left:1px solid #c8c8f7;
-  border-right:1px solid #c8c8f7}
-.spiffy5{
-  border-left:1px solid #b7b7f2;
-  border-right:1px solid #b7b7f2}
-.spiffyfg{
-  background:#AAAAEE;
-  padding:1em}
+div#breadcrumbs, div#labels, div#files {
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    background:#AAAAEE;
+    padding:1em;
+}
+
