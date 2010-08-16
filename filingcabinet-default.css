@@ -78,6 +78,10 @@ td.common_label {
     font-weight:bold;
 }
 
+table#upload th, td {
+    padding-right:1em;
+}
+
 /* rounded corners without images or javasvcript*/
 .spiffy{display:block}
 .spiffy *{
