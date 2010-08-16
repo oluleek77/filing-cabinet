@@ -9,12 +9,28 @@ function mimeFilename ($mimeType)
 }
 
 // generate page head
-function head($title = 'Filing Cabinet')
+function head($title = 'Filing Cabinet', $scripts = array())
 {
-    return "
+    return headA($scripts) . headB($title);
+}
+
+function headA($scripts)
+{
+    $out = "
 <html>
 <head>
     <link rel=\"stylesheet\" type=\"text/css\" href=\"filingcabinet-default.css\" />
+";
+    foreach ($scripts as $type => $script)
+    {
+        $out .= "<script type=\"$type\" src=\"$script\"></script>\n";
+    }
+    return $out;
+}
+
+function headB($title)
+{
+    return "
     <title>$title</title>
 </head>
 <body>
