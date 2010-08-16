@@ -18,11 +18,11 @@ echo tabMenu(True, $user->get_property('username'));
 <table>
   <tr>
     <th></th>
-    <th>Files to upload</th>
-    <th>Edit filename</th>
-    <th>Comma separated list of labels</th>
-    <th>Allow public access</th>
-    <th>Sequence</th>
+    <th title='Choose a file to upload'>Files to upload</th>
+    <th title='Rename the file (optional)'>Edit filename</th>
+    <th title='Comma separated list of labels for the file'>Labels</th>
+    <th title='Allow anyone to download the file?'>Public</th>
+    <th title='File follows in sequence from previous file?'>Sequence</th>
   </tr>
 <?php
 // amount of files that can be uploaded in one go
@@ -31,11 +31,13 @@ for ($i = 1; $i <= $amount; ++$i):
 ?>
   <tr>
     <td>File <?php echo $i ?></td>
-    <td><input name='uploadedfile_<?php echo $i ?>' type='file' onchange="document.getElementById('name_<?php echo $i ?>').value = this.value" /></td>
-    <td><input name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
-    <td><input name='labels_<?php echo $i ?>' type='text' /></td>
-    <td><input name='public_<?php echo $i ?>' type='checkbox' /></td>
-    <td><input name='sequence_<?php echo $i ?>' type='checkbox' /></td>
+    <td><input title='Choose a file to upload' name='uploadedfile_<?php echo $i ?>' type='file' onchange="document.getElementById('name_<?php echo $i ?>').value = this.value" /></td>
+    <td><input title='Rename the file (optional)' name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
+    <td><input title='Comma separated list of labels for the file' name='labels_<?php echo $i ?>' type='text' /></td>
+    <td><input title='Allow anyone to download the file?' name='public_<?php echo $i ?>' type='checkbox' /></td>
+    <?php if ($i > 1): // don't need sequence option on the first file ?> 
+        <td><input title='File follows in sequence from File <?php echo $i - 1 ?>?' name='sequence_<?php echo $i ?>' type='checkbox' /></td>
+    <?php endif; ?>
   </tr>
 <?php
 endfor;
