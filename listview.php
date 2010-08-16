@@ -69,16 +69,10 @@ if ($_GET['crumbs'])
     $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
 }
 ?>
-<!-- css rounded corners, without images or javascript -->
-<div id="breadcrumbs">
-  <b class="spiffy">
-  <b class="spiffy1"><b></b></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy5"></b></b>
 
-  <div class="spiffyfg">
+
+
+<div id="breadcrumbs">
 <?php
 
 echo '<a href="listview.php">All Files</a>';
@@ -90,25 +84,11 @@ foreach ($breadcrumbs as $num => $crumb)
     $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
 } 
 ?>
-  </div>
-
-  <b class="spiffy">
-  <b class="spiffy5"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy1"><b></b></b></b>
 </div>
 
-<div id="labels">
-  <b class="spiffy">
-  <b class="spiffy1"><b></b></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy5"></b></b>
 
-  <div class="spiffyfg">
+
+<div id="labels">
 <?php
 
 // count all the available labels i.e. labels that occur on the selected files
@@ -202,25 +182,13 @@ if ($labelCount > $labels_per_page)
 echo "</p>\n";
 
 ?>
-  </div>
-
-  <b class="spiffy">
-  <b class="spiffy5"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy1"><b></b></b></b>
 </div>
 
-<div id="files">
-  <b class="spiffy">
-  <b class="spiffy1"><b></b></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy5"></b></b>
 
-  <div class="spiffyfg">
+
+
+<div id="files">
+
 <?php
 
 // count number of files selected
@@ -299,15 +267,10 @@ if ($fileCount > $files_per_page)
 echo "</p>\n";
 
 ?>
-  </div>
 
-  <b class="spiffy">
-  <b class="spiffy5"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy1"><b></b></b></b>
 </div>
+
+
 <?php
 
 mysql_close();
