@@ -61,6 +61,9 @@ else {
     echo tabMenu(False);
 }
 
+
+
+
 // create a breadcrumb navigation for the labels
 $crumbDelimiter = ',';
 $breadcrumbs = array();
@@ -68,29 +71,50 @@ if ($_GET['crumbs'])
 {
     $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
 }
+if ($_GET['label_select'])
+{
+    array_push($breadcrumbs, $_GET['label_select']);
+}
 ?>
 
-
-
 <div id="breadcrumbs">
-<?php
 
-echo '<a href="listview.php">All Files</a>';
+<form id="label_select_form" action="listview.php" method="GET">
+<a href="listview.php">All Files</a>
+<?php
 foreach ($breadcrumbs as $num => $crumb)
 {
     echo ' >> <a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_slice($breadcrumbs, 0, $num+1))) . '">' . $crumb . '</a>';
     // while we are creating the breadcrumb navigation
     // also build the query that will fetch the files that match the selected labels.
     $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
-} 
+}
+// add a text fiel to allow user to manually add label filters
+echo "    <label for=\"label_select\"> >> </label>\n";
+echo "    <input id=\"label_select\" name=\"label_select\" />\n";
+
+if ($breadcrumbs)
+{
+    $crumbs = implode($crumbDelimiter, $breadcrumbs);
+    echo "<input type=\"hidden\" name=\"crumbs\" value=\"$crumbs\" />";
+}
+if ($_GET['labelpage'])
+{
+    echo "<input type=\"hidden\" name=\"labelpage\" value=\"{$_GET['labelpage']}\" />";
+}
+if ($_GET['filepage'])
+{
+    echo "<input type=\"hidden\" name=\"filepage\" value=\"{$_GET['filepage']}\" />";
+}
 ?>
+    <!-- <input type="submit" value="Go" /> -->
+</form>
 </div>
 
 
 
 <div id="labels">
 <?php
-
 // count all the available labels i.e. labels that occur on the selected files
 $qCountAvailableLabels = "SELECT COUNT(DISTINCT label_name) AS label_amount FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id";
 $rCountAvailableLabels = mysql_query($qCountAvailableLabels) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qCountAvailableLabels );
