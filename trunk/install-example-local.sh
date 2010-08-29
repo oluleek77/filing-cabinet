@@ -29,7 +29,7 @@ archive_path_enc="$archive_path\/allfiles.7z"
 admin_email='admin@my.domain.com'
 
 # this bit copies the web files in
-cp index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php filingcabinet-default.css $full_path
+cp index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php filingcabinet-default.css jquery-1.4.1.min.js $full_path
 cp images/* $full_path/images/
 cp images/mimetypes/16/* $full_path/images/mimetypes/16/
 cp images/mimetypes/32/* $full_path/images/mimetypes/32/
