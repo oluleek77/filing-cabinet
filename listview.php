@@ -10,8 +10,18 @@ mysql_connect(localhost, $db_user, $db_password);
 
 $user = new flexibleAccess($db_link);
 
-echo head();
-
+echo headA(array("text/javascript" => "jquery-1.4.1.min.js"));
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+    var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
+    $("#label_select").autocomplete({
+        source: availableTags
+    });
+});
+</script>
+<?php
+echo headB('Filing Cabinet');
 echo '<h1>Filing Cabinet</h1>';
 
 // check if we've been asked to delete a file
