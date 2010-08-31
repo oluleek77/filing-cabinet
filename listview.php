@@ -10,13 +10,14 @@ mysql_connect(localhost, $db_user, $db_password);
 
 $user = new flexibleAccess($db_link);
 
-echo headA(array("text/javascript" => "jquery-1.4.1.min.js"));
+echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
 ?>
+<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <script type="text/javascript">
 $(document).ready(function(){
-    var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
-    $("#label_select").autocomplete({
-        source: availableTags
+    
+    $("h1").click(function(){
+        $(this).hide();
     });
 });
 </script>
