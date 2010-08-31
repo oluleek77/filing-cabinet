@@ -19,9 +19,9 @@ function headA($scripts)
     $out = "
 <html>
 <head>
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"filingcabinet-default.css\" />
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/filingcabinet-default.css\" />
 ";
-    foreach ($scripts as $type => $script)
+    foreach ($scripts as $script => $type)
     {
         $out .= "<script type=\"$type\" src=\"$script\"></script>\n";
     }
