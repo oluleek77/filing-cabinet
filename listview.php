@@ -20,10 +20,10 @@ if ($_GET['label_select'])
 {
     array_push($breadcrumbs, $_GET['label_select']);
 }
-$labelServerURL = 'labelserver.php';
+$autocomplete_src = 'labelserver.php';
 if ($breadcrumbs)
 {
-    $labelServerURL .= '?crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs));
+    $autocomplete_src .= '?crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs));
 }
 
 echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
@@ -32,8 +32,12 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
 <script type="text/javascript">
     $(function() {
         $("#label_select").autocomplete({
-            <?php  echo "source: \"$labelServerURL\",\n" ?>
-            minLength: 2
+            <?php  echo "source: \"$autocomplete_src\",\n" ?>
+            minLength: 2,
+            select: function(event, ui) {
+                $("#label_select").val(ui.item.value);
+                $("#label_select_form").submit();
+            }
         });
     });
 </script>
