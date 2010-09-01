@@ -1,5 +1,8 @@
 <?php
-// this file hold functions for common use
+// this file holds functions and values for common use
+
+//delimiter for label filters when passed by URL
+$crumbDelimiter = ',';
 
 // parse the string of the MIME type stored in the db to the file name of the icon for that type
 function mimeFilename ($mimeType)
