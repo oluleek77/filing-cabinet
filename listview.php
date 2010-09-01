@@ -10,16 +10,32 @@ mysql_connect(localhost, $db_user, $db_password);
 
 $user = new flexibleAccess($db_link);
 
+// process label filters that are already applied
+$breadcrumbs = array();
+if ($_GET['crumbs'])
+{
+    $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
+}
+if ($_GET['label_select'])
+{
+    array_push($breadcrumbs, $_GET['label_select']);
+}
+$labelServerURL = 'labelserver.php';
+if ($breadcrumbs)
+{
+    $labelServerURL .= '?crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs));
+}
+
 echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
 ?>
 <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <script type="text/javascript">
-$(document).ready(function(){
-    
-    $("h1").click(function(){
-        $(this).hide();
+    $(function() {
+        $("#label_select").autocomplete({
+            <?php  echo "source: \"$labelServerURL\",\n" ?>
+            minLength: 2
+        });
     });
-});
 </script>
 <?php
 echo headB('Filing Cabinet');
@@ -76,16 +92,6 @@ else {
 
 
 // create a breadcrumb navigation for the labels
-$crumbDelimiter = ',';
-$breadcrumbs = array();
-if ($_GET['crumbs'])
-{
-    $breadcrumbs = explode($crumbDelimiter, $_GET['crumbs']);
-}
-if ($_GET['label_select'])
-{
-    array_push($breadcrumbs, $_GET['label_select']);
-}
 ?>
 
 <div id="breadcrumbs">
