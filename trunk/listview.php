@@ -28,7 +28,7 @@ if ($breadcrumbs)
 
 echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
 ?>
-<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <script type="text/javascript">
     $(function() {
         $("#label_select").autocomplete({
