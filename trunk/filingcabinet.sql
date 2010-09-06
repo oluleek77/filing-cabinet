@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `Files` (
   `type` varchar(50) collate utf8_unicode_ci NOT NULL default 'unknown',
   `size` double NOT NULL default '0',
   `uploaded` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `downloads` bigint(20) unsigned NOT NULL default '0',
   `owner` varchar(50) collate utf8_unicode_ci NOT NULL,
   `permissions` smallint(6) NOT NULL default '0',
   `next_file_id` int(10) default NULL,

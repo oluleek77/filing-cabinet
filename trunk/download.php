@@ -41,6 +41,10 @@ if (file_exists("$archive_dir/file_" . $_GET['id'])) {
     header('Content-disposition: attachment; filename=' . mysql_result($qFileDataResult, 0, 'filename'));
     header('Content-type: ' . mysql_result($qFileDataResult, 0, 'type'));
     readfile("$archive_dir/file_" . $_GET['id']);
+    // record download in database
+    $new_downloads = mysql_result($qFileDataResult, 0, 'downloads') + 1;
+    mysql_query("UPDATE Files SET downloads = $new_downloads WHERE id = {$_GET['id']}");
+    // clean up
     exec("rm $archive_dir/file_" . $_GET['id']);
     exit(0);
 } else {

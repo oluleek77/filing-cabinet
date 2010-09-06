@@ -110,6 +110,7 @@ echo '<div><a href="download.php?id=' . $_GET['id'] . '"><img src="images/downlo
 echo '<p>MIME Type: ' . mysql_result($rAllFileData, 0, 'type') . '</p>';
 echo '<p>File size: ' . HumanReadableFilesize(mysql_result($rAllFileData, 0, 'size')) . '</p>';
 echo '<p>Uploaded ' . mysql_result($rAllFileData, 0, 'uploaded') . ' by: ' . mysql_result($rAllFileData, 0, 'owner') . '</p>';
+echo '<p>Downloads: ' . mysql_result($rAllFileData, 0, 'downloads') . '</p>';
 
 // if the user owns the file, show form for switching privacy
 if ($user->is_loaded() and $user->is_active() and mysql_result($rAllFileData, 0, 'owner') == $user->get_property('username'))
