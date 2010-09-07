@@ -28,14 +28,18 @@ if ( !$user->is_loaded() )
 	echo tabMenu(False);
 	echo '<h2>Filing Cabinet Login</h2>
     <p>You do not have to login to <a href="listview.php">access public files</a>.</p>
-	<p><form method="post" action="'.$_SERVER['PHP_SELF'].'" />
-	 username: <input type="text" name="uname" /><br /><br />
-	 password: <input type="password" name="pwd" /><br /><br />
+	<form method="post" action="'.$_SERVER['PHP_SELF'].'" ><div>
+	 <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br /><br />
+	 <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br /><br />
 	 <input type="hidden" name="location" value="'.$_GET['location'].'" />
 	 <input type="submit" value="login" />
-	</form>
-	</p>
-	<p>Or you may <a href="register.php">create a new account</a>.</p>';
+	</div></form>
+	<p>Or you may <a href="register.php">create a new account</a>.</p>
+	<p>
+	    <a href="http://validator.w3.org/check?uri=referer"><img
+            src="http://www.w3.org/Icons/valid-xhtml10-blue.png"
+            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+        </p>';
 	echo foot();
 }
 else if (!$user->is_active()){
