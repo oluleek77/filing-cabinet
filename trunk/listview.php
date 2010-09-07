@@ -46,6 +46,12 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $("#common_title").click(function(){
             $('#common_content').slideToggle(400);
         });
+        $("#pop_title").click(function(){
+            $('#pop_content').slideToggle(400);
+        });
+        $("#new_title").click(function(){
+            $('#new_content').slideToggle(400);
+        });
     });
 </script>
 <?php
@@ -248,6 +254,34 @@ $qCountSelectedFiles = substr_replace($qSelectedFiles, 'COUNT(*) AS file_amount'
 $rCountSelectedFiles = mysql_query($qCountSelectedFiles) or die ( 'Query failed: ' . mysql_error() . '<br />' . $qSelectedFiles );
 $fileCount = mysql_result($rCountSelectedFiles, 0, 'file_amount');
 
+// if there are more than $show_common_limit files present $show_common_amount most popular and newest up front
+if ($fileCount > $show_common_limit)
+{
+    
+    $qPopularFiles = "$qSelectedFiles AND downloads > 0 ORDER BY downloads DESC, filename ASC LIMIT 0, $show_common_amount";
+    if ($rPopularFiles = mysql_query($qPopularFiles))
+    {
+        echo "<div class=\"toggle_trigger\" id=\"pop_title\"><strong>Popular Files</strong></div>\n";
+        echo "<div class=\"toggle_target\" id=\"pop_content\"><table>\n"; 
+        while ($row = mysql_fetch_assoc($rPopularFiles))
+        {
+            echo fileListing($row, True);
+        }
+        echo "</table></div>\n";
+    }
+    $qNewFiles = "$qSelectedFiles ORDER BY uploaded DESC LIMIT 0, $show_common_amount";
+    if ($rNewFiles = mysql_query($qNewFiles))
+    {
+        echo "<div class=\"toggle_trigger\" id=\"new_title\"><strong>New Files</strong></div>\n";
+        echo "<div class=\"toggle_target\" id=\"new_content\"><table>\n"; 
+        while ($row = mysql_fetch_assoc($rNewFiles))
+        {
+            echo fileListing($row, False);
+        }
+        echo "</table></div>\n";
+    }
+}
+
 // show pages for files
 $firstFile = $_GET['filepage'] * $files_per_page or 0;
 $lastFile = $firstFile + $files_per_page;
@@ -278,25 +312,7 @@ $rSelectedFiles = mysql_query($qSelectedFiles) or die ( 'Query failed: ' . mysql
 echo "<table>\n";
 while ($row = mysql_fetch_assoc($rSelectedFiles))
 {
-    echo "<tr>\n";
-    // show MIME icon
-    echo '<td><img src="images/mimetypes/16/' . mimeFilename($row['type']) . "\" alt=\"{$row['type']}\" /></td>\n";
-    // filename linked fo fileview
-    echo "<td><a href=\"fileview.php?id={$row['id']}\">" . htmlspecialchars($row['filename']) . "</a></td>\n";
-    // provide a download button
-    echo "<td><a href=\"download?id={$row['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
-    // provide a delete button for the file is user owns it.
-    /*if ($user->is_loaded() and $user->is_active() and (mysql_result($rSelectedFiles, $row, 'owner') == $user->get_property('username')))
-    {
-        echo '<td><form action="listview.php" method="GET">';
-        echo '<input type="hidden" name="action" value="delete" />';
-        echo '<input type="hidden" name="file_id" value="' . mysql_result($rSelectedFiles, $row, 'id') . '" />';
-        echo '<input type="submit" value="Delete" />';
-        echo "</form></td>\n";
-    }*/
-    // show filesize
-    echo '<td>' . HumanReadableFilesize($row['size']) . "</td>\n";
-    echo "</tr>\n"; 
+    echo fileListing($row);
 }
 echo "</table>\n";
 
