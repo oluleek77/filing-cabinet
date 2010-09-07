@@ -74,6 +74,10 @@ body {
     float:left;
 }
 
+#foot {
+    clear:both;
+}
+
 td.common_label {
     font-weight:bold;
 }

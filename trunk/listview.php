@@ -107,7 +107,7 @@ else {
 
 <div id="breadcrumbs">
 
-<form id="label_select_form" action="listview.php" method="GET">
+<form id="label_select_form" action="listview.php" method="get"><div>
 <a href="listview.php">All Files</a>
 <?php
 foreach ($breadcrumbs as $num => $crumb)
@@ -136,7 +136,7 @@ if ($_GET['filepage'])
 }
 ?>
     <!-- <input type="submit" value="Go" /> -->
-</form>
+</div></form>
 </div>
 
 
@@ -209,7 +209,7 @@ while ($row = mysql_fetch_assoc($rAvailableLabels))
         if ($row['amount'] < 2) $fontsize = 'small';
         if ($row['amount'] >= $label_large_amount ) $fontsize = 'large';
         if ($row['amount'] >= $label_x_large_amount ) $fontsize = 'x-large';
-        echo '<td  style="font-size:'.$fontsize.'"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . $row['label_name'] . '</a>(' . $row['amount'] . ")</td>\n";
+        echo '<td  style="font-size:'.$fontsize.'"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge($breadcrumbs, array($row['label_name'])))) . '">' . htmlspecialchars($row['label_name']) . '</a>(' . $row['amount'] . ")</td>\n";
         echo "</tr>\n";
     }
 }
@@ -282,7 +282,7 @@ while ($row = mysql_fetch_assoc($rSelectedFiles))
     // show MIME icon
     echo '<td><img src="images/mimetypes/16/' . mimeFilename($row['type']) . "\" alt=\"{$row['type']}\" /></td>\n";
     // filename linked fo fileview
-    echo "<td><a href=\"fileview.php?id={$row['id']}\">{$row['filename']}</a></td>\n";
+    echo "<td><a href=\"fileview.php?id={$row['id']}\">" . htmlspecialchars($row['filename']) . "</a></td>\n";
     // provide a download button
     echo "<td><a href=\"download?id={$row['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
     // provide a delete button for the file is user owns it.
@@ -321,7 +321,11 @@ echo "</p>\n";
 ?>
 
 </div>
-
+<div id="foot">
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="http://www.w3.org/Icons/valid-xhtml10-blue.png"
+        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+</div>
 
 <?php
 
