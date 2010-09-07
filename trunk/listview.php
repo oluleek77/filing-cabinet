@@ -40,6 +40,13 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             }
         });
     });
+    
+    $(document).ready(function(){
+        $('.toggle_target').hide();
+        $("#common_title").click(function(){
+            $('#common_content').slideToggle(400);
+        });
+    });
 </script>
 <?php
 echo headB('Filing Cabinet');
@@ -150,8 +157,8 @@ if ($labelCount > $show_common_limit)
     $qCommonLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC LIMIT 0, $common_amount_crumbs";
     if ($rCommonLabels = mysql_query($qCommonLabels))
     {
-        echo "<table>\n";
-        echo '<tr><th>Most common labels:</th></tr>'; 
+        echo "<div class=\"toggle_trigger\" id=\"common_title\"><strong>Common labels</strong></div>\n";
+        echo "<div class=\"toggle_target\" id=\"common_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rCommonLabels))
         {
             // don't show labels that have already been selected
@@ -161,7 +168,7 @@ if ($labelCount > $show_common_limit)
                 echo "</tr>\n";
             }
         }
-        echo "</table>\n";
+        echo "</table></div>\n";
     }
 }
 

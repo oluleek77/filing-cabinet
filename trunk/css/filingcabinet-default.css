@@ -83,11 +83,39 @@ table#upload th, td {
 }
 
 div#breadcrumbs, div#labels, div#files {
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
-    border-radius:10px;
+    -webkit-border-radius:1em;
+    -moz-border-radius:1em;
+    border-radius:1em;
     background:#AAAAEE;
     padding:1em;
+}
+
+.toggle_trigger, .toggle_target {
+    background:#B0B0FF;
+    border:3px solid #8888EE;
+    padding:1ex;
+}
+
+.toggle_trigger {
+    -webkit-border-top-right-radius: 1ex;
+    -webkit-border-top-left-radius: 1ex;
+    -moz-border-radius-topright: 1ex;
+    -moz-border-radius-topleft: 1ex;
+    border-top-right-radius: 1ex;
+    border-top-left-radius: 1ex;
+}
+.toggle_trigger:hover {
+    background:#C0C0FF;
+}
+
+.toggle_target {
+    border-top: 0px;
+    -webkit-border-bottom-right-radius: 1ex;
+    -webkit-border-bottom-left-radius: 1ex;
+    -moz-border-radius-bottomright: 1ex;
+    -moz-border-radius-bottomleft: 1ex;
+    border-bottom-right-radius: 1ex;
+    border-bottom-left-radius: 1ex;
 }
 
 .ui-autocomplete-loading {
