@@ -75,6 +75,27 @@ function tabMenu($logged = True, $username = '')
 ";
 }
 
+// generate file listing as table row
+function fileListing($DBrow, $downloads = False)
+{
+    $out = "<tr>\n";
+    // show MIME icon
+    $out .= '<td><img src="images/mimetypes/16/' . mimeFilename($DBrow['type']) . "\" alt=\"{$DBrow['type']}\" /></td>\n";
+    // filename linked fo fileview
+    $out .= "<td><a href=\"fileview.php?id={$DBrow['id']}\">" . htmlspecialchars($DBrow['filename']) . "</a></td>\n";
+    if ($downloads)
+    {
+        // show number of downloads
+        $out .= "<td>({$DBrow['downloads']} downloads)</td>\n";
+    }
+    // provide a download button
+    $out .= "<td><a href=\"download?id={$DBrow['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
+    // show filesize
+    $out .= '<td>' . HumanReadableFilesize($DBrow['size']) . "</td>\n";
+    $out .= "</tr>\n";
+    return $out;
+}
+
 // translate comma-seperated string into array of labels
 function parseLabels($str)
 {

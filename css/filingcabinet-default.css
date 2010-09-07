@@ -122,6 +122,14 @@ div#breadcrumbs, div#labels, div#files {
     border-bottom-left-radius: 1ex;
 }
 
+div#files div.toggle_trigger {
+    margin-top: 1ex;
+}
+
+div#files div.toggle_trigger:first-child {
+    margin-top: 0px;
+}
+
 .ui-autocomplete-loading {
     background: white url('images/ajax-loader.gif') right center no-repeat;
 }
