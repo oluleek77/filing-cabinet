@@ -1,6 +1,9 @@
 
 body {
 	background:#E0E0FF;
+	background-image:url('images/cabinet.png');
+	background-repeat:no-repeat;
+	background-position:right top;
 }
 
 /*Credits: Dynamic Drive CSS Library */

@@ -9,7 +9,6 @@ if (!($user->is_loaded() and $user->is_active())) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/login.php?location='.urlencode('upload_files.php'));
 }
 echo head();
-echo '<h1>Filing Cabinet</h1>';
 echo tabMenu(True, $user->get_property('username'));
 ?>
 

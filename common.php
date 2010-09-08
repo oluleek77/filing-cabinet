@@ -40,6 +40,7 @@ function headB($title)
     <title>$title</title>
 </head>
 <body>
+<h1><img src=\"images/heading.png\" alt=\"Filing Cabinet Heading\" /></h1>
 ";
 }
 

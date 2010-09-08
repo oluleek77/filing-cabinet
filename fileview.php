@@ -27,7 +27,6 @@ if ($permissions == 0 and mysql_result($rAllFileData, 0, 'owner') != $user->get_
 }
 
 echo head();
-echo '<h1>Filing Cabinet</h1>';
 
 if ($user->is_loaded() and $user->is_active())
 {
