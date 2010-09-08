@@ -12,7 +12,7 @@ echo head();
 echo tabMenu(True, $user->get_property('username'));
 ?>
 
-<form enctype="multipart/form-data" action="uploader.php" method="POST">
+<form enctype="multipart/form-data" action="uploader.php" method="post">
 <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
 <table id='upload'>
   <tr>
@@ -41,9 +41,16 @@ for ($i = 1; $i <= $amount; ++$i):
 <?php
 endfor;
 ?>
-</table> <br />
-<input type='hidden' name='amount' value='<?php echo $amount ?>' />
-<input type='submit' value='Upload Files' />
+</table>
+  <div>
+    <input type='hidden' name='amount' value='<?php echo $amount ?>' />
+    <input type='submit' value='Upload Files' />
+  </div>
 </form>
+<div id="foot">
+    <a href="http://validator.w3.org/check?uri=referer"><img
+        src="http://www.w3.org/Icons/valid-xhtml10-blue.png"
+        alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+</div>
 </body>
 </html>
