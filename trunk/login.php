@@ -24,7 +24,6 @@ if ( !$user->is_loaded() )
 	}
 	if (!isset($_GET['location'])) $_GET['location'] = urlencode('listview.php');
 	echo head();
-	echo '<h1>Filing Cabinet</h1>';
 	echo tabMenu(False);
 	echo '<h2>Filing Cabinet Login</h2>
     <p>You do not have to login to <a href="listview.php">access public files</a>.</p>

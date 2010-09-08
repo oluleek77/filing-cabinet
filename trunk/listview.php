@@ -56,7 +56,6 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
 </script>
 <?php
 echo headB('Filing Cabinet');
-echo '<h1>Filing Cabinet</h1>';
 
 // check if we've been asked to delete a file
 if ($_GET['action'] == 'delete')
