@@ -8,18 +8,20 @@ require_once 'access.class.php';
 
 $user = new flexibleAccess();
 
-if ( $_GET['logout'] == 1 ) 
-	$user->logout('http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
+if ( $_POST['logout'] == 1 ) {
+	$user->logout();
+	echo 'User logged out';
+}
 
-if ( !$user->is_loaded() )
+else if ( !$user->is_loaded() )
 {
 	//Login stuff:
 	if ( isset($_POST['uname']) && isset($_POST['pwd'])){
 	  if ( !$user->login($_POST['uname'],$_POST['pwd'],$_POST['remember'] )){// we don't have to use addslashes as access.class does the job
-	    echo '<span class="failure">Login Failed</span>';
+	    echo '<span class="failure">Login failed.</span>';
 	  }else{
 	    //user is now loaded
-	    echo '<span class="success">Login Succeeded</span>';
+	    echo '<span class="success">Login succeeded.</span>';
 	    //header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 	  }
 	}
@@ -44,8 +46,8 @@ if ( !$user->is_loaded() )
 }
 else if (!$user->is_active()){
     //echo head();
-    echo '<p>Your account is not active. When you registered you should have got an email giving you directions
-    on how to activate your account. If there is a problem contat the administrator.</p>';
+    echo 'Your account is not active. When you registered you should have got an email giving you directions
+    on how to activate your account. If there is a problem contact the administrator.';
     //echo '<p><a href="'.$_SERVER['PHP_SELF'].'?logout=1">logout</a></p>';
     ///echo foot();
 } else {
