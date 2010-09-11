@@ -26,6 +26,21 @@ if ($breadcrumbs)
     $autocomplete_src .= '?crumbs=' . urlencode(implode($crumbDelimiter, $breadcrumbs));
 }
 
+// start building query for selecting files from database
+$qSelectedFiles = 'SELECT * FROM Files WHERE (permissions = 1';
+// if the user is logged in their private files will be selected
+if ($user->is_loaded() and $user->is_active())
+{
+    $qSelectedFiles .= " OR owner = '".addslashes($user->get_property('username'))."')";
+    //echo tabMenu(True, $user->get_property('username'));
+    
+}
+else {
+    $qSelectedFiles .= ')';
+    //echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
+    //echo tabMenu(False);
+}
+
 echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
 ?>
 <link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
@@ -42,7 +57,16 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
     });
     
     $(document).ready(function(){
+        $.ajaxSetup ({  
+            cache: false  
+        });  
+    
         $('.toggle_target').hide();
+        $('#login_content').hide();
+        
+        $("#login_title").click(function(){
+            $('#login_content').toggle(400);
+        });
         $("#common_title").click(function(){
             $('#common_content').slideToggle(400);
         });
@@ -52,6 +76,11 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $("#new_title").click(function(){
             $('#new_content').slideToggle(400);
         });
+        
+        $("#submit_login").click(function(){  
+            $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()});  
+        }); 
+        
     });
 </script>
 <?php
@@ -91,26 +120,25 @@ if ($_GET['action'] == 'delete')
     }
 }
 
-// show all puplic files and files own by this user (if logged in)
-$qSelectedFiles = 'SELECT * FROM Files WHERE (permissions = 1';
-if ($user->is_loaded() and $user->is_active())
-{
-    $qSelectedFiles .= " OR owner = '".addslashes($user->get_property('username'))."')";
-    echo tabMenu(True, $user->get_property('username'));
-}
-else {
-    $qSelectedFiles .= ')';
-    echo '<p>Only displaying public files. <a href="login.php">Login</a> to access your own private files.</p>'."\n";
-    echo tabMenu(False);
-}
 
 
 
-
-// create a breadcrumb navigation for the labels
 ?>
+<!-- place to show info messages -->
+<div id="info">Only displaying public files. <br />Login to access your own private files.</div>
 
-<div id="breadcrumbs">
+<!-- panel for account management and file upload -->
+  <div class="main" id="login_panel">
+    <div class="toggle_trigger" id="login_title">Login</div>
+    <div id="login_content">
+	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br /><br />
+	  <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br /><br />
+	  <input type="submit" id="submit_login" value="Login" />
+    </div>
+  </div>
+
+<!-- create a breadcrumb navigation for the labels -->
+<div class="main" id="breadcrumbs">
 
 <form id="label_select_form" action="listview.php" method="get"><div>
 <a href="listview.php">All Files</a>
@@ -146,7 +174,7 @@ if ($_GET['filepage'])
 
 
 
-<div id="labels">
+<div class="main" id="labels">
 <?php
 // count all the available labels i.e. labels that occur on the selected files
 $qCountAvailableLabels = "SELECT COUNT(DISTINCT label_name) AS label_amount FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id";
@@ -162,7 +190,7 @@ if ($labelCount > $show_common_limit)
     $qCommonLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC LIMIT 0, $common_amount_crumbs";
     if ($rCommonLabels = mysql_query($qCommonLabels))
     {
-        echo "<div class=\"toggle_trigger\" id=\"common_title\"><strong>Common labels</strong></div>\n";
+        echo "<div class=\"toggle_trigger\" id=\"common_title\">Common labels</div>\n";
         echo "<div class=\"toggle_target\" id=\"common_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rCommonLabels))
         {
@@ -244,7 +272,7 @@ echo "</p>\n";
 
 
 
-<div id="files">
+<div class="main" id="files">
 
 <?php
 
@@ -260,7 +288,7 @@ if ($fileCount > $show_common_limit)
     $qPopularFiles = "$qSelectedFiles AND downloads > 0 ORDER BY downloads DESC, filename ASC LIMIT 0, $show_common_amount";
     if ($rPopularFiles = mysql_query($qPopularFiles))
     {
-        echo "<div class=\"toggle_trigger\" id=\"pop_title\"><strong>Popular Files</strong></div>\n";
+        echo "<div class=\"toggle_trigger\" id=\"pop_title\">Popular Files</div>\n";
         echo "<div class=\"toggle_target\" id=\"pop_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rPopularFiles))
         {
@@ -271,7 +299,7 @@ if ($fileCount > $show_common_limit)
     $qNewFiles = "$qSelectedFiles ORDER BY uploaded DESC LIMIT 0, $show_common_amount";
     if ($rNewFiles = mysql_query($qNewFiles))
     {
-        echo "<div class=\"toggle_trigger\" id=\"new_title\"><strong>New Files</strong></div>\n";
+        echo "<div class=\"toggle_trigger\" id=\"new_title\">New Files</div>\n";
         echo "<div class=\"toggle_target\" id=\"new_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rNewFiles))
         {
