@@ -40,7 +40,7 @@ sed -i "s/<insert path of app relative to web directory>/$fc_path/" environment.
 sed -i "s/<insert admin email address>/$admin_email/" environment.php.tmp
 
 # this bit copies the web files in
-rsync -rl index.html common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images js css $full_path/
+rsync -rl --exclude='*/.svn' index.html common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images js css $full_path/
 scp environment.php.tmp $full_path/environment.php
 
 # You might want to add a bit that imports the sql into your database
