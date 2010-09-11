@@ -64,6 +64,15 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $('.toggle_target').hide();
         $('#login_content').hide();
         
+        <?php
+  if ($user->is_loaded() and $user->is_active()) {
+
+  } else if ($user->is_loaded() and !($user->is_active())) { // user has not yet activated account
+
+  } else { // user is not logged in
+
+  } ?>
+        
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
         });
@@ -78,7 +87,32 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         });
         
         $("#submit_login").click(function(){  
-            $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()});  
+            $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()}, function() {
+                if ($('#info').html().indexOf('succeeded') != -1)
+                {
+                    $('#login_content').hide(400);
+                } else {
+                    $('#uname').val('');
+                    $('#pwd').val('');
+                }
+            });
+        }); 
+        
+        $("#submit_logout").click(function(){  
+            $("#info").load("login.php", {logout: 1}, function() {
+                $('#login_content').hide(400, function() {
+                 $('#login_panel').html(
+"                  <div class=\"toggle_trigger\" id=\"login_title\">Login</div>\
+                    <div id=\"login_content\">\
+	                  <label for=\"uname\"> username: </label><input id=\"uname\" type=\"text\" name=\"uname\" /><br /><br />\
+	                  <label for=\"pwd\"> password: </label><input id=\"pwd\" type=\"password\" name=\"pwd\" /><br /><br />\
+	                  <input type=\"submit\" id=\"submit_login\" value=\"Login\" />\
+                    </div>\
+                  </div>", function() {
+                      $('#login_content').hide();
+                  });
+                });
+            });
         }); 
         
     });
@@ -127,8 +161,19 @@ if ($_GET['action'] == 'delete')
 <!-- place to show info messages -->
 <div id="info">Only displaying public files. <br />Login to access your own private files.</div>
 
-<!-- panel for account management and file upload -->
-  <div class="main" id="login_panel">
+<!-- panel for login, logout and account management -->
+<!-- three different contents, jQuery with CSS should make sure only one is visible at a time -->
+<div class="main" id="login_panel">
+  <div class="begin_hidden" id="login_content_A"> <!-- when user is properly logged in -->
+    <div class="toggle_trigger" id="login_title"><?php echo $user->get_property('username') ?></div>
+    <div id="login_content">
+	  <input type="submit" id="submit_logout" value="Logout" />
+    </div>
+  </div>
+  <div class="begin_hidden" id="login_content_B"> <!-- when user is logged in but account is not active -->
+    <div>Your account is not yet active.<br /><input type="submit" id="submit_logout" value="Logout" /></div>
+  </div>
+  <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
     <div class="toggle_trigger" id="login_title">Login</div>
     <div id="login_content">
 	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br /><br />
@@ -136,6 +181,7 @@ if ($_GET['action'] == 'delete')
 	  <input type="submit" id="submit_login" value="Login" />
     </div>
   </div>
+</div>
 
 <!-- create a breadcrumb navigation for the labels -->
 <div class="main" id="breadcrumbs">
