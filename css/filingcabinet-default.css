@@ -62,39 +62,14 @@ body {
 #tabs a:hover span {
 	background-position:100% -42px;
 }
-	
-#breadcrumbs {
-    clear:both;
-    margin-bottom:1em;
-}
-	
-#labels {
-    float:left;
-    margin-right:2em;
-}
-	
-#files {
-    float:left;
-}
 
-#foot {
-    clear:both;
-}
-
-td.common_label {
-    font-weight:bold;
-}
-
-table#upload th, td {
-    padding-right:1em;
-}
-
-div#breadcrumbs, div#labels, div#files {
+div.main {
     -webkit-border-radius:1em;
     -moz-border-radius:1em;
     border-radius:1em;
     background:#AAAAEE;
     padding:1em;
+    float: left;
 }
 
 .toggle_trigger, .toggle_target {
@@ -110,6 +85,7 @@ div#breadcrumbs, div#labels, div#files {
     -moz-border-radius-topleft: 1ex;
     border-top-right-radius: 1ex;
     border-top-left-radius: 1ex;
+    font-weight: bold;
 }
 .toggle_trigger:hover {
     background:#C0C0FF;
@@ -123,6 +99,56 @@ div#breadcrumbs, div#labels, div#files {
     -moz-border-radius-bottomleft: 1ex;
     border-bottom-right-radius: 1ex;
     border-bottom-left-radius: 1ex;
+}
+
+h1 {
+    float: left;
+}
+
+#info {
+    float: left;
+    margin: 3em;
+}
+
+#login_panel {
+    clear: left;
+    margin-bottom: 1em;
+    padding: 1ex;
+}
+
+#login_title {
+    -webkit-border-bottom-right-radius: 1ex;
+    -webkit-border-bottom-left-radius: 1ex;
+    -moz-border-radius-bottomright: 1ex;
+    -moz-border-radius-bottomleft: 1ex;
+    border-bottom-right-radius: 1ex;
+    border-bottom-left-radius: 1ex;
+}
+
+#login_content {
+    margin-top: 1ex;
+}
+
+#breadcrumbs {
+    clear: left;
+    margin-bottom:1em;
+}
+	
+#labels {
+    clear: left;
+    margin-right:2em;
+}
+
+#foot {
+    clear:both;
+}
+
+td.common_label {
+    font-weight:bold;
+}
+
+table#upload th, td {
+    padding-right:1em;
 }
 
 div#files div.toggle_trigger {
