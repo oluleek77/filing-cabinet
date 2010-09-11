@@ -29,7 +29,7 @@ archive_path_enc="$archive_path\/allfiles.7z"
 admin_email='admin@my.domain.com'
 
 # this bit copies the web files in
-rsync -lr index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
+rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php
