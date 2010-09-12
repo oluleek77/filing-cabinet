@@ -66,11 +66,11 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
         <?php
   if ($user->is_loaded() and $user->is_active()) {
-
+      echo "$('#login_content_A').css('display', 'block');";
   } else if ($user->is_loaded() and !($user->is_active())) { // user has not yet activated account
-
+      echo "$('#login_content_B').css('display', 'block');";
   } else { // user is not logged in
-
+      echo "$('#login_content_C').css('display', 'block');";
   } ?>
         
         $("#login_title").click(function(){
@@ -90,7 +90,10 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()}, function() {
                 if ($('#info').html().indexOf('succeeded') != -1)
                 {
-                    $('#login_content').hide(400);
+                    $('#login_content').hide(400, function(){
+                        $('#login_content_C').css('display', 'none');
+                        $('#login_content_A').css('display', 'block');
+                    });
                 } else {
                     $('#uname').val('');
                     $('#pwd').val('');
@@ -98,19 +101,11 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             });
         }); 
         
-        $("#submit_logout").click(function(){  
+        $("#submit_logout_A").click(function(){  
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
-                 $('#login_panel').html(
-"                  <div class=\"toggle_trigger\" id=\"login_title\">Login</div>\
-                    <div id=\"login_content\">\
-	                  <label for=\"uname\"> username: </label><input id=\"uname\" type=\"text\" name=\"uname\" /><br /><br />\
-	                  <label for=\"pwd\"> password: </label><input id=\"pwd\" type=\"password\" name=\"pwd\" /><br /><br />\
-	                  <input type=\"submit\" id=\"submit_login\" value=\"Login\" />\
-                    </div>\
-                  </div>", function() {
-                      $('#login_content').hide();
-                  });
+                  $('#login_content_A').css('display', 'none');
+                  $('#login_content_C').css('display', 'block');
                 });
             });
         }); 
@@ -164,22 +159,29 @@ if ($_GET['action'] == 'delete')
 <!-- panel for login, logout and account management -->
 <!-- three different contents, jQuery with CSS should make sure only one is visible at a time -->
 <div class="main" id="login_panel">
-  <div class="begin_hidden" id="login_content_A"> <!-- when user is properly logged in -->
-    <div class="toggle_trigger" id="login_title"><?php echo $user->get_property('username') ?></div>
-    <div id="login_content">
-	  <input type="submit" id="submit_logout" value="Logout" />
+  <div class="toggle_trigger" id="login_title">
+  <?php if ($user->is_loaded()) {
+      echo $user->get_property('username');
+  } else {
+      echo 'Login';
+  } ?>
+  </div>
+  <div id="login_content">
+  
+    <div class="begin_hidden" id="login_content_A"> <!-- when user is properly logged in -->
+	  <input type="submit" id="submit_logout_A" value="Logout" />
     </div>
-  </div>
-  <div class="begin_hidden" id="login_content_B"> <!-- when user is logged in but account is not active -->
-    <div>Your account is not yet active.<br /><input type="submit" id="submit_logout" value="Logout" /></div>
-  </div>
-  <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
-    <div class="toggle_trigger" id="login_title">Login</div>
-    <div id="login_content">
+    
+    <div class="begin_hidden" id="login_content_B"> <!-- when user is logged in but account is not active -->
+      <div>Your account is not yet active.<br /><input type="submit" id="submit_logout_B" value="Logout" /></div>
+    </div>
+    
+    <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
 	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br /><br />
 	  <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br /><br />
 	  <input type="submit" id="submit_login" value="Login" />
     </div>
+    
   </div>
 </div>
 
