@@ -21,7 +21,7 @@ else if ( !$user->is_loaded() )
 	    echo '<span class="failure">Login failed.</span>';
 	  }else{
 	    //user is now loaded
-	    echo '<span class="success">Login succeeded.</span>';
+	    echo "<span class=\"success\">Login for <span class=\"uname\">{$user->get_property('username')}</span> succeeded.</span>";
 	    //header('Location: http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']);
 	  }
 	}

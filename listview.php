@@ -92,6 +92,8 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                 {
                     $('#login_content').hide(400, function(){
                         $('#login_content_C').css('display', 'none');
+                        // extract the username from the info div to put in the login_title div
+                        $('#login_title').html($('#info').html().substring($('#info').html().indexOf('<span class="uname">'),$('#info').html().indexOf('</span>')));
                         $('#login_content_A').css('display', 'block');
                     });
                 } else {
@@ -105,10 +107,21 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
                   $('#login_content_A').css('display', 'none');
+                  $('#login_title').html('Login');
                   $('#login_content_C').css('display', 'block');
                 });
             });
         }); 
+        
+        $("#submit_logout_B").click(function(){  
+            $("#info").load("login.php", {logout: 1}, function() {
+                $('#login_content').hide(400, function() {
+                  $('#login_content_B').css('display', 'none');
+                  $('#login_title').html('Login');
+                  $('#login_content_C').css('display', 'block');
+                });
+            });
+        });  
         
     });
 </script>
