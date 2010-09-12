@@ -63,6 +63,10 @@ body {
 	background-position:100% -42px;
 }
 
+.begin_hidden {
+    display: none;
+}
+
 div.main {
     -webkit-border-radius:1em;
     -moz-border-radius:1em;
