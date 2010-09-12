@@ -76,6 +76,9 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
         });
+        $("#register_title").click(function(){
+            $('#register_content').slideToggle(400);
+        });
         $("#common_title").click(function(){
             $('#common_content').slideToggle(400);
         });
@@ -190,9 +193,18 @@ if ($_GET['action'] == 'delete')
     </div>
     
     <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
-	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br /><br />
-	  <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br /><br />
+	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br />
+	  <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br />
 	  <input type="submit" id="submit_login" value="Login" />
+	  <div class="toggle_trigger" id="register_title">Register new user</div>
+	  <form method="post" action="register.php" />
+	    <div class="toggle_target" id="register_content">
+	      username: <input type="text" name="username" /><br />
+	      password: <input type="password" name="pwd" /><br />
+	      email: <input type="text" name="email" /><br />
+	      <input type="submit" value="Register user" />
+	    </div>
+	  </form>
     </div>
     
   </div>
