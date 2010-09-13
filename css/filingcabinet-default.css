@@ -166,5 +166,9 @@ div#files div.toggle_trigger:first-child {
 .ui-autocomplete-loading {
     background: white url('images/ajax-loader.gif') right center no-repeat;
 }
+
+div.loading {
+    background: url('images/ajax-loader.gif') center center no-repeat;
+}
 	
 

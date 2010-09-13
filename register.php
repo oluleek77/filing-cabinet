@@ -15,20 +15,21 @@ if (!empty($_GET['activate'])){
 	$res = $user->query("SELECT `{$user->tbFields['active']}` FROM `{$user->dbTable}` WHERE `activationHash` = '$hash' LIMIT 1",__LINE__);
 	if ( $rec = mysql_fetch_array($res) ){
 		if ( $rec[0] == 1 )
-			echo 'Your account is already activated. <a href="login.php">Login</a>';
+			echo 'Your account is already activated. You don\'t need to activate it again.';
 		else{
 			//Activate the account:
 			if ($user->query("UPDATE `{$user->dbTable}` SET `{$user->tbFields['active']}` = 1 WHERE `activationHash` = '$hash' LIMIT 1", __LINE__))
-				echo 'Account activated. You may <a href="login.php">login</a> now';
+				echo 'Account activated.';
 			else
-				echo 'Unexpected error. Please contact an administrator';
+				echo 'Unexpected error. Please contact an administrator.';
 		}
 	}else{
 		echo 'User account does not exists';
 	}
+	echo '<br />Return to <a href="listview.php">Filing Cabinet main interface</a>.';
 }
 
-if (!empty($_POST['username'])){
+if (!empty($_POST['uname'])){
   // Register user:
   
   // Get an activation hash and mail it to the user
@@ -37,7 +38,7 @@ if (!empty($_POST['username'])){
   	  $hash = $user->randomPass(100);
   //Adding the user. The logic is simple. We need to provide an associative array, where keys are the field names and values are the values :)
   $data = array(
-  	'username' => $_POST['username'],
+  	'username' => $_POST['uname'],
   	'email' => $_POST['email'],
   	'password' => $_POST['pwd'],
   	'activationHash' => $hash,
@@ -45,30 +46,21 @@ if (!empty($_POST['username'])){
   );
   $rows_inserted = $user->insertUser($data); //The method returns the userID of the new user or 0 if the user is not added
   if (!$rows_inserted > 0)
-  	echo '<p>Could not register user.</p>';
+  	echo '<span class="failure">Failed to register user.</span>';
   else {
   	//Here is the mail that the user will get:
-	$email = 'Activate your user account by visiting : '. $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] .'?activate='.$hash;
-	echo $_POST['email'];
+	$email = 'Activate your Filing Cabinet user account by visiting : <a href="'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] .'?activate='.$hash.'">'. $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] .'?activate='.$hash.'</a>';
+	//echo $_POST['email'];
 	$activation_sent = mail($_POST['email'], 'Filing Cabinet: Activate your account', $email);
 	if (!$activation_sent) {
 	    echo '<p>User registered, but failed to send activation instructions to email address!</p>';
 	    echo '<p>'.$email.'</p>';
 	} else {
-	    echo '<p>User registered. Instructions on how to activate your account have been sent to your email address.</p>';
+	    echo 'User registered.<br />Instructions on how to activate your account<br />have been sent to your email address.<br />';
+	    echo '(You may need to check your junk-mail/spam folder)';
   	}
-  	mail($admin_email, '[Filing Cabinet] new user', 'A new user has registered. '.$_POST['username'].' --- '.$_POST['email']);
+  	mail($admin_email, '[Filing Cabinet] new user', 'A new user has registered. '.$_POST['uname'].' --- '.$_POST['email']);
   }
-}
-
-
-echo '<h1>Register</h1>
-	<p><form method="post" action="'.$_SERVER['PHP_SELF'].'" />
-	 username: <input type="text" name="username" /><br /><br />
-	 password: <input type="password" name="pwd" /><br /><br />
-	 email: <input type="text" name="email" /><br /><br />
-	 <input type="submit" value="Register user" />
-	</form>
-	</p>';
+}
 
 ?>
