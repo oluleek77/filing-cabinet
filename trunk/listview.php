@@ -41,9 +41,8 @@ else {
     //echo tabMenu(False);
 }
 
-echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript"));
+echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript", "js/filingcabinet.js" => "text/javascript"));
 ?>
-<link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <script type="text/javascript">
     $(function() {
         $("#label_select").autocomplete({
@@ -89,24 +88,46 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             $('#new_content').slideToggle(400);
         });
         
-        $("#submit_login").click(function(){  
+        $("#submit_login").click(function(){
+            $('#login_title').addClass('loading');
             $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()}, function() {
                 if ($('#info').html().indexOf('succeeded') != -1)
                 {
                     $('#login_content').hide(400, function(){
                         $('#login_content_C').css('display', 'none');
                         // extract the username from the info div to put in the login_title div
-                        $('#login_title').html($('#info').html().substring($('#info').html().indexOf('<span class="uname">'),$('#info').html().indexOf('</span>')));
-                        $('#login_content_A').css('display', 'block');
+                        $('#login_title').html($('#info').html().substring($('#info').html().indexOf('<span class="uname">'),$('#info').html().indexOf('</span>'))); 
+                        if ($('#info').html().indexOf('not yet been activated') != -1)
+                        {
+                            $('#login_content_B').css('display', 'block');
+                        } else {
+                            $('#login_content_A').css('display', 'block');
+                        }
                     });
                 } else {
                     $('#uname').val('');
                     $('#pwd').val('');
                 }
             });
-        }); 
+            $('#login_title').removeClass('loading');
+        });
         
-        $("#submit_logout_A").click(function(){  
+        $("#reg_submit").click(function(){
+            $('#login_title').addClass('loading');
+            $("#info").load("register.php", {uname: $("#reg_uname").val(), pwd: $("#reg_pwd").val(), email: $("#reg_email").val()}, function() {
+                $('#reg_uname').val('');
+                $('#reg_pwd').val('');
+                $('#reg_email').val('');
+                if ($('#info').html().indexOf('registered') != -1)
+                {
+                    $('#register_content').slideToggle(400);
+                } 
+            });
+            $('#login_title').removeClass('loading');
+        });
+        
+        $("#submit_logout_A").click(function() {
+            $('#login_title').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
                   $('#login_content_A').css('display', 'none');
@@ -114,9 +135,11 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                   $('#login_content_C').css('display', 'block');
                 });
             });
+            $('#login_title').removeClass('loading');
         }); 
         
-        $("#submit_logout_B").click(function(){  
+        $("#submit_logout_B").click(function() {
+            $('#login_title').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
                   $('#login_content_B').css('display', 'none');
@@ -124,10 +147,12 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                   $('#login_content_C').css('display', 'block');
                 });
             });
+            $('#login_title').removeClass('loading');
         });  
         
     });
 </script>
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <?php
 echo headB('Filing Cabinet');
 
@@ -193,18 +218,16 @@ if ($_GET['action'] == 'delete')
     </div>
     
     <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
-	  <label for="uname"> username: </label><input id="uname" type="text" name="uname" /><br />
-	  <label for="pwd"> password: </label><input id="pwd" type="password" name="pwd" /><br />
+	    <label for="uname">username: </label><input id="uname" type="text" /><br />
+	    <label for="pwd">password: </label><input id="pwd" type="password" /><br />
 	  <input type="submit" id="submit_login" value="Login" />
 	  <div class="toggle_trigger" id="register_title">Register new user</div>
-	  <form method="post" action="register.php" />
 	    <div class="toggle_target" id="register_content">
-	      username: <input type="text" name="username" /><br />
-	      password: <input type="password" name="pwd" /><br />
-	      email: <input type="text" name="email" /><br />
-	      <input type="submit" value="Register user" />
+	      <label for="reg_uname">username: </label><input id="reg_uname" type="text" /><br />
+	      <label for="reg_pwd">password: </label><input id="reg_pwd" type="password" /><br />
+	      <label for="reg_email">email: </label><input id="reg_email" type="text" /><br />
+	      <input type="submit" id="reg_submit" value="Register user" />
 	    </div>
-	  </form>
     </div>
     
   </div>
