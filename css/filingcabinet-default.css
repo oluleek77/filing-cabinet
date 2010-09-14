@@ -63,26 +63,28 @@ body {
 	background-position:100% -42px;
 }
 
-.begin_hidden {
+.begin_hidden_css {
     display: none;
 }
 
 div.main {
-    -webkit-border-radius:1em;
-    -moz-border-radius:1em;
-    border-radius:1em;
-    background:#AAAAEE;
-    padding:1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    background: #AAAAEE;
+    padding: 1em;
     float: left;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
-.toggle_trigger, .toggle_target {
-    background:#B0B0FF;
-    border:3px solid #8888EE;
-    padding:1ex;
+.toggle_panel_top, .toggle_panel_bottom {
+    background: #B0B0FF;
+    border: 3px solid #8888EE;
+    padding: 1ex;
 }
 
-.toggle_trigger {
+.toggle_panel_top {
     -webkit-border-top-right-radius: 1ex;
     -webkit-border-top-left-radius: 1ex;
     -moz-border-radius-topright: 1ex;
@@ -91,11 +93,11 @@ div.main {
     border-top-left-radius: 1ex;
     font-weight: bold;
 }
-.toggle_trigger:hover {
+.toggle_panel_top:hover {
     background:#C0C0FF;
 }
 
-.toggle_target {
+.toggle_panel_bottom {
     border-top: 0px;
     -webkit-border-bottom-right-radius: 1ex;
     -webkit-border-bottom-left-radius: 1ex;
@@ -114,13 +116,11 @@ h1 {
     margin: 3em;
 }
 
-#login_panel {
-    clear: left;
-    margin-bottom: 1em;
+div.main_toggle_panel {
     padding: 1ex;
 }
 
-#login_title {
+div.main_toggle_panel div.toggle_panel_top {
     -webkit-border-bottom-right-radius: 1ex;
     -webkit-border-bottom-left-radius: 1ex;
     -moz-border-radius-bottomright: 1ex;
@@ -129,37 +129,43 @@ h1 {
     border-bottom-left-radius: 1ex;
 }
 
-#login_content #register_title {
-    margin-top: 1ex;
+#login_panel {
+    clear: left;
 }
 
 #breadcrumbs {
     clear: left;
-    margin-bottom:1em;
+}
+
+#labels {
+    clear: left;
+}
+
+#login_content #register_title {
+    margin-top: 1ex;
 }
 	
 #labels {
-    clear: left;
-    margin-right:2em;
+    margin-right: 2em;
 }
 
 #foot {
-    clear:both;
+    clear: both;
 }
 
 td.common_label {
-    font-weight:bold;
+    font-weight: bold;
 }
 
 table#upload th, td {
-    padding-right:1em;
+    padding-right: 1em;
 }
 
-div#files div.toggle_trigger {
+div#files div.toggle_panel_top {
     margin-top: 1ex;
 }
 
-div#files div.toggle_trigger:first-child {
+div#files div.toggle_panel_top:first-child {
     margin-top: 0px;
 }
 
