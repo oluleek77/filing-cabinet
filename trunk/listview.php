@@ -60,7 +60,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             cache: false  
         });  
     
-        $('.toggle_target').hide();
+        $('.toggle_panel_bottom').hide();
         $('#login_content').hide();
         $('#upload_content').hide();
         
@@ -203,8 +203,8 @@ if ($_GET['action'] == 'delete')
 
 <!-- panel for login, logout and account management -->
 <!-- three different contents, jQuery with CSS should make sure only one is visible at a time -->
-<div class="main" id="login_panel">
-  <div class="toggle_trigger" id="login_title">
+<div class="main main_toggle_panel" id="login_panel">
+  <div class="toggle_panel_top" id="login_title">
   <?php if ($user->is_loaded()) {
       echo $user->get_property('username');
   } else {
@@ -213,20 +213,20 @@ if ($_GET['action'] == 'delete')
   </div>
   <div id="login_content">
   
-    <div class="begin_hidden" id="login_content_A"> <!-- when user is properly logged in -->
+    <div class="begin_hidden_css" id="login_content_A"> <!-- when user is properly logged in -->
 	  <input type="submit" id="submit_logout_A" value="Logout" />
     </div>
     
-    <div class="begin_hidden" id="login_content_B"> <!-- when user is logged in but account is not active -->
+    <div class="begin_hidden_css" id="login_content_B"> <!-- when user is logged in but account is not active -->
       <div>Your account is not yet active.<br /><input type="submit" id="submit_logout_B" value="Logout" /></div>
     </div>
     
-    <div class="begin_hidden" id="login_content_C"> <!-- when user is not logged in -->
+    <div class="begin_hidden_css" id="login_content_C"> <!-- when user is not logged in -->
 	    <label for="uname">username: </label><input id="uname" type="text" /><br />
 	    <label for="pwd">password: </label><input id="pwd" type="password" /><br />
 	  <input type="submit" id="submit_login" value="Login" />
-	  <div class="toggle_trigger" id="register_title">Register new user</div>
-	    <div class="toggle_target" id="register_content">
+	  <div class="toggle_panel_top" id="register_title">Register new user</div>
+	    <div class="toggle_panel_bottom" id="register_content">
 	      <label for="reg_uname">username: </label><input id="reg_uname" type="text" /><br />
 	      <label for="reg_pwd">password: </label><input id="reg_pwd" type="password" /><br />
 	      <label for="reg_email">email: </label><input id="reg_email" type="text" /><br />
@@ -238,8 +238,8 @@ if ($_GET['action'] == 'delete')
 </div>
 
 <!-- panel for file upload -->
-<div class="main" id="upload_panel">
-  <div class="toggle_trigger" id="upload_title">Upload Files</div>
+<div class="main main_toggle_panel" id="upload_panel">
+  <div class="toggle_panel_top" id="upload_title">Upload Files</div>
   <div id="upload_content">
     <form enctype="multipart/form-data" action="uploader.php" method="post">
       <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
@@ -332,8 +332,8 @@ if ($labelCount > $show_common_limit)
     $qCommonLabels = "SELECT COUNT(file_id) AS amount, label_name FROM Labels INNER JOIN ($qSelectedFiles) AS Selected ON Labels.file_id = Selected.id GROUP BY label_name ORDER BY amount DESC, label_name ASC LIMIT 0, $common_amount_crumbs";
     if ($rCommonLabels = mysql_query($qCommonLabels))
     {
-        echo "<div class=\"toggle_trigger\" id=\"common_title\">Common labels</div>\n";
-        echo "<div class=\"toggle_target\" id=\"common_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_top\" id=\"common_title\">Common labels</div>\n";
+        echo "<div class=\"toggle_panel_bottom\" id=\"common_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rCommonLabels))
         {
             // don't show labels that have already been selected
@@ -430,8 +430,8 @@ if ($fileCount > $show_common_limit)
     $qPopularFiles = "$qSelectedFiles AND downloads > 0 ORDER BY downloads DESC, filename ASC LIMIT 0, $show_common_amount";
     if ($rPopularFiles = mysql_query($qPopularFiles))
     {
-        echo "<div class=\"toggle_trigger\" id=\"pop_title\">Popular Files</div>\n";
-        echo "<div class=\"toggle_target\" id=\"pop_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_top\" id=\"pop_title\">Popular Files</div>\n";
+        echo "<div class=\"toggle_panel_bottom\" id=\"pop_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rPopularFiles))
         {
             echo fileListing($row, True);
@@ -441,8 +441,8 @@ if ($fileCount > $show_common_limit)
     $qNewFiles = "$qSelectedFiles ORDER BY uploaded DESC LIMIT 0, $show_common_amount";
     if ($rNewFiles = mysql_query($qNewFiles))
     {
-        echo "<div class=\"toggle_trigger\" id=\"new_title\">New Files</div>\n";
-        echo "<div class=\"toggle_target\" id=\"new_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_top\" id=\"new_title\">New Files</div>\n";
+        echo "<div class=\"toggle_panel_bottom\" id=\"new_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rNewFiles))
         {
             echo fileListing($row, False);
