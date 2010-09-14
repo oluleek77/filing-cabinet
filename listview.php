@@ -63,6 +63,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $('.toggle_panel_bottom').hide();
         $('#login_content').hide();
         $('#upload_content').hide();
+        $('.main_toggle_panel').addClass('reduced_margin');
         
         <?php
   if ($user->is_loaded() and $user->is_active()) {
@@ -75,12 +76,14 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
+            $('#login_panel').toggleClass('reduced_margin');
         });
         $("#register_title").click(function(){
             $('#register_content').slideToggle(400);
         });
         $("#upload_title").click(function(){
             $('#upload_content').toggle(400);
+            $('#upload_panel').toggleClass('reduced_margin');
         });
         $("#common_title").click(function(){
             $('#common_content').slideToggle(400);
@@ -98,6 +101,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                 if ($('#info').html().indexOf('succeeded') != -1)
                 {
                     $('#login_content').hide(400, function(){
+                        $('#login_panel').addClass('reduced_margin');
                         $('#login_content_C').css('display', 'none');
                         // extract the username from the info div to put in the login_title div
                         $('#login_title').html($('#info').html().substring($('#info').html().indexOf('<span class="uname">'),$('#info').html().indexOf('</span>'))); 
@@ -134,6 +138,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             $('#login_title').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
+                  $('#login_panel').addClass('reduced_margin');
                   $('#login_content_A').css('display', 'none');
                   $('#login_title').html('Login');
                   $('#login_content_C').css('display', 'block');
@@ -146,6 +151,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             $('#login_title').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
+                  $('#login_panel').addClass('reduced_margin');
                   $('#login_content_B').css('display', 'none');
                   $('#login_title').html('Login');
                   $('#login_content_C').css('display', 'block');
