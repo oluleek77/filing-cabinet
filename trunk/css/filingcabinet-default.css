@@ -116,17 +116,18 @@ h1 {
     margin: 3em;
 }
 
-div.main_toggle_panel {
+div.reduced_margin {
     padding: 1ex;
 }
 
-div.main_toggle_panel div.toggle_panel_top {
+div.main_toggle_panel div.toggle_panel_top:first-child {
     -webkit-border-bottom-right-radius: 1ex;
     -webkit-border-bottom-left-radius: 1ex;
     -moz-border-radius-bottomright: 1ex;
     -moz-border-radius-bottomleft: 1ex;
     border-bottom-right-radius: 1ex;
     border-bottom-left-radius: 1ex;
+    margin-bottom: 1ex;
 }
 
 #login_panel {
