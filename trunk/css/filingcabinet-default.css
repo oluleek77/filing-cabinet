@@ -130,6 +130,10 @@ div.main_toggle_panel div.toggle_panel_top:first-child {
     margin-bottom: 1ex;
 }
 
+div.reduced_margin div.toggle_panel_top:first-child {
+    margin-bottom: 0px;
+}
+
 #login_panel {
     clear: left;
 }
