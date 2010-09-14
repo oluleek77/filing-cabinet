@@ -62,6 +62,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
     
         $('.toggle_target').hide();
         $('#login_content').hide();
+        $('#upload_content').hide();
         
         <?php
   if ($user->is_loaded() and $user->is_active()) {
@@ -77,6 +78,9 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         });
         $("#register_title").click(function(){
             $('#register_content').slideToggle(400);
+        });
+        $("#upload_title").click(function(){
+            $('#upload_content').toggle(400);
         });
         $("#common_title").click(function(){
             $('#common_content').slideToggle(400);
@@ -233,6 +237,48 @@ if ($_GET['action'] == 'delete')
   </div>
 </div>
 
+<!-- panel for file upload -->
+<div class="main" id="upload_panel">
+  <div class="toggle_trigger" id="upload_title">Upload Files</div>
+  <div id="upload_content">
+    <form enctype="multipart/form-data" action="uploader.php" method="post">
+      <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
+      <table id='upload'>
+        <tr>
+          <th></th>
+          <th title='Choose a file to upload'>Files to upload</th>
+          <th title='Rename the file (optional)'>Edit filename</th>
+          <th title='Comma separated list of labels for the file'>Labels</th>
+          <th title='Allow anyone to download the file?'>Public</th>
+          <th title='File follows in sequence from previous file?'>Sequence</th>
+        </tr>
+<?php
+// amount of files that can be uploaded in one go
+$amount = 5;
+for ($i = 1; $i <= $amount; ++$i):
+?>
+  <tr>
+    <td>File <?php echo $i ?></td>
+    <td><input title='Choose a file to upload' name='uploadedfile_<?php echo $i ?>' type='file' onchange="document.getElementById('name_<?php echo $i ?>').value = this.value" /></td>
+    <td><input title='Rename the file (optional)' name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
+    <td><input title='Comma separated list of labels for the file' name='labels_<?php echo $i ?>' type='text' /></td>
+    <td><input title='Allow anyone to download the file?' name='public_<?php echo $i ?>' type='checkbox' /></td>
+    <?php if ($i > 1): // don't need sequence option on the first file ?> 
+        <td><input title='File follows in sequence from File <?php echo $i - 1 ?>?' name='sequence_<?php echo $i ?>' type='checkbox' /></td>
+    <?php endif; ?>
+  </tr>
+<?php
+endfor;
+?>
+</table>
+  <div>
+    <input type='hidden' name='amount' value='<?php echo $amount ?>' />
+    <input type='submit' value='Upload Files' />
+  </div>
+</form>
+  </div>
+</div>
+
 <!-- create a breadcrumb navigation for the labels -->
 <div class="main" id="breadcrumbs">
 
@@ -246,7 +292,7 @@ foreach ($breadcrumbs as $num => $crumb)
     // also build the query that will fetch the files that match the selected labels.
     $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
 }
-// add a text fiel to allow user to manually add label filters
+// add a text field to allow user to manually add label filters
 echo "    <label for=\"label_select\"> >> </label>\n";
 echo "    <input id=\"label_select\" name=\"label_select\" />\n";
 
