@@ -67,11 +67,14 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
         <?php
   if ($user->is_loaded() and $user->is_active()) {
-      echo "$('#login_content_A').css('display', 'block');";
+      echo "$('#login_content_A').css('display', 'block');\n";
+      echo "$('#info').html('Welcome back {$user->get_property('username')}');\n";
   } else if ($user->is_loaded() and !($user->is_active())) { // user has not yet activated account
-      echo "$('#login_content_B').css('display', 'block');";
+      echo "$('#upload_panel').hide();\n";
+      echo "$('#login_content_B').css('display', 'block');\n";
   } else { // user is not logged in
-      echo "$('#login_content_C').css('display', 'block');";
+      echo "$('#upload_panel').hide();\n";
+      echo "$('#login_content_C').css('display', 'block');\n";
   } ?>
         
         $("#login_title").click(function(){
@@ -110,6 +113,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                             $('#login_content_B').css('display', 'block');
                         } else {
                             $('#login_content_A').css('display', 'block');
+                            $('#upload_panel').show(400);
                         }
                     });
                 } else {
@@ -137,6 +141,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $("#submit_logout_A").click(function() {
             $('#login_title').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
+                $('#upload_panel').hide(400);
                 $('#login_content').hide(400, function() {
                   $('#login_panel').addClass('reduced_margin');
                   $('#login_content_A').css('display', 'none');
