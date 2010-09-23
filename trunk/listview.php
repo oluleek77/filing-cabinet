@@ -60,9 +60,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             cache: false  
         });  
     
-        $('.toggle_panel_bottom').hide();
-        $('#login_content').hide();
-        $('#upload_content').hide();
+        $('.begin_hidden_js').hide();
         $('.main_toggle_panel').addClass('reduced_margin');
         
         <?php
@@ -83,11 +81,11 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             // path to server-side upload script
             action: 'qquploader.php',
             onComplete: function(id, fileName, responseJSON) {
-                
+                $('#add_to_cabinet').show(400);
             }
         });
         
-        $('.button, .qq-upload-button').button();
+        $('.button').button();
         
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
@@ -235,7 +233,7 @@ if ($_GET['action'] == 'delete')
       echo 'Login';
   } ?>
   </div>
-  <div id="login_content">
+  <div id="login_content" class="begin_hidden_js">
            
       <noscript>          
         <p>Please enable JavaScript to use login.</p>
@@ -254,7 +252,7 @@ if ($_GET['action'] == 'delete')
 	    <label for="pwd">password: </label><input id="pwd" type="password" /><br />
 	  <div class="button" id="submit_login" />Login</div>
 	  <div class="toggle_panel_top" id="register_title">Register new user</div>
-	    <div class="toggle_panel_bottom" id="register_content">
+	    <div class="toggle_panel_bottom begin_hidden_js" id="register_content">
 	      <label for="reg_uname">username: </label><input id="reg_uname" type="text" /><br />
 	      <label for="reg_pwd">password: </label><input id="reg_pwd" type="password" /><br />
 	      <label for="reg_email">email: </label><input id="reg_email" type="text" /><br />
@@ -268,7 +266,7 @@ if ($_GET['action'] == 'delete')
 <!-- panel for file upload -->
 <div class="main main_toggle_panel" id="upload_panel">
   <div class="toggle_panel_top" id="upload_title">Upload Files</div>
-  <div id="upload_content">
+  <div id="upload_content" class="begin_hidden_js">
     <form enctype="multipart/form-data" action="uploader.php" method="post">
       <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
       <table id='upload'>
@@ -305,9 +303,9 @@ endfor;
     <div id="file-uploader">       
       <noscript>          
         <p>Please enable JavaScript to use file uploader.</p>
-        <!-- or put a simple form for upload here -->
       </noscript>         
     </div>
+    <div class="button begin_hidden_js" id="add_to_cabinet">Add Files to Cabinet</div>
   </div>
 </div>
 
@@ -365,7 +363,7 @@ if ($labelCount > $show_common_limit)
     if ($rCommonLabels = mysql_query($qCommonLabels))
     {
         echo "<div class=\"toggle_panel_top\" id=\"common_title\">Common labels</div>\n";
-        echo "<div class=\"toggle_panel_bottom\" id=\"common_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_bottom begin_hidden_js\" id=\"common_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rCommonLabels))
         {
             // don't show labels that have already been selected
@@ -463,7 +461,7 @@ if ($fileCount > $show_common_limit)
     if ($rPopularFiles = mysql_query($qPopularFiles))
     {
         echo "<div class=\"toggle_panel_top\" id=\"pop_title\">Popular Files</div>\n";
-        echo "<div class=\"toggle_panel_bottom\" id=\"pop_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_bottom begin_hidden_js\" id=\"pop_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rPopularFiles))
         {
             echo fileListing($row, True);
@@ -474,7 +472,7 @@ if ($fileCount > $show_common_limit)
     if ($rNewFiles = mysql_query($qNewFiles))
     {
         echo "<div class=\"toggle_panel_top\" id=\"new_title\">New Files</div>\n";
-        echo "<div class=\"toggle_panel_bottom\" id=\"new_content\"><table>\n"; 
+        echo "<div class=\"toggle_panel_bottom begin_hidden_js\" id=\"new_content\"><table>\n"; 
         while ($row = mysql_fetch_assoc($rNewFiles))
         {
             echo fileListing($row, False);
