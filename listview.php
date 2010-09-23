@@ -87,6 +87,8 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             }
         });
         
+        $('.button, .qq-upload-button').button();
+        
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
             $('#login_panel').toggleClass('reduced_margin');
@@ -177,8 +179,8 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
     });
 </script>
-<link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/fileuploader.css" rel="stylesheet" />
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
 <?php
 echo headB('Filing Cabinet');
 
@@ -240,23 +242,23 @@ if ($_GET['action'] == 'delete')
       </noscript> 
   
     <div class="begin_hidden_css" id="login_content_A"> <!-- when user is properly logged in -->
-	  <input type="submit" id="submit_logout_A" value="Logout" />
+	  <div class="button" id="submit_logout_A" />Logout</div>
     </div>
     
     <div class="begin_hidden_css" id="login_content_B"> <!-- when user is logged in but account is not active -->
-      <div>Your account is not yet active.<br /><input type="submit" id="submit_logout_B" value="Logout" /></div>
+      <div>Your account is not yet active.<div class="button" id="submit_logout_B" />Logout</div></div>
     </div>
     
     <div class="begin_hidden_css" id="login_content_C"> <!-- when user is not logged in -->
 	    <label for="uname">username: </label><input id="uname" type="text" /><br />
 	    <label for="pwd">password: </label><input id="pwd" type="password" /><br />
-	  <input type="submit" id="submit_login" value="Login" />
+	  <div class="button" id="submit_login" />Login</div>
 	  <div class="toggle_panel_top" id="register_title">Register new user</div>
 	    <div class="toggle_panel_bottom" id="register_content">
 	      <label for="reg_uname">username: </label><input id="reg_uname" type="text" /><br />
 	      <label for="reg_pwd">password: </label><input id="reg_pwd" type="password" /><br />
 	      <label for="reg_email">email: </label><input id="reg_email" type="text" /><br />
-	      <input type="submit" id="reg_submit" value="Register user" />
+	      <div class="button" id="reg_submit">Register user</div>
 	    </div>
     </div>
     
