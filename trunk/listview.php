@@ -41,7 +41,7 @@ else {
     //echo tabMenu(False);
 }
 
-echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript", "js/filingcabinet.js" => "text/javascript"));
+echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.8.4.custom.min.js" => "text/javascript", "js/fileuploader.js" => "text/javascript"));
 ?>
 <script type="text/javascript">
     $(function() {
@@ -76,6 +76,13 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
       echo "$('#upload_panel').hide();\n";
       echo "$('#login_content_C').css('display', 'block');\n";
   } ?>
+  
+        var uploader = new qq.FileUploader({
+            // pass the dom node (ex. $(selector)[0] for jQuery users)
+            element: document.getElementById('file-uploader'),
+            // path to server-side upload script
+            action: 'qquploader.php'
+        });
         
         $("#login_title").click(function(){
             $('#login_content').toggle(400);
@@ -168,6 +175,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
     });
 </script>
 <link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/fileuploader.css" rel="stylesheet" />
 <?php
 echo headB('Filing Cabinet');
 
@@ -223,6 +231,10 @@ if ($_GET['action'] == 'delete')
   } ?>
   </div>
   <div id="login_content">
+           
+      <noscript>          
+        <p>Please enable JavaScript to use login.</p>
+      </noscript> 
   
     <div class="begin_hidden_css" id="login_content_A"> <!-- when user is properly logged in -->
 	  <input type="submit" id="submit_logout_A" value="Logout" />
@@ -256,7 +268,6 @@ if ($_GET['action'] == 'delete')
       <!-- <input type="hidden" name="MAX_FILE_SIZE" value="10485760" /> -->
       <table id='upload'>
         <tr>
-          <th></th>
           <th title='Choose a file to upload'>Files to upload</th>
           <th title='Rename the file (optional)'>Edit filename</th>
           <th title='Comma separated list of labels for the file'>Labels</th>
@@ -269,13 +280,12 @@ $amount = 5;
 for ($i = 1; $i <= $amount; ++$i):
 ?>
   <tr>
-    <td>File <?php echo $i ?></td>
     <td><input title='Choose a file to upload' name='uploadedfile_<?php echo $i ?>' type='file' onchange="document.getElementById('name_<?php echo $i ?>').value = this.value" /></td>
     <td><input title='Rename the file (optional)' name='filename_<?php echo $i ?>' id='name_<?php echo $i ?>' type='text' /></td>
     <td><input title='Comma separated list of labels for the file' name='labels_<?php echo $i ?>' type='text' /></td>
     <td><input title='Allow anyone to download the file?' name='public_<?php echo $i ?>' type='checkbox' /></td>
     <?php if ($i > 1): // don't need sequence option on the first file ?> 
-        <td><input title='File follows in sequence from File <?php echo $i - 1 ?>?' name='sequence_<?php echo $i ?>' type='checkbox' /></td>
+        <td><input title='File follows in sequence from previous file?' name='sequence_<?php echo $i ?>' type='checkbox' /></td>
     <?php endif; ?>
   </tr>
 <?php
@@ -287,6 +297,12 @@ endfor;
     <input type='submit' value='Upload Files' />
   </div>
 </form>
+    <div id="file-uploader">       
+      <noscript>          
+        <p>Please enable JavaScript to use file uploader.</p>
+        <!-- or put a simple form for upload here -->
+      </noscript>         
+    </div>
   </div>
 </div>
 
