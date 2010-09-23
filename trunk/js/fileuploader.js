@@ -484,21 +484,21 @@ qq.FileUploader = function(o){
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
                 '<div class="qq-upload-button">Upload a file</div>' +
-                '<ul class="qq-upload-list"></ul>' + 
+                '<table class="qq-upload-list"></table>' + 
              '</div>',
 
         // template for one item in file list
-        fileTemplate: '<li>' +
-                '<span class="qq-upload-file"></span>' +
+        fileTemplate: '<tr>' +
+                '<td><span class="qq-upload-file"></span>' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
-                '<span class="qq-upload-failed-text">Failed</span>' +
-                '<span class="qq-upload-rename-input"><input title="Rename the file (optional)" type="text" /></span>' +
-                '<span class="qq-upload-label-input"><input title="Comma separated list of labels for the file" type="text" /></span>' +
-                '<span class="qq-upload-public-checkbox"><input title="Allow anyone to download the file?" type="checkbox" /></span>' +
-                '<span class="qq-upload-sequence-checkbox"><input title="File follows in sequence from previous file?" type="checkbox" /></span>' +
-            '</li>',        
+                '<span class="qq-upload-failed-text">Failed</span></td>' +
+                '<td><input class="qq-upload-rename-input" title="Rename the file (optional)" type="text" /></td>' +
+                '<td><input class="qq-upload-label-input" title="Comma separated list of labels for the file" type="text" /></td>' +
+                '<td><input class="qq-upload-public-checkbox" title="Allow anyone to download the file?" type="checkbox" /></td>' +
+                '<td><input class="qq-upload-sequence-checkbox" title="File follows in sequence from previous file?" type="checkbox" /></td>' +
+            '</tr>',        
         
         classes: {
             // used to get elements from templates
@@ -511,6 +511,9 @@ qq.FileUploader = function(o){
             spinner: 'qq-upload-spinner',
             size: 'qq-upload-size',
             cancel: 'qq-upload-cancel',
+            
+            rename: 'qq-upload-rename-input',
+            
 
             // added to list item when upload completes
             // used in css to hide progress spinner
@@ -628,7 +631,8 @@ qq.extend(qq.FileUploader.prototype, {
 
         var fileElement = this._find(item, 'file');        
         qq.setText(fileElement, this._formatFileName(fileName));
-        this._find(item, 'size').style.display = 'none';        
+        this._find(item, 'size').style.display = 'none';
+        this._find(item, 'rename').value = fileName;        
 
         this._listElement.appendChild(item);
     },

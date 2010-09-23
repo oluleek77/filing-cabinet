@@ -81,7 +81,10 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             // pass the dom node (ex. $(selector)[0] for jQuery users)
             element: document.getElementById('file-uploader'),
             // path to server-side upload script
-            action: 'qquploader.php'
+            action: 'qquploader.php',
+            onComplete: function(id, fileName, responseJSON) {
+                
+            }
         });
         
         $("#login_title").click(function(){
