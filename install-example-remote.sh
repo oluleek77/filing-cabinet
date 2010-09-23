@@ -13,16 +13,20 @@
 db_user=user
 db_pass=pass
 
-# directory for web hosting
-web_path=user@my.domain:/my_web_home
+# user @ host server
+server=user@my.domain
+
+# directory for web hosting on server
+web_path=/my_web_home
 
 # path within web directory for filing cabinet app (relative to web path)
 fc_path=filingcabinet
 
-full_path=$web_path/$fc_path
+full_path=$server:$web_path/$fc_path
+
 
 # where the files are actually stored from the point of view of the server (needs to be a 7zip file)
-archive_path='\/media\/sdb\/filearchive'
+archive_path='\/media\/sdb\/filearc$web_path/$fc_pathhive'
 archive_path_enc="$archive_path\/allfiles.7z"
 
 # email address of the administrator
@@ -38,6 +42,9 @@ sed -i "s/<insert archive path>/$archive_path/" environment.php.tmp
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" environment.php.tmp
 sed -i "s/<insert path of app relative to web directory>/$fc_path/" environment.php.tmp
 sed -i "s/<insert admin email address>/$admin_email/" environment.php.tmp
+
+# this bit sets up the directorty structure
+ssh $server mkdir $web_path/$fc_path/uploads $web_path/$fc_path/js $web_path/$fc_path/css $web_path/$fc_path/images
 
 # this bit copies the web files in
 rsync -rl --exclude='*/.svn' index.html common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images js css $full_path/

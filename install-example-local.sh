@@ -28,6 +28,9 @@ archive_path_enc="$archive_path\/allfiles.7z"
 # email address of the administrator
 admin_email='admin@my.domain.com'
 
+# this bit sets up the directorty structure
+mkdir $full_path/uploads $full_path/js $full_path/css $full_path/images
+
 # this bit copies the web files in
 rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
 
