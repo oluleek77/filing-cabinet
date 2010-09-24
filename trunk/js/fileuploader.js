@@ -513,7 +513,9 @@ qq.FileUploader = function(o){
             cancel: 'qq-upload-cancel',
             
             rename: 'qq-upload-rename-input',
-            
+            label: 'qq-upload-label-input',
+            pub: 'qq-upload-public-checkbox',
+            sequence: 'qq-upload-sequence-checkbox',
 
             // added to list item when upload completes
             // used in css to hide progress spinner
@@ -623,6 +625,10 @@ qq.extend(qq.FileUploader.prototype, {
             qq.addClass(item, this._classes.success);    
         } else {
             qq.addClass(item, this._classes.fail);
+            this._find(item, 'rename').disabled = true;
+            this._find(item, 'label').disabled = true;
+            this._find(item, 'pub').disabled = true;
+            this._find(item, 'sequence').disabled = true;
         }         
     },
     _addToList: function(id, fileName){
