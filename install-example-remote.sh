@@ -41,7 +41,7 @@ cp environment.php environment.php.tmp
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" environment.php.tmp
 sed -i "s/<insert database password>/$db_pass/" environment.php.tmp
-sed -i "s/<insert path to upload directory>/$upload_path/" environment.php.tmp
+sed -i "s/<insert path to upload directory>/$(echo $upload_path | sed -e 's/\(\/\|\\\|&\)/\\&/g')/" environment.php.tmp
 sed -i "s/<insert archive path>/$archive_path/" environment.php.tmp
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" environment.php.tmp
 sed -i "s/<insert path of app relative to web directory>/$fc_path/" environment.php.tmp

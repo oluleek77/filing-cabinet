@@ -40,7 +40,7 @@ rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php
 sed -i "s/<insert database password>/$db_pass/" $full_path/environment.php
-sed -i "s/<insert path to upload directory>/$upload_path/" $full_path/environment.php
+sed -i "s/<insert path to upload directory>/$(echo $upload_path | sed -e 's/\(\/\|\\\|&\)/\\&/g')/" $full_path/environment.php
 sed -i "s/<insert archive path>/$archive_path/" $full_path/environment.php
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" $full_path/environment.php
 sed -i "s/<insert path of app relative to web directory>/$fc_path/" $full_path/environment.php
