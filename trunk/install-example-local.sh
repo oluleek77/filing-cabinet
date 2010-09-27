@@ -21,6 +21,9 @@ fc_path=filingcabinet
 
 full_path=$web_path/$fc_path
 
+# path to directory that recieves file uploads
+upload_path=$full_path/uploads
+
 # where the files are actually stored (needs to be a 7zip file)
 archive_path='\/media\/sdb\/filearchive'
 archive_path_enc="$archive_path\/allfiles.7z"
@@ -32,11 +35,12 @@ admin_email='admin@my.domain.com'
 mkdir $full_path/uploads $full_path/js $full_path/css $full_path/images
 
 # this bit copies the web files in
-rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php qquploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
+rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php qquploader.php single-file-uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" $full_path/environment.php
 sed -i "s/<insert database password>/$db_pass/" $full_path/environment.php
+sed -i "s/<insert path to upload directory>/$upload_path/" $full_path/environment.php
 sed -i "s/<insert archive path>/$archive_path/" $full_path/environment.php
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" $full_path/environment.php
 sed -i "s/<insert path of app relative to web directory>/$fc_path/" $full_path/environment.php

@@ -1,5 +1,7 @@
 <?php
 
+require_once 'environment.php';
+
 /**
  * Handle file uploads via XMLHttpRequest
  */
@@ -134,6 +136,6 @@ $allowedExtensions = array();
 $sizeLimit = 6 * 1024 * 1024;
 
 $uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-$result = $uploader->handleUpload('uploads/');
+$result = $uploader->handleUpload("$upload_path/");
 // to pass data through iframe you will need to encode all html tags
 echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);

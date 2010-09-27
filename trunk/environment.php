@@ -4,6 +4,7 @@
 $db_user = '<insert database username>';
 $db_password = '<insert database password>';
 $database = 'filingcabinet';
+$upload_path = '<insert path to upload directory>';
 $archive_dir = '<insert archive path>';
 $archive_path = '<insert archive path and filename>';
 $rel_web_path = '<insert path of app relative to web directory>';

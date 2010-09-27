@@ -24,6 +24,9 @@ fc_path=filingcabinet
 
 full_path=$server:$web_path/$fc_path
 
+# path to directory that recieves file uploads
+upload_path=$web_path/$fc_path/uploads
+
 
 # where the files are actually stored from the point of view of the server (needs to be a 7zip file)
 archive_path='\/media\/sdb\/filearc$web_path/$fc_pathhive'
@@ -38,6 +41,7 @@ cp environment.php environment.php.tmp
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert database username>/$db_user/" environment.php.tmp
 sed -i "s/<insert database password>/$db_pass/" environment.php.tmp
+sed -i "s/<insert path to upload directory>/$upload_path/" environment.php.tmp
 sed -i "s/<insert archive path>/$archive_path/" environment.php.tmp
 sed -i "s/<insert archive path and filename>/$archive_path_enc/" environment.php.tmp
 sed -i "s/<insert path of app relative to web directory>/$fc_path/" environment.php.tmp
@@ -47,7 +51,7 @@ sed -i "s/<insert admin email address>/$admin_email/" environment.php.tmp
 ssh $server mkdir $web_path/$fc_path/uploads $web_path/$fc_path/js $web_path/$fc_path/css $web_path/$fc_path/images
 
 # this bit copies the web files in
-rsync -rl --exclude='*/.svn' index.html common.php upload_files.php uploader.php qquploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images js css $full_path/
+rsync -rl --exclude='*/.svn' index.html common.php upload_files.php uploader.php qquploader.php single-file-uploader.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images js css $full_path/
 scp environment.php.tmp $full_path/environment.php
 
 # You might want to add a bit that imports the sql into your database
