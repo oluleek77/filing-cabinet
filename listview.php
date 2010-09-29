@@ -180,9 +180,16 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         $('#add_to_cabinet').click(function() {
             $('#file-uploader .qq-uploader .qq-upload-list').children().each(function(index){
                 if ($(this).hasClass('qq-upload-fail')) {
-                   // delete rows where the upload failed
-                   $(this).remove();
+                    // delete rows where the upload failed
+                    $(this).remove();
                 } else if ($(this).hasClass('qq-upload-success')) {
+                    $('#info').load('add_file.php', {
+                        filename: $(this).find('.qq-upload-file').text(),
+                        rename: FIXME,
+                        pub: FIXME,
+                        sequence: FIXME
+                    }, function() {
+                    });
                 }
                 // if it has neither the fail nor success class then it hasn't finished uploading
                 // in this case just leave it.
@@ -190,9 +197,12 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         }); 
         
     });
+    
 </script>
+
 <link type="text/css" href="css/fileuploader.css" rel="stylesheet" />
 <link type="text/css" href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+
 <?php
 echo headB('Filing Cabinet');
 
