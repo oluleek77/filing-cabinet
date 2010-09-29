@@ -51,7 +51,7 @@ while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 
 
   if(move_uploaded_file($file_path, $target_path)) {
     // archive the file
-    echo 'archiver says: ' . exec("7za a -mx=9 -y $archive_path $target_path", $output, $return_value) . '<br />';
+    $archiver_message = exec("7za a -mx=9 -y $archive_path $target_path", $output, $return_value);
     if ($return_value == 0) {
         // insert the file data into the database
         $qFilename = addslashes($_POST['filename']);
@@ -62,7 +62,7 @@ while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 
         mysql_query(
           "INSERT INTO Files (filename, type, size, owner, permissions)
           VALUES('".$qFilename."', '".addslashes($mime_type)."', ". sprintf("%u", filesize($file_path)) .",
-          '".addslashes($user->get_property('username'))."', ".(($_POST['public'] == 'on')?'1':'0').")"
+          '".addslashes($user->get_property('username'))."', ".(($_POST['pub'] == 'on')?'1':'0').")"
         ); 
         // now safe to unlock because the next increment will give a new file id.
         @unlink('.lock_cabinet');
@@ -88,9 +88,10 @@ while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 
         
         // remove the file from the upload location
         exec('rm ' . $target_path);
+        echo $_POST['filename'] . ' added. ID: <span class="file_id">' . $fileID . '</span>';
     } else {
         @unlink('.lock_cabinet');
-        echo 'There was an error archiving the file: ' . $_POST['filename'];
+        echo 'There was an error archiving the file: ' . $_POST['filename'] . '<br />Archiver says: ' . $archiver_message;
     }
   } else {
     @unlink('.lock_cabinet');
