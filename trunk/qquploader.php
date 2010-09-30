@@ -107,6 +107,10 @@ class qqFileUploader {
         $filename = $pathinfo['filename'];
         //$filename = md5(uniqid());
         $ext = $pathinfo['extension'];
+        $dot_ext = '';
+        if ($ext) {
+            $dot_ext = '.' . $ext;
+        }
 
         if($this->allowedExtensions && !in_array(strtolower($ext), $this->allowedExtensions)){
             $these = implode(', ', $this->allowedExtensions);
@@ -115,12 +119,12 @@ class qqFileUploader {
         
         if(!$replaceOldFile){
             /// don't overwrite previous files that were uploaded
-            while (file_exists($uploadDirectory . $filename . '.' . $ext)) {
+            while (file_exists($uploadDirectory . $filename .  $dot_ext)) {
                 $filename .= rand(10, 99);
             }
         }
         
-        if ($this->file->save($uploadDirectory . $filename . '.' . $ext)){
+        if ($this->file->save($uploadDirectory . $filename . $dot_ext)){
             return array('success'=>true);
         } else {
             return array('error'=> 'Could not save uploaded file.' .

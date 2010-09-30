@@ -23,9 +23,14 @@ $user = new flexibleAccess($db_link);
 if (!($user->is_loaded() and $user->is_active())) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].'/'.$rel_web_path.'/listview.php');
 }
-
-
-$file_path = $upload_path/$_POST['filename'];
+/*
+if (isset($_POST['filename'])) {
+echo $_POST['filename'];
+} else {
+echo "no file";
+}
+*/
+$file_path = "$upload_path/{$_POST['filename']}";
 
 // the type of the file may not have been detected properly, so detect again with a better method
 $mime_type = mime_content_type($file_path);
@@ -49,7 +54,7 @@ while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 
   // make the file name correspond to the id in the database
   $target_path =  'file_' . $fileID;
 
-  if(move_uploaded_file($file_path, $target_path)) {
+  if(rename($file_path, $target_path)) {
     // archive the file
     $archiver_message = exec("7za a -mx=9 -y $archive_path $target_path", $output, $return_value);
     if ($return_value == 0) {
@@ -62,7 +67,7 @@ while (file_exists('.lock_cabinet') && ((time() - filemtime('.lock_cabinet')) < 
         mysql_query(
           "INSERT INTO Files (filename, type, size, owner, permissions)
           VALUES('".$qFilename."', '".addslashes($mime_type)."', ". sprintf("%u", filesize($file_path)) .",
-          '".addslashes($user->get_property('username'))."', ".(($_POST['pub'] == 'on')?'1':'0').")"
+          '".addslashes($user->get_property('username'))."', ".($_POST['pub']).")"
         ); 
         // now safe to unlock because the next increment will give a new file id.
         @unlink('.lock_cabinet');
