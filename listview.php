@@ -45,31 +45,40 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
 ?>
 <script type="text/javascript">
 
+    // ID of the file last added
+    // used to do sequence linking
+    var fileLastAdded = null;
+    
     // make a recursive function to add the files one at a time in orderof appearance
     // they need to be added thus so that the sequence linking will work
     function addFiles(uploaded) {
         // exit condition is empty array
         if (uploaded.length == 0) {
-            $('#add-file-results').append('<li>length 0</li>')
             return;
         } else {
-            $('#add-file-results').append('<li>length > 0</li>')
             fileElement = uploaded.first();
             if (fileElement.hasClass('qq-upload-fail')) {
-                    $('#add-file-results').append('<li>failed upload</li>')
                     // delete rows where the upload failed
                     fileElement.remove();
+                    fileLastAdded = null;
             } else if (fileElement.hasClass('qq-upload-success')) {
-                    $('#add-file-results').append('<li>successful upload</li>')
-                    $('#add-file-results').append('<li></li>')
-                    $('#add-file-results li:last').load('add-file.php', {
+                    var data = {
                         filename: fileElement.find('.qq-upload-file').text(),
                         rename: fileElement.find('.qq-upload-rename-input').val(),
                         labels: fileElement.find('.qq-upload-label-input').val(),
                         pub: fileElement.find('.qq-upload-public-checkbox:checked').length
-                        //, sequence: FIXME
-                    }, function() {
-                        $('#add-file-results').append('<li>next</li>')
+                        
+                    };
+                    if (fileLastAdded != null && fileElement.find('.qq-upload-sequence-checkbox:checked').length > 0) {
+                        data.sequence = fileLastAdded;
+                    }
+                    $('#add-file-results').append('<li></li>')
+                    $('#add-file-results li:last').load('add-file.php', data, function() {
+                        if ($('#add-file-results').children().last().html().indexOf('<span class="file_id">') != -1) {
+                            fileLastAdded = $('#add-file-results').children().last().find('.file_id').html();
+                        } else {
+                            fileLastAdded = null;
+                        }
                         addFiles(uploaded.slice(1)); // recursive call
                     });
             }
