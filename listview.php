@@ -54,7 +54,14 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
     function addFiles(uploaded) {
         // exit condition is empty array
         if (uploaded.length == 0) {
-            return;
+            // on exit hide all elements for sucessfully added files
+            $('#file-uploader .qq-uploader .qq-upload-list').children('.added').hide(400, function(){
+                $(this).remove();
+            });
+            // if there are no more uploaded files to add we can hide the 'add' button
+            if ($('#file-uploader .qq-uploader .qq-upload-list').children('.qq-upload-success').length == 0) {
+                $('#add_to_cabinet').hide(400);
+            }
         } else {
             fileElement = uploaded.first();
             if (fileElement.hasClass('qq-upload-fail')) {
@@ -76,6 +83,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                     $('#add-file-results li:last').load('add-file.php', data, function() {
                         if ($('#add-file-results').children().last().html().indexOf('<span class="file_id">') != -1) {
                             fileLastAdded = $('#add-file-results').children().last().find('.file_id').html();
+                            fileElement.addClass('added');
                         } else {
                             fileLastAdded = null;
                         }
@@ -222,8 +230,10 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
         $('#add_to_cabinet').click(function() {
             $('#info').html('<ul id="add-file-results"></ul>');
-           
-            addFiles($('#file-uploader .qq-uploader .qq-upload-list').children());
+            // send the elements un the upload list to the function to add them to the cabinet
+            // exclude file elements already added
+            addFiles($('#file-uploader .qq-uploader .qq-upload-list').children().not('.attempt-add'));
+            $('#file-uploader .qq-uploader .qq-upload-list').children().not('.attempt-add').addClass('attempt-add');
         }); 
         
     });

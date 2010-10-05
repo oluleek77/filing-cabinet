@@ -111,7 +111,7 @@ h1 {
     float: left;
 }
 
-#info {
+div#info {
     float: left;
     margin: 3em;
 }
@@ -134,7 +134,7 @@ div.reduced_margin div.toggle_panel_top:first-child {
     margin-bottom: 0px;
 }
 
-#login_panel {
+div#login_panel {
     clear: left;
 }
 
@@ -164,6 +164,10 @@ td.common_label {
 
 table#upload th, td {
     padding-right: 1em;
+}
+
+.added {
+    background-color: green;
 }
 
 div#files div.toggle_panel_top {
