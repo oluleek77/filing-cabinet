@@ -70,7 +70,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                     fileLastAdded = null;
             } else if (fileElement.hasClass('qq-upload-success')) {
                     var data = {
-                        filename: fileElement.find('.qq-upload-file').text(),
+                        filename: fileElement.find('.qq-upload-full-file').val(),
                         rename: fileElement.find('.qq-upload-rename-input').val(),
                         labels: fileElement.find('.qq-upload-label-input').val(),
                         pub: fileElement.find('.qq-upload-public-checkbox:checked').length
