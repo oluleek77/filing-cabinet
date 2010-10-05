@@ -490,6 +490,7 @@ qq.FileUploader = function(o){
         // template for one item in file list
         fileTemplate: '<tr>' +
                 '<td><span class="qq-upload-file"></span>' +
+                '<input class="qq-upload-full-file" type="hidden" />' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
@@ -508,6 +509,7 @@ qq.FileUploader = function(o){
             list: 'qq-upload-list',
                         
             file: 'qq-upload-file',
+            fullFile: 'qq-upload-full-file',
             spinner: 'qq-upload-spinner',
             size: 'qq-upload-size',
             cancel: 'qq-upload-cancel',
@@ -622,7 +624,10 @@ qq.extend(qq.FileUploader.prototype, {
         qq.remove(this._find(item, 'spinner'));
         
         if (result.success){
-            qq.addClass(item, this._classes.success);    
+            qq.addClass(item, this._classes.success);
+            this._find(item, 'fullFile').value = result.fileName;
+            var fileElement = this._find(item, 'file');
+            qq.setText(fileElement, this._formatFileName(result.fileName));    
         } else {
             qq.addClass(item, this._classes.fail);
             this._find(item, 'rename').disabled = true;
@@ -635,6 +640,7 @@ qq.extend(qq.FileUploader.prototype, {
         var item = qq.toElement(this._options.fileTemplate);                
         item.qqFileId = id;
 
+        this._find(item, 'fullFile').value = fileName;
         var fileElement = this._find(item, 'file');        
         qq.setText(fileElement, this._formatFileName(fileName));
         this._find(item, 'size').style.display = 'none';

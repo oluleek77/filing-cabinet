@@ -82,7 +82,7 @@ class qqFileUploader {
     }
     
     /**
-     * Returns array('success'=>true) or array('error'=>'error message')
+     * Returns array('success'=>true,'fileName'=>'saved as name') or array('error'=>'error message')
      */
     function handleUpload($uploadDirectory, $replaceOldFile = FALSE){
         if (!is_writable($uploadDirectory)){
@@ -125,7 +125,7 @@ class qqFileUploader {
         }
         
         if ($this->file->save($uploadDirectory . $filename . $dot_ext)){
-            return array('success'=>true);
+            return array('success'=>true, 'fileName'=>$filename.$dot_ext);
         } else {
             return array('error'=> 'Could not save uploaded file.' .
                 'The upload was cancelled, or server error encountered');
