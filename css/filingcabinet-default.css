@@ -185,5 +185,40 @@ div#files div.toggle_panel_top:first-child {
 div.loading {
     background: url('images/ajax-loader.gif') center center no-repeat;
 }
+
+.button {
+    display: block;
+    max-width: 8em;
+    margin-left: auto;
+    padding: 1ex;
+    margin-bottom: 1ex;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #D0D0FF;
+    /* gradient top to bottom */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddddff', endColorstr='#bbbbee'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#ddf), to(#bbe)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #ddf,  #bbe); /* for firefox 3.6+ */
+    /* rounded borders */
+    border: 1px solid #5555AA;
+    -webkit-border-radius: 1ex;
+    -moz-border-radius: 1ex;
+    border-radius: 1ex;
+    /* drop shadow */
+    box-shadow:4px 4px 4px #337;
+    -moz-box-shadow:4px 4px 4px #337;
+    -webkit-box-shadow:4px 4px 4px #337;
+}
+.button:hover {
+    background-color: #EEEEFF;
+    /* gradient top to bottom */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeff', endColorstr='#ddddff'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#eef), to(#ddf)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #eef,  #ddf); /* for firefox 3.6+ */
+    /* drop shadow */
+    box-shadow:5px 5px 3px #337;
+    -moz-box-shadow:5px 5px 3px #337;
+    -webkit-box-shadow:5px 5px 3px #337;
+}
 	
 
