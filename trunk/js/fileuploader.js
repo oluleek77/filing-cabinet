@@ -104,10 +104,33 @@ qq.contains = function(parent, descendant){
 qq.toElement = (function(){
     var div = document.createElement('div');
     return function(html){
+        console.log(html);
         div.innerHTML = html;
+        console.log(div);
         var element = div.firstChild;
+        console.log(element);
         div.removeChild(element);
         return element;
+    };
+})();
+
+/**
+ * Creates and returns element from html string, where that element is a table row
+ * Uses innerHTML to create an element
+ */
+qq.toElementTr = (function(){
+    var div = document.createElement('table');
+    return function(html){
+        div.innerHTML = html;
+        var element = div.firstChild;
+        console.log(element);
+        div.removeChild(element);
+        console.log(element.tagName);
+        if (element.tagName.toLowerCase() == 'tbody') {
+            return element.firstChild;
+        } else {
+            return element;
+        }
     };
 })();
 
@@ -650,12 +673,12 @@ qq.extend(qq.FileUploader.prototype, {
         }         
     },
     _addToList: function(id, fileName){
-        var item = qq.toElement(this._options.fileTemplate);                
+        var item = qq.toElementTr(this._options.fileTemplate);                
         item.qqFileId = id;
 
-        this._find(item, 'fullFile').value = fileName;
         var fileElement = this._find(item, 'file');        
         qq.setText(fileElement, this._formatFileName(fileName));
+        this._find(item, 'fullFile').value = fileName;
         this._find(item, 'size').style.display = 'none';
         this._find(item, 'rename').value = fileName;        
 
