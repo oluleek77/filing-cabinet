@@ -135,6 +135,15 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                 if (responseJSON['success']) {
                     $('#add_to_cabinet').show(400);
                 }
+                if ($('#file-uploader').find('.qq-file-data').length > 0) {
+                    $('#file-uploader').find('.qq-upload-list-head').css('display', 'block');
+                }
+                if ($('#file-uploader').find('.qq-file-data').length > 1) {
+                    $('#file-uploader').find('.qq-upload-list-shortcuts').css('display', 'block');
+                }
+                if ($('#file-uploader').find('.qq-file-data').length > 2) {
+                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'inline');
+                }
             }
         });
         
@@ -230,10 +239,10 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         
         $('#add_to_cabinet').click(function() {
             $('#info').html('<ul id="add-file-results"></ul>');
-            // send the elements un the upload list to the function to add them to the cabinet
+            // send the elements in the upload list to the function to add them to the cabinet
             // exclude file elements already added
-            addFiles($('#file-uploader .qq-uploader .qq-upload-list').children().not('.attempt-add'));
-            $('#file-uploader .qq-uploader .qq-upload-list').children().not('.attempt-add').addClass('attempt-add');
+            addFiles($('#file-uploader').find('.qq-file-data').not('.attempt-add'));
+            $('#file-uploader').find('.qq-file-data').not('.attempt-add').addClass('attempt-add');
         }); 
         
     });

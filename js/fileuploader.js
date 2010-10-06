@@ -483,12 +483,25 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                '<div class="qq-upload-button button">Upload a file</div>' +
-                '<table class="qq-upload-list"></table>' + 
-             '</div>',
+                '<div class="qq-upload-button button">Select files</div>' +
+                '  <table>' +
+                '    <thead>' +
+                '      <tr class="qq-upload-list-head">' +
+                '        <th>File</th><th>Rename</th>' +
+                '        <th>Labels</th><th>Public</th><th>Sequence</th>' +
+                '      </tr>' +
+                '      <tr class="qq-upload-list-shortcuts">' +
+                '        <td></th><td></td><td></td>' +
+                '        <td><input class="qq-upload-public-all" title="All public" type="checkbox" /></td>' +
+                '        <td><input class="qq-upload-sequence-all" title="All sequence" type="checkbox" /></td>' +
+                '      </tr>' +
+                '    </thead>' +
+                '    <tbody class="qq-upload-list"></tbody>' +
+                '  </table>' + 
+                '</div>',
 
         // template for one item in file list
-        fileTemplate: '<tr>' +
+        fileTemplate: '<tr class="qq-file-data">' +
                 '<td><span class="qq-upload-file"></span>' +
                 '<input class="qq-upload-full-file" type="hidden" />' +
                 '<span class="qq-upload-spinner"></span>' +
