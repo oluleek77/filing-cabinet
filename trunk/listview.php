@@ -55,11 +55,15 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
         // exit condition is empty array
         if (uploaded.length == 0) {
             // on exit hide all elements for sucessfully added files
-            $('#file-uploader .qq-uploader .qq-upload-list').children('.added').hide(400, function(){
+            $('#file-uploader').find('.added').hide(400, function(){
                 $(this).remove();
+                // if there are no more elements in the list hide the table head
+                if ($('#file-uploader').find('.qq-file-data').not('.added').length == 0) {
+                    $('#file-uploader').find('.qq-upload-list-head').css('display', 'none');
+                }
             });
             // if there are no more uploaded files to add we can hide the 'add' button
-            if ($('#file-uploader .qq-uploader .qq-upload-list').children('.qq-upload-success').length == 0) {
+            if ($('#file-uploader').find('.qq-upload-success').not('.added').length == 0) {
                 $('#add_to_cabinet').hide(400);
             }
         } else {
