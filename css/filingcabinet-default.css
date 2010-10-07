@@ -189,7 +189,6 @@ div.loading {
 .button {
     display: block;
     max-width: 8em;
-    margin-left: auto;
     padding: 1ex;
     margin-bottom: 1ex;
     text-decoration: none;
@@ -220,5 +219,8 @@ div.loading {
     -moz-box-shadow:5px 5px 3px #337;
     -webkit-box-shadow:5px 5px 3px #337;
 }
-	
 
+#add_to_cabinet {
+    clear: left;
+    margin-left: auto;
+}

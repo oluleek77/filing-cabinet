@@ -22,3 +22,8 @@
 .qq-upload-failed-text, .qq-upload-list-head, .qq-upload-list-shortcuts, .qq-upload-sequence-all {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
 
+.qq-upload-list-head {font-weight: bold;}
+.qq-col1 {float: left; clear: left; width: 15em}
+.qq-col2, .qq-col3 {float: left; width: 12em}
+.qq-col4, .qq-col5 {float: left; width: 4em}
+

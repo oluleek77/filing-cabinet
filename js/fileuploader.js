@@ -507,35 +507,37 @@ qq.FileUploader = function(o){
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
                 '<div class="qq-upload-button button">Select files</div>' +
-                '  <table>' +
-                '    <thead>' +
-                '      <tr class="qq-upload-list-head">' +
-                '        <th>File</th><th>Rename</th>' +
-                '        <th>Labels</th><th>Public</th><th>Sequence</th>' +
-                '      </tr>' +
-                '      <tr class="qq-upload-list-shortcuts">' +
-                '        <td></th><td></td><td></td>' +
-                '        <td><input class="qq-upload-public-all" title="All public" type="checkbox" /></td>' +
-                '        <td><input class="qq-upload-sequence-all" title="All sequence" type="checkbox" /></td>' +
-                '      </tr>' +
-                '    </thead>' +
-                '    <tbody class="qq-upload-list"></tbody>' +
-                '  </table>' + 
+                '<div class="qq-like-table qq-upload-list">' +
+                  '<div class="qq-upload-list-head">' +
+                    '<div class="qq-col1">File</div>' +
+                    '<div class="qq-col2">Rename</div>' +
+                    '<div class="qq-col3">Labels</div>' +
+                    '<div class="qq-col4">Public</div>' +
+                    '<div class="qq-col5">Sequence</div>' +
+                  '</div>' +
+                  '<div class="qq-upload-list-shortcuts">' +
+                    '<div class="qq-col1">&nbsp;</div>' +
+                    '<div class="qq-col2">&nbsp;</div>' +
+                    '<div class="qq-col3">&nbsp;</div>' +
+                    '<div class="qq-col4"><input class="qq-upload-public-all" title="All public" type="checkbox" /></div>' +
+                    '<div class="qq-col5"><input class="qq-upload-sequence-all" title="All sequence" type="checkbox" /></div>' +
+                  '</div>' +
+                '</div>' + 
                 '</div>',
 
         // template for one item in file list
-        fileTemplate: '<tr class="qq-file-data">' +
-                '<td><span class="qq-upload-file"></span>' +
+        fileTemplate: '<div class="qq-file-data">' +
+                '<div class="qq-col1"><span class="qq-upload-file"></span>' +
                 '<input class="qq-upload-full-file" type="hidden" />' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
-                '<span class="qq-upload-failed-text">Failed</span></td>' +
-                '<td><input class="qq-upload-rename-input" title="Rename the file (optional)" type="text" /></td>' +
-                '<td><input class="qq-upload-label-input" title="Comma separated list of labels for the file" type="text" /></td>' +
-                '<td><input class="qq-upload-public-checkbox" title="Allow anyone to download the file?" type="checkbox" /></td>' +
-                '<td><input class="qq-upload-sequence-checkbox" title="File follows in sequence from previous file?" type="checkbox" /></td>' +
-            '</tr>',        
+                '<span class="qq-upload-failed-text">Failed</span></div>' +
+                '<div class="qq-col2"><input class="qq-upload-rename-input" title="Rename the file (optional)" type="text" /></div>' +
+                '<div class="qq-col3"><input class="qq-upload-label-input" title="Comma separated list of labels for the file" type="text" /></div>' +
+                '<div class="qq-col4"><input class="qq-upload-public-checkbox" title="Allow anyone to download the file?" type="checkbox" /></div>' +
+                '<div class="qq-col5"><input class="qq-upload-sequence-checkbox" title="File follows in sequence from previous file?" type="checkbox" /></div>' +
+            '</div>',        
         
         classes: {
             // used to get elements from templates
@@ -673,7 +675,7 @@ qq.extend(qq.FileUploader.prototype, {
         }         
     },
     _addToList: function(id, fileName){
-        var item = qq.toElementTr(this._options.fileTemplate);                
+        var item = qq.toElement(this._options.fileTemplate);                
         item.qqFileId = id;
 
         var fileElement = this._find(item, 'file');        
