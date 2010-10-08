@@ -114,26 +114,6 @@ qq.toElement = (function(){
     };
 })();
 
-/**
- * Creates and returns element from html string, where that element is a table row
- * Uses innerHTML to create an element
- */
-qq.toElementTr = (function(){
-    var div = document.createElement('table');
-    return function(html){
-        div.innerHTML = html;
-        var element = div.firstChild;
-        console.log(element);
-        div.removeChild(element);
-        console.log(element.tagName);
-        if (element.tagName.toLowerCase() == 'tbody') {
-            return element.firstChild;
-        } else {
-            return element;
-        }
-    };
-})();
-
 //
 // Node properties and attributes
 

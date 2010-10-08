@@ -57,6 +57,7 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             // on exit hide all elements for sucessfully added files
             $('#file-uploader').find('.added').hide(400, function(){
                 $(this).remove();
+                fileLastAdded = null;
                 // if there are 2 or less elements in the list hide sequence shortcut
                 if ($('#file-uploader').find('.qq-file-data').not('.added').length <= 2) {
                     $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'none');
