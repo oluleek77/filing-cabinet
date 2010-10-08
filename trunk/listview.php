@@ -57,9 +57,21 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             // on exit hide all elements for sucessfully added files
             $('#file-uploader').find('.added').hide(400, function(){
                 $(this).remove();
+                // if there are 2 or less elements in the list hide sequence shortcut
+                if ($('#file-uploader').find('.qq-file-data').not('.added').length <= 2) {
+                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'none');
+                }
+                // if there is no more than one element hide all shortcuts
+                if ($('#file-uploader').find('.qq-file-data').not('.added').length <= 1) {
+                    $('#file-uploader').find('.qq-upload-list-shortcuts').css('display', 'none');
+                }
                 // if there are no more elements in the list hide the table head
                 if ($('#file-uploader').find('.qq-file-data').not('.added').length == 0) {
-                    $('#file-uploader').find('.qq-upload-list-head').css('display', 'none');
+                    $('#file-uploader').find('.qq-upload-list-head, .qq-upload-list-shortcuts').css('display', 'none');
+                }
+                // if there is at least one element left disable the sequence checkbox on the first
+                else {
+                    $('#file-uploader').find('.qq-file-data:not(.added):first').attr('disabled', 'disabled');
                 }
             });
             // if there are no more uploaded files to add we can hide the 'add' button
@@ -135,6 +147,10 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
             element: document.getElementById('file-uploader'),
             // path to server-side upload script
             action: 'qquploader.php',
+            onSubmit: function(id, fileName) {
+                // disable sequence checkbox for first item, because there's nothing before it to link to
+                $('#file-uploader').find('.qq-file-data:first').find('.qq-upload-sequence-checkbox').attr('disabled', 'disabled');
+            },
             onComplete: function(id, fileName, responseJSON) {
                 if (responseJSON['success']) {
                     $('#add_to_cabinet').show(400);
@@ -239,7 +255,15 @@ echo headA(array("js/jquery-1.4.2.min.js" => "text/javascript", "js/jquery-ui-1.
                 });
             });
             $('#login_title').removeClass('loading');
-        }); 
+        });
+        
+        $('#file-uploader').find('.qq-upload-public-all').click(function() {
+            $('#file-uploader').find('.qq-upload-public-checkbox:enabled').attr('checked', $('#file-uploader').find('.qq-upload-public-all').is(':checked'));
+        });
+        
+        $('#file-uploader').find('.qq-upload-sequence-all').click(function() {
+            $('#file-uploader').find('.qq-upload-sequence-checkbox:enabled').attr('checked', $('#file-uploader').find('.qq-upload-sequence-all').is(':checked'));
+        });
         
         $('#add_to_cabinet').click(function() {
             $('#info').html('<ul id="add-file-results"></ul>');
