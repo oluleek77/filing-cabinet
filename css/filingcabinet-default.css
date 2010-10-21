@@ -114,6 +114,7 @@ h1 {
 div#info {
     float: left;
     margin: 3em;
+    background: rgb(0.8, 0.8, 1.0, 0.3);
 }
 
 div.reduced_margin {
@@ -167,7 +168,7 @@ table#upload th, td {
 }
 
 .added {
-    background-color: green;
+    background-color: #C0FFC0;
 }
 
 div#files div.toggle_panel_top {
@@ -218,6 +219,12 @@ div.loading {
     box-shadow:5px 5px 3px #337;
     -moz-box-shadow:5px 5px 3px #337;
     -webkit-box-shadow:5px 5px 3px #337;
+}
+.button:active {
+    /* button being pressed -> drop shadow shrunk and darker */
+    box-shadow:1px 1px 1px #114;
+    -moz-box-shadow:1px 1px 1px #114;
+    -webkit-box-shadow:1px 1px 1px #114;
 }
 
 #add_to_cabinet {
