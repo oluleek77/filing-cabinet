@@ -179,12 +179,8 @@ div#files div.toggle_panel_top:first-child {
     margin-top: 0px;
 }
 
-.ui-autocomplete-loading {
+.ui-autocomplete-loading, div.loading {
     background: white url('images/ajax-loader.gif') right center no-repeat;
-}
-
-div.loading {
-    background: url('images/ajax-loader.gif') center center no-repeat;
 }
 
 .button {

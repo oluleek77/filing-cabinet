@@ -10,28 +10,27 @@
             // on exit hide all elements for sucessfully added files
             $('#file-uploader').find('.added').hide(400, function(){
                 $(this).remove();
-                fileLastAdded = null;
-                // if there are 2 or less elements in the list hide sequence shortcut
-                if ($('#file-uploader').find('.qq-file-data').not('.added').length <= 2) {
-                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'none');
-                }
-                // if there is no more than one element hide all shortcuts
-                if ($('#file-uploader').find('.qq-file-data').not('.added').length <= 1) {
-                    $('#file-uploader').find('.qq-upload-list-shortcuts').css('display', 'none');
-                }
-                // if there are no more elements in the list hide the table head
-                if ($('#file-uploader').find('.qq-file-data').not('.added').length == 0) {
+                // hide bits and pieces that are no longer necessary
+                if ($('#file-uploader').find('.qq-file-data').length == 0) {
                     $('#file-uploader').find('.qq-upload-list-head, .qq-upload-list-shortcuts').css('display', 'none');
                 }
                 // if there is at least one element left disable the sequence checkbox on the first
                 else {
-                    $('#file-uploader').find('.qq-file-data:not(.added):first').attr('disabled', 'disabled');
+                    $('#file-uploader').find('.qq-file-data:first').attr('disabled', 'disabled');
+                }
+                if ($('#file-uploader').find('.qq-upload-public-checkbox:enabled').length < 2) {
+                    $('#file-uploader').find('.qq-upload-public-all').css('display', 'none');
+                }
+                if ($('#file-uploader').find('.qq-upload-sequence-checkbox:enabled').length < 2) {
+                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'none');
                 }
             });
+            fileLastAdded = null;
             // if there are no more uploaded files to add we can hide the 'add' button
             if ($('#file-uploader').find('.qq-upload-success').not('.added').length == 0) {
                 $('#add_to_cabinet').hide(400);
             }
+            $('#add_to_cabinet').removeClass('loading');
         } else {
             fileElement = uploaded.first();
             if (fileElement.hasClass('qq-upload-fail')) {
@@ -62,6 +61,7 @@
             }
             // if it has neither the fail nor success class then it hasn't finished uploading
             // in this case just leave it.
+            fileElement.removeClass('attempt-add');
         }
     }
 
@@ -104,19 +104,21 @@
             onSubmit: function(id, fileName) {
                 // disable sequence checkbox for first item, because there's nothing before it to link to
                 $('#file-uploader').find('.qq-file-data:first').find('.qq-upload-sequence-checkbox').attr('disabled', 'disabled');
+                // display bits and pieces when necessary
+                if ($('#file-uploader').find('.qq-file-data').length > 0) {
+                    $('#file-uploader').find('.qq-upload-list-head').css('display', 'block');
+                    $('#file-uploader').find('.qq-upload-list-shortcuts').css('display', 'block');
+                }
+                if ($('#file-uploader').find('.qq-upload-public-checkbox:enabled').length > 1) {
+                    $('#file-uploader').find('.qq-upload-public-all').css('display', 'inline');
+                }
+                if ($('#file-uploader').find('.qq-upload-sequence-checkbox:enabled').length > 1) {
+                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'inline');
+                }
             },
             onComplete: function(id, fileName, responseJSON) {
                 if (responseJSON['success']) {
                     $('#add_to_cabinet').show(400);
-                }
-                if ($('#file-uploader').find('.qq-file-data').length > 0) {
-                    $('#file-uploader').find('.qq-upload-list-head').css('display', 'block');
-                }
-                if ($('#file-uploader').find('.qq-file-data').length > 1) {
-                    $('#file-uploader').find('.qq-upload-list-shortcuts').css('display', 'block');
-                }
-                if ($('#file-uploader').find('.qq-file-data').length > 2) {
-                    $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'inline');
                 }
             }
         });
@@ -145,7 +147,7 @@
         });
         
         $("#submit_login").click(function(){
-            $('#login_title').addClass('loading');
+            $('#submit_login').addClass('loading');
             $("#info").load("login.php", {uname: $("#uname").val(), pwd: $("#pwd").val()}, function() {
                 if ($('#info').html().indexOf('succeeded') != -1)
                 {
@@ -166,12 +168,12 @@
                     $('#uname').val('');
                     $('#pwd').val('');
                 }
+                $('#submit_login').removeClass('loading');
             });
-            $('#login_title').removeClass('loading');
         });
         
         $("#reg_submit").click(function(){
-            $('#login_title').addClass('loading');
+            $('#reg_submit').addClass('loading');
             $("#info").load("register.php", {uname: $("#reg_uname").val(), pwd: $("#reg_pwd").val(), email: $("#reg_email").val()}, function() {
                 $('#reg_uname').val('');
                 $('#reg_pwd').val('');
@@ -179,13 +181,13 @@
                 if ($('#info').html().indexOf('registered') != -1)
                 {
                     $('#register_content').slideToggle(400);
-                } 
+                }
+                $('#reg_submit').removeClass('loading'); 
             });
-            $('#login_title').removeClass('loading');
         });
         
         $("#submit_logout_A").click(function() {
-            $('#login_title').addClass('loading');
+            $('#submit_logout_A').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#upload_panel').hide(400);
                 $('#login_content').hide(400, function() {
@@ -194,12 +196,12 @@
                   $('#login_title').html('Login');
                   $('#login_content_C').css('display', 'block');
                 });
+                $('#submit_logout_A').removeClass('loading');
             });
-            $('#login_title').removeClass('loading');
         }); 
         
         $("#submit_logout_B").click(function() {
-            $('#login_title').addClass('loading');
+            $('#submit_logout_B').addClass('loading');
             $("#info").load("login.php", {logout: 1}, function() {
                 $('#login_content').hide(400, function() {
                   $('#login_panel').addClass('reduced_margin');
@@ -207,8 +209,8 @@
                   $('#login_title').html('Login');
                   $('#login_content_C').css('display', 'block');
                 });
+                $('#submit_logout_B').removeClass('loading');
             });
-            $('#login_title').removeClass('loading');
         });
         
         $('#file-uploader').find('.qq-upload-public-all').click(function() {
@@ -220,6 +222,7 @@
         });
         
         $('#add_to_cabinet').click(function() {
+            $('#add_to_cabinet').addClass('loading');
             $('#info').html('<ul id="add-file-results"></ul>');
             // send the elements in the upload list to the function to add them to the cabinet
             // exclude file elements already added
