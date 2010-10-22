@@ -17,9 +17,9 @@ function head($title = 'Filing Cabinet', $scripts = array())
     return headA($scripts) . headB($title);
 }
 
-function headA($scripts)
+function headA()
 {
-    $out = "
+    return "
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
 \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
@@ -28,11 +28,7 @@ function headA($scripts)
     <link rel=\"stylesheet\" type=\"text/css\" href=\"css/filingcabinet-default.css\" />
     <link rel=\"icon\" type=\"image/png\" href=\"images/favicon.png\" />
 ";
-    foreach ($scripts as $script => $type)
-    {
-        $out .= "<script type=\"$type\" src=\"$script\"></script>\n";
-    }
-    return $out;
+    
 }
 
 function headB($title)
