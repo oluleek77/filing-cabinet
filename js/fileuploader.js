@@ -104,11 +104,8 @@ qq.contains = function(parent, descendant){
 qq.toElement = (function(){
     var div = document.createElement('div');
     return function(html){
-        console.log(html);
         div.innerHTML = html;
-        console.log(div);
         var element = div.firstChild;
-        console.log(element);
         div.removeChild(element);
         return element;
     };
