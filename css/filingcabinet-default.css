@@ -151,6 +151,10 @@ div#login_panel {
     border-radius: 1ex;
 }
 
+.filter_name {
+    font-size: large;
+}
+
 .filter_control {
     font-size: small;
 }
