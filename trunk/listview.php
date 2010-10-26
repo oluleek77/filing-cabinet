@@ -162,18 +162,23 @@ echo "</span>\n";
 <div class="main" id="breadcrumbs">
 
 <form id="label_select_form" action="listview.php" method="get"><div>
-<a href="listview.php">All Files</a>
+<div id="filters_title">Filters (<a href="listview.php">remove all</a>)</div>
+
+<div>
 <?php
 foreach ($breadcrumbs as $num => $crumb)
 {
-    echo ' >> <a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_slice($breadcrumbs, 0, $num+1))) . '">' . $crumb . '</a>';
+    echo '<div class="filter"> <div class="filter_name">' . $crumb . '</div>';
+    echo '<div class="filter_control"><a href="listview.php?crumbs=' . urlencode(implode($crumbDelimiter, array_merge(array_slice($breadcrumbs, 0, $num), array_slice($breadcrumbs, $num+1)))) . '">Remove</a><br />';
+    echo '<a href="listview.php?crumbs=' . urlencode($crumb) . '">Keep only this</a></div></div>';
     // while we are creating the breadcrumb navigation
     // also build the query that will fetch the files that match the selected labels.
     $qSelectedFiles .= " AND EXISTS(SELECT * FROM Labels WHERE Files.id = file_id AND label_name = '".addslashes($crumb)."')";
 }
 // add a text field to allow user to manually add label filters
-echo "    <label for=\"label_select\"> >> </label>\n";
-echo "    <input id=\"label_select\" name=\"label_select\" />\n";
+echo "    <div class=\"filter\"><input id=\"label_select\" name=\"label_select\" /></div>\n";
+
+echo "</div>\n";
 
 if ($breadcrumbs)
 {
