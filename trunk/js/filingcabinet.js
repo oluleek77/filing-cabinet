@@ -102,6 +102,8 @@
             // path to server-side upload script
             action: 'qquploader.php',
             onSubmit: function(id, fileName) {
+            },
+            onComplete: function(id, fileName, responseJSON) {
                 // disable sequence checkbox for first item, because there's nothing before it to link to
                 $('#file-uploader').find('.qq-file-data:first').find('.qq-upload-sequence-checkbox').attr('disabled', 'disabled');
                 // display bits and pieces when necessary
@@ -115,8 +117,6 @@
                 if ($('#file-uploader').find('.qq-upload-sequence-checkbox:enabled').length > 1) {
                     $('#file-uploader').find('.qq-upload-sequence-all').css('display', 'inline');
                 }
-            },
-            onComplete: function(id, fileName, responseJSON) {
                 if (responseJSON['success']) {
                     $('#add_to_cabinet').show(400);
                 }
