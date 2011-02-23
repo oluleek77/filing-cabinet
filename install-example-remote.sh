@@ -10,6 +10,7 @@
 # mimetypes has two subdirectories: '16' and '32'
 
 # put your database username and password here
+db_host=localhost
 db_user=user
 db_pass=pass
 

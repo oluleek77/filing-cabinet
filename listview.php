@@ -5,7 +5,7 @@ require 'common.php';
 require_once 'access.class.php';
 
 // connect to the database
-mysql_connect(localhost, $db_user, $db_password);
+mysql_connect($db_host, $db_user, $db_password);
 @mysql_select_db($database) or die( 'Unable to select database');
 
 $user = new flexibleAccess($db_link);
