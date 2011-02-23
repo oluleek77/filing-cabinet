@@ -46,7 +46,7 @@ class flexibleAccess{
    * The database host
    * var string
    */
-  var $dbHost = 'localhost';
+  var $dbHost = ''; // will get from environment.php in constructor
   /**
    * The database port
    * var int
@@ -124,6 +124,7 @@ class flexibleAccess{
   {
 	    // insert data from environment.php
 	    $this->dbName = $GLOBALS['database'];
+	    $this->dbHost = $GLOBALS['db_host'];
 	    $this->dbUser = $GLOBALS['db_user'];
 	    $this->dbPass = $GLOBALS['db_password'];
 	    
