@@ -87,7 +87,7 @@ function fileListing($DBrow, $downloads = False)
         $out .= "<td>({$DBrow['downloads']} downloads)</td>\n";
     }
     // provide a download button
-    $out .= "<td><a href=\"download?id={$DBrow['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
+    $out .= "<td><a href=\"download.php?id={$DBrow['id']}\"><img src=\"images/download-32.png\" alt=\"Download\" /></a></td>\n";
     // show filesize
     $out .= '<td>' . HumanReadableFilesize($DBrow['size']) . "</td>\n";
     $out .= "</tr>\n";
