@@ -40,6 +40,7 @@ admin_email='admin@my.domain.com'
 cp environment.php environment.php.tmp
 
 # this bit edits the web files so they work with your setup
+sed -i "s/<insert command for archiver>/$archiver/" environment.php.tmp
 sed -i "s/<insert database username>/$db_user/" environment.php.tmp
 sed -i "s/<insert database password>/$db_pass/" environment.php.tmp
 sed -i "s/<insert path to upload directory>/$(echo $upload_path | sed -e 's/\(\/\|\\\|&\)/\\&/g')/" environment.php.tmp

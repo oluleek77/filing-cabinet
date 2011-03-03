@@ -10,6 +10,7 @@ $archive_dir = '<insert archive path>';
 $archive_path = '<insert archive path and filename>';
 $rel_web_path = '<insert path of app relative to web directory>';
 $admin_email = '<insert admin email address>';
+$archiver = '<insert command for archiver>';
 
 $labels_per_page = 50;
 $files_per_page = 50;

@@ -26,7 +26,7 @@ if (mysql_result($qFileDataResult, 0, 'permissions') == 0 and mysql_result($qFil
 }
 
 // extract the file from the archive
-exec("7za e -y -o$archive_dir $archive_path file_" . $_GET['id'], $output, $return_value);
+exec("$archiver e -y -o$archive_dir $archive_path file_" . $_GET['id'], $output, $return_value);
 
 if ($return_value > 1) {
     echo 'error extracting file from archive';
