@@ -36,7 +36,7 @@ admin_email='admin@my.domain.com'
 mkdir $full_path/uploads $full_path/js $full_path/css $full_path/images
 
 # this bit copies the web files in
-rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php qquploader.php add-file.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php images css js $full_path
+rsync -lr --exclude='*/.svn' index.html environment.php common.php upload_files.php uploader.php qquploader.php add-file.php listview.php fileview.php access.class.php login.php register.php download.php labelserver.php mime_type_lib.php images css js $full_path
 
 # this bit edits the web files so they work with your setup
 sed -i "s/<insert command for archiver>/$archiver/" environment.php

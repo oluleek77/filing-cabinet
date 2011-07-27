@@ -40,6 +40,7 @@
             } else if (fileElement.hasClass('qq-upload-success')) {
                     var data = {
                         filename: fileElement.find('.qq-upload-full-file').val(),
+                        filesize: fileElement.find('.qq-upload-full-size').val(),
                         rename: fileElement.find('.qq-upload-rename-input').val(),
                         labels: fileElement.find('.qq-upload-label-input').val(),
                         pub: fileElement.find('.qq-upload-public-checkbox:checked').length
