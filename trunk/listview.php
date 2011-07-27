@@ -72,7 +72,7 @@ if ($_GET['action'] == 'delete')
         }
         else {
             echo "<p>Deleting file from archive<br />\n";
-            echo 'archiver says: ' . exec("7za d -y $archive_path file_" . $_GET['file_id'], $output, $return_value) . "<br />\n";
+            echo 'archiver says: ' . exec("$archiver d -y $archive_path file_" . $_GET['file_id'], $output, $return_value) . "<br />\n";
             if ($return_value == 0)
             {
                 $qDelFile = 'DELETE FROM Files WHERE id = ' . $_GET['file_id'];

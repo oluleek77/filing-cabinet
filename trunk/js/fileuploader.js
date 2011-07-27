@@ -508,6 +508,7 @@ qq.FileUploader = function(o){
                 '<input class="qq-upload-full-file" type="hidden" />' +
                 '<span class="qq-upload-spinner"></span>' +
                 '<span class="qq-upload-size"></span>' +
+                '<input class="qq-upload-full-size" type="hidden" />' +
                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
                 '<span class="qq-upload-failed-text">Failed</span></div>' +
                 '<div class="qq-col2"><input class="qq-upload-rename-input" title="Rename the file (optional)" type="text" /></div>' +
@@ -527,6 +528,7 @@ qq.FileUploader = function(o){
             fullFile: 'qq-upload-full-file',
             spinner: 'qq-upload-spinner',
             size: 'qq-upload-size',
+            fullSize: 'qq-upload-full-size',
             cancel: 'qq-upload-cancel',
             
             rename: 'qq-upload-rename-input',
@@ -620,6 +622,8 @@ qq.extend(qq.FileUploader.prototype, {
         var item = this._getItemByFileId(id);
         var size = this._find(item, 'size');
         size.style.display = 'inline';
+
+        this._find(item, 'fullSize').value = total;
         
         var text; 
         if (loaded != total){
