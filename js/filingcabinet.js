@@ -146,6 +146,11 @@
         $("#new_title").click(function(){
             $('#new_content').slideToggle(400);
         });
+
+        //click to taggle more info on any file
+        $(".file_head").click(function(){
+            $('#' + this.id + '_info').slideToggle(400);
+        });
         
         $("#submit_login").click(function(){
             $('#submit_login').addClass('loading');

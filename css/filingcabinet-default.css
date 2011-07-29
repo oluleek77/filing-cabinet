@@ -97,6 +97,10 @@ div.main {
     background:#C0C0FF;
 }
 
+.file_head:hover {
+    background:#C0C0FF;
+}
+
 .toggle_panel_bottom {
     border-top: 0px;
     -webkit-border-bottom-right-radius: 1ex;

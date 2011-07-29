@@ -76,7 +76,7 @@ function tabMenu($logged = True, $username = '')
 // generate file listing as table row
 function fileListing($DBrow, $downloads = False)
 {
-    $out = "<tr>\n";
+    $out = "<tr class=\"file_head\" id=\"{$DBrow['id']}\">\n";
     // show MIME icon
     $out .= '<td><img src="images/mimetypes/16/' . mimeFilename($DBrow['type']) . "\" alt=\"{$DBrow['type']}\" /></td>\n";
     // filename linked fo fileview
@@ -91,6 +91,9 @@ function fileListing($DBrow, $downloads = False)
     // show filesize
     $out .= '<td>' . HumanReadableFilesize($DBrow['size']) . "</td>\n";
     $out .= "</tr>\n";
+    $out .= '<tr class="file_info">';
+    $out .= '<td colspan="4"><div class="begin_hidden_js" id="' . $DBrow['id'] . '_info">more detailed content</div></td>';
+    $out .= "</tr>\n"; 
     return $out;
 }
 
